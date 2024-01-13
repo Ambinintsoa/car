@@ -1,5 +1,5 @@
 # Utilisation d'une image de base avec Java
-FROM openjdk:11-jre-slim
+FROM openjdk:17-jre-slim
 
 # Définir le répertoire de travail
 WORKDIR /app
