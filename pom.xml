@@ -116,10 +116,10 @@
 						<builder>paketobuildpacks/builder-jammy-base:latest</builder>
 					</image>
 					<excludes>
-						<!-- <exclude>
+						<exclude>
 							<groupId>org.projectlombok</groupId>
 							<artifactId>lombok</artifactId>
-						</exclude> -->
+						</exclude>
 					</excludes>
 				</configuration>
 			</plugin>
