@@ -33,7 +33,7 @@ public class AuthService {
         public AuthenticationResponse register(RegisterRequest request) {
                 User user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
                                 .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
-                                .roles(Role.ADMIN) // role example
+                                .roles(Role.USER) // role example
                                 .build();
                 user = repository.save(user);
                 return getAuthResponse(user);

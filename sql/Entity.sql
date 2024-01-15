@@ -3,6 +3,7 @@ create sequence seq_motor;
 CREATE  TABLE motor ( 
 	idmotor             varchar(100)  default 'MTR'||NEXTVAL('seq_motor'),
 	name                  varchar(40)    ,
+    state int default  1,
 	CONSTRAINT pk_motor PRIMARY KEY ( idmotor )
  );
 INSERT INTO motor (name)
@@ -15,6 +16,7 @@ create sequence seq_category;
 CREATE  TABLE category ( 
 	idcategory             varchar(100)  default 'CTG'||NEXTVAL('seq_category'),
 	name                  varchar(40)    ,
+    state int default  1,
 	CONSTRAINT pk_category PRIMARY KEY ( idcategory )
  );
 INSERT INTO category (name)
@@ -25,6 +27,7 @@ VALUES
 CREATE  TABLE specifite ( 
 	idspecifite             varchar(100)  default 'SPF'||NEXTVAL('seq_specifite'),
 	name                  varchar(100)    ,
+    state int default  1,
     idcategory             varchar(100) ,
     CONSTRAINT fk_specifite_category FOREIGN KEY ( idcategory ) REFERENCES category( idcategory ) ,
 	CONSTRAINT pk_specifite PRIMARY KEY ( idspecifite )
@@ -53,6 +56,7 @@ create sequence seq_country;
 CREATE  TABLE country ( 
 	idcountry             varchar(100)  default 'CTR'||NEXTVAL('seq_country'),
 	name                  varchar(40)    ,
+     state int default  1,
 	CONSTRAINT pk_country PRIMARY KEY ( idcountry )
  );
  INSERT INTO country (name)
@@ -63,6 +67,7 @@ create sequence seq_devise;
 CREATE  TABLE devise ( 
 	iddevise             varchar(100)  default 'DEV'||NEXTVAL('seq_devise'),
 	name                  varchar(40)    ,
+    state int default  1,
     idcountry VARCHAR(100),
 	CONSTRAINT pk_devise PRIMARY KEY ( iddevise ),
     CONSTRAINT fk_devise_country FOREIGN KEY ( idcountry ) REFERENCES country( idcountry ) 
@@ -74,6 +79,7 @@ CREATE  TABLE devise (
 CREATE  TABLE type ( 
 	idtype             varchar(100)  default 'TPE'||NEXTVAL('seq_type'),
 	name                  varchar(40)    ,
+     state int default  1,
 	CONSTRAINT pk_type PRIMARY KEY ( idtype )
  );
  INSERT INTO type (name) VALUES 
@@ -86,6 +92,7 @@ CREATE  TABLE type (
    create sequence seq_make;
 CREATE  TABLE make ( 
 	idmake             varchar(100)  default 'MKE'||NEXTVAL('seq_make'),
+     state int default  1,
 	name                  varchar(40)    ,
 	CONSTRAINT pk_make PRIMARY KEY ( idmake )
  );
@@ -116,6 +123,7 @@ CREATE  TABLE make (
 CREATE  TABLE model ( 
 	idmodel             varchar(100)  default 'MDL'||NEXTVAL('seq_model'),
 	name                  varchar(40)    ,
+    state int default  1,
     release_date date ,
     places_Number int,
     doors_number int,
@@ -155,6 +163,7 @@ VALUES
 CREATE  TABLE maintains ( 
 	idmaintains             varchar(100)  default 'MTN'||NEXTVAL('seq_maintains'),
 	name                  varchar(100)    ,
+    state int default  1,
 	CONSTRAINT pk_maintains PRIMARY KEY ( idmaintains )
  );
  INSERT INTO maintains (name) VALUES
@@ -175,3 +184,4 @@ CREATE  TABLE maintains (
     ('Power Steering Fluid Flush'),
     ('Timing Belt Replacement'),
     ('Fuel Injector Cleaning');
+

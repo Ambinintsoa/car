@@ -39,7 +39,6 @@ public class AuthController {
     @PostMapping("/check")
     public ResponseEntity<Object> checkEmailAvailable(
             @PathParam(value = "email") String email) {
-        System.out.println(email);
         return ResponseEntity.ok(!service.chekcIfAlreadyExist(email));
     }
 

@@ -15,7 +15,4 @@ public class RegisterRequest {
     private String lastname;
     private String email;
     private String password;
-    private String society;
-    private String role;
-    private Long society_id;
 }

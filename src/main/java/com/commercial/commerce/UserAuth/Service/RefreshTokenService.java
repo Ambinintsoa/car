@@ -66,4 +66,12 @@ public class RefreshTokenService {
         }
         return !token.getExpireDate().isBefore(Instant.now());
     }
+
+    public String getRole(String refreshToken) {
+        try {
+            return refreshTokenRepository.getRole(refreshToken);
+        } catch (Exception e) {
+            return null;
+        }
+    }
 }

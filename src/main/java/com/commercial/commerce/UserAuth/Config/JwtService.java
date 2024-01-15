@@ -8,6 +8,8 @@ import javax.crypto.SecretKey;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
+import com.commercial.commerce.UserAuth.Models.User;
+
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.lang.Function;
