@@ -74,4 +74,24 @@ public class RefreshTokenService {
             return null;
         }
     }
+
+    public boolean verification(String token) {
+        if (token.compareToIgnoreCase("") == 0) {
+            return false;
+        }
+        if (this.isRefreshTokenValid(token)
+                && this.getRole(token).compareToIgnoreCase("admin") == 0) {
+            return true;
+        }
+        return false;
+    }
+
+    public String splitToken(String header) {
+        String[] tokens = header.split("Bearer ");
+        if (tokens.length == 1) {
+            return "";
+        }
+        return tokens[1];
+
+    }
 }

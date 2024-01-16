@@ -82,9 +82,8 @@ public class TypeController {
             @Valid @RequestBody TypeEntity updatedType) {
         try {
             if (request.getHeader("Authorization") != null) {
-                String token = request.getHeader("Authorization").split("Bearer ")[1];
-                if (refreshTokenService.isRefreshTokenValid(token)
-                        && refreshTokenService.getRole(token).compareToIgnoreCase("admin") == 0) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
 
                     Optional<TypeEntity> existingType = typeService.updateType(id, updatedType);
 
@@ -94,13 +93,15 @@ public class TypeController {
                         return createResponseEntity(null, "nothing updated ");
                     }
                 }
+                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+
             } else {
                 return ResponseEntity.status(HttpStatus.ACCEPTED)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(new ApiResponse<>(null, new Status("error", "token not valid"), LocalDateTime.now()));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
@@ -112,9 +113,8 @@ public class TypeController {
     public ResponseEntity<ApiResponse<TypeEntity>> deleteType(HttpServletRequest request, @PathVariable String id) {
         try {
             if (request.getHeader("Authorization") != null) {
-                String token = request.getHeader("Authorization").split("Bearer ")[1];
-                if (refreshTokenService.isRefreshTokenValid(token)
-                        && refreshTokenService.getRole(token).compareToIgnoreCase("admin") == 0) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
                     Optional<TypeEntity> existingType = typeService.deleteType(id);
 
                     if (existingType.isPresent()) {
@@ -123,13 +123,15 @@ public class TypeController {
                         return createResponseEntity(null, "nothing deleted ");
                     }
                 }
+                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+
             } else {
                 return ResponseEntity.status(HttpStatus.ACCEPTED)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(new ApiResponse<>(null, new Status("error", "token not valid"), LocalDateTime.now()));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)

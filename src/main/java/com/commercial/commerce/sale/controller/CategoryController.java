@@ -84,9 +84,8 @@ public class CategoryController {
         try {
             if (request.getHeader("Authorization") != null) {
 
-                String token = request.getHeader("Authorization").split("Bearer ")[1];
-                if (refreshTokenService.isRefreshTokenValid(token)
-                        && refreshTokenService.getRole(token).compareToIgnoreCase("admin") == 0) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
 
                     Optional<CategoryEntity> existingCategory = categoryService.updateCategory(id, updatedCategory);
 
@@ -96,13 +95,15 @@ public class CategoryController {
                         return createResponseEntity(null, "nothing updated ");
                     }
                 }
+                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+
             } else {
                 return ResponseEntity.status(HttpStatus.ACCEPTED)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(new ApiResponse<>(null, new Status("error", "token not valid"), LocalDateTime.now()));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.ACCEPTED)
@@ -115,12 +116,9 @@ public class CategoryController {
             @PathVariable String id) {
         try {
             if (request.getHeader("Authorization") != null) {
-                String token = request.getHeader("Authorization").split("Bearer ")[1];
-                if (refreshTokenService.isRefreshTokenValid(token)
-                        && refreshTokenService.getRole(token).compareToIgnoreCase("admin") == 0) {
-
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
                     Optional<CategoryEntity> existingCategory = categoryService.deleteCategory(id);
-
                     if (existingCategory.isPresent()) {
                         return createResponseEntity(existingCategory.get(), "Category updated successfully");
                     } else {
@@ -128,13 +126,14 @@ public class CategoryController {
                     }
 
                 }
+                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
             } else {
                 return ResponseEntity.status(HttpStatus.ACCEPTED)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
-                    .body(new ApiResponse<>(null, new Status("error", "token not valid"), LocalDateTime.now()));
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.ACCEPTED)
