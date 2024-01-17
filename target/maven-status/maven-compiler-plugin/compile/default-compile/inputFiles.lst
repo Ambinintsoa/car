@@ -1,12 +1,14 @@
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\CategoryService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Response\CheckStatusResponse.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\response\Status.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Make.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\CategoryController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Enum\Role.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\MaintainService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\TestRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Request\RefreshTokenRequest.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\TestService.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Caracteristic.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Repository\RefreshTokenRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Request\AuthenticationRequest.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\TestController.java
@@ -20,10 +22,13 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Models\Refre
 D:\cloud_project\car\src\main\java\com\commercial\commerce\ServletInitializer.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\MakeEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\TypeController.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Vendeur.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\AnnonceService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\response\ApiResponse.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Config\SecurityConfig.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Response\AuthenticationResponse.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Config\ApplicationConfig.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Motor.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Service\CheckStatusService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\TypeRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\TypeEntity.java
@@ -32,7 +37,10 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\TestEntit
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Models\User.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Repository\UserRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\TypeService.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\AnnonceController.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Maintenance.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Service\AuthService.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\AnnonceRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\ModelController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\ModelService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\MotorService.java
@@ -49,4 +57,5 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Config\JwtAu
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\MotorEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\MotorController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\CommerceApplication.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\AnnonceEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Response\RegisterData.java

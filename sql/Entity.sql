@@ -185,3 +185,55 @@ CREATE  TABLE maintains (
     ('Timing Belt Replacement'),
     ('Fuel Injector Cleaning');
 
+
+
+
+/** 
+ * Paste one or more documents here
+ */
+{
+  "_id": {
+    "$oid": "65a821866c93603c7a354a84"
+  },
+  "make": {
+    "id": "1",
+    "name": "1"
+  },
+  "caracteristic": [
+    {
+      "id": "1",
+      "name": "1"
+    },
+    {
+      "id": "1",
+      "name": "1"
+    }
+  ],
+  "year": "2020-13-12",
+  "kilometre": 90,
+  "consommation": 20,
+  "maintenance": [
+    {
+      "id": "1",
+      "name": "1"
+    },
+    {
+      "id": "1",
+      "name": "1"
+    }
+  ],
+  "localisation": "tana",
+  "stock": 1,
+  "vendeur": {
+    "id": "1",
+    "name": "aa",
+    "proprietaire": 1
+  },
+  "commission": 20000,
+  "picture": "qsnxiochoh",
+  "motor": {
+    "id": "1",
+    "name": "1"
+  },
+  "note": 4
+}
