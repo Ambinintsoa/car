@@ -54,7 +54,8 @@ public class MotorController {
         try {
             Optional<MotorEntity> motor = motorService.getMotorById(id);
             return motor.map(c -> createResponseEntity(c, "Motor retrieved successfully for this id"))
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.ACCEPTED)
+                            .body(new ApiResponse<>(null, new Status("error", "NOT FOUND"), LocalDateTime.now())));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));

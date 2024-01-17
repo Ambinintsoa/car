@@ -56,7 +56,8 @@ public class TypeController {
         try {
             Optional<TypeEntity> type = typeService.getTypeById(id);
             return type.map(c -> createResponseEntity(c, "Type retrieved successfully for this id"))
-                    .orElseGet(() -> ResponseEntity.notFound().build());
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.ACCEPTED)
+                            .body(new ApiResponse<>(null, new Status("error", "NOT FOUND"), LocalDateTime.now())));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));

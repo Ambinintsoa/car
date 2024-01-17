@@ -56,7 +56,9 @@ public class CategoryController {
             Optional<CategoryEntity> category = categoryService.getCategoryById(id);
             return category.map(c -> createResponseEntity(c, "Category retrieved successfully for this id"))
                     .orElseGet(
-                            () -> createResponseEntity(category.get(), "Category retrieved successfully for this id"));
+                            () -> ResponseEntity.status(HttpStatus.ACCEPTED)
+                                    .body(new ApiResponse<>(null, new Status("error", "NOT FOUND"),
+                                            LocalDateTime.now())));
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
