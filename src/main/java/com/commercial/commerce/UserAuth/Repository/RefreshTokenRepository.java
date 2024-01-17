@@ -20,6 +20,6 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
     @Query("DELETE FROM refresh_token rf WHERE rf.user.email = :useremail ")
     void deleteByEmail(@Param("useremail") String email);
 
-    @Query(value = "SELECT role FROM v_user where token = :token", nativeQuery = true)
+    @Query(value = "SELECT roles FROM v_user where token = :token", nativeQuery = true)
     String getRole(@Param("token") String token);
 }

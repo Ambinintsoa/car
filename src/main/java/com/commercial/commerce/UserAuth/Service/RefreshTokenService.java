@@ -60,7 +60,9 @@ public class RefreshTokenService {
     public Boolean isRefreshTokenValid(String refreshToken) {
         RefreshToken token = null;
         try {
+
             token = findByToken(refreshToken).get();
+
         } catch (Exception e) {
             return false;
         }
@@ -81,6 +83,7 @@ public class RefreshTokenService {
         }
         if (this.isRefreshTokenValid(token)
                 && this.getRole(token).compareToIgnoreCase("admin") == 0) {
+            System.out.println(this.getRole(token));
             return true;
         }
         return false;
