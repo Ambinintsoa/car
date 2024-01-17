@@ -6,8 +6,6 @@ import com.commercial.commerce.sale.service.MakeService; // Importe le service p
 import com.commercial.commerce.sale.service.ModelService;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import com.commercial.commerce.UserAuth.Config.JwtService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
@@ -15,8 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;

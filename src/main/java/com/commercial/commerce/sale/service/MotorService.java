@@ -36,6 +36,9 @@ public class MotorService {
         if (existingMotor.isPresent()) {
             // Effectuez la mise à jour du moteur existant avec les nouvelles données
             updatedMotor.setId(id);
+            if (updatedMotor.getNom() == null) {
+                updatedMotor.setNom(existingMotor.get().getNom());
+            }
             return Optional.of(motorRepository.save(updatedMotor));
         } else {
             return Optional.empty();

@@ -4,8 +4,6 @@ import com.commercial.commerce.sale.entity.CategoryEntity;
 import com.commercial.commerce.sale.service.CategoryService;
 
 import jakarta.servlet.http.HttpServletRequest;
-
-import com.commercial.commerce.UserAuth.Models.RefreshToken;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;

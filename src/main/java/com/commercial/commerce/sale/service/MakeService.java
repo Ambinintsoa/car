@@ -36,6 +36,10 @@ public class MakeService {
         if (existingMake.isPresent()) {
             // Effectuez la mise à jour du make existant avec les nouvelles données
             updatedMake.setId(id);
+            if (updatedMake.getNom() == null) {
+                updatedMake.setNom(existingMake.get().getNom());
+            }
+
             return Optional.of(makeRepository.save(updatedMake));
         } else {
             return Optional.empty();

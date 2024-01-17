@@ -8,13 +8,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
-import com.commercial.commerce.sale.entity.CategoryEntity;
 import com.commercial.commerce.sale.entity.TestEntity;
-import com.commercial.commerce.sale.service.MotorService;
 import com.commercial.commerce.sale.service.TestService;
 
 @RestController

@@ -1,22 +1,15 @@
 package com.commercial.commerce.sale.controller;
 
-import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.entity.ModelEntity;
-import com.commercial.commerce.sale.entity.MotorEntity;
 import com.commercial.commerce.sale.service.ModelService;
-import com.commercial.commerce.sale.service.MotorService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
-
-import org.springframework.data.repository.query.Param;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;

@@ -34,8 +34,10 @@ public class CategoryService {
         Optional<CategoryEntity> existingCategory = categoryRepository.findById(id);
 
         if (existingCategory.isPresent()) {
-            // Effectuez la mise à jour de la catégorie existante avec les nouvelles données
             updatedCategory.setId(id);
+            if (updatedCategory.getNom() == null) {
+                updatedCategory.setNom(existingCategory.get().getNom());
+            }
             return Optional.of(categoryRepository.save(updatedCategory));
         } else {
             return Optional.empty();

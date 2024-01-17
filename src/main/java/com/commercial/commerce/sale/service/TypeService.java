@@ -36,6 +36,9 @@ public class TypeService {
         if (existingType.isPresent()) {
             // Effectuez la mise à jour du type existant avec les nouvelles données
             updatedType.setId(id);
+            if (updatedType.getNom() == null) {
+                updatedType.setNom(existingType.get().getNom());
+            }
             return Optional.of(typeRepository.save(updatedType));
         } else {
             return Optional.empty();
