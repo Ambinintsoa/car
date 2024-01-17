@@ -25,6 +25,7 @@ com\commercial\commerce\UserAuth\Config\ApplicationConfig.class
 com\commercial\commerce\sale\repository\TypeRepository.class
 com\commercial\commerce\sale\controller\MakeController.class
 com\commercial\commerce\UserAuth\Repository\UserRepository.class
+com\commercial\commerce\sale\service\TestService.class
 com\commercial\commerce\sale\service\CategoryService.class
 com\commercial\commerce\UserAuth\Service\CheckStatusService.class
 com\commercial\commerce\sale\service\TypeService.class
@@ -43,6 +44,7 @@ com\commercial\commerce\UserAuth\Repository\RefreshTokenRepository.class
 com\commercial\commerce\UserAuth\Service\AuthService.class
 com\commercial\commerce\UserAuth\Config\JwtAuthFilter.class
 com\commercial\commerce\response\Status.class
+com\commercial\commerce\sale\repository\TestRepository.class
 com\commercial\commerce\UserAuth\Response\RegisterData$RegisterDataBuilder.class
 com\commercial\commerce\sale\repository\CategoryRepository.class
 com\commercial\commerce\UserAuth\Response\AuthenticationResponse.class
@@ -51,4 +53,6 @@ com\commercial\commerce\UserAuth\Models\RefreshToken$RefreshTokenBuilder.class
 com\commercial\commerce\sale\entity\CategoryEntity.class
 com\commercial\commerce\UserAuth\Service\RefreshTokenService.class
 com\commercial\commerce\response\ApiResponse.class
+com\commercial\commerce\sale\entity\TestEntity.class
+com\commercial\commerce\sale\controller\TestController.class
 com\commercial\commerce\sale\repository\MotorRepository.class
