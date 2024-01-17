@@ -2,6 +2,7 @@ package com.commercial.commerce.sale.entity;
 
 import java.sql.Date;
 
+import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators.Mod;
 import org.springframework.data.repository.query.Param;
 
 import jakarta.persistence.*;
@@ -117,4 +118,27 @@ public class ModelEntity {
         this.setMake(new MakeEntity());
         this.getMake().setId(make);
     }
+
+    public void verify(ModelEntity update) {
+        if (this.getNom() == null) {
+            this.setNom(update.getNom());
+        }
+        if (this.getDate() == null) {
+            this.setDate(update.getDate());
+        }
+        if (this.getDoors() == 0) {
+            this.setDoors(update.getDoors());
+        }
+        if (this.getPlaces() == 0) {
+            this.setPlaces(update.getPlaces());
+        }
+        if (this.getType() == null) {
+            this.setType(update.getType());
+        }
+        if (this.getMake() == null) {
+            this.setMake(update.getMake());
+        }
+
+    }
+
 }

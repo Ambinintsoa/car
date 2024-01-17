@@ -43,7 +43,7 @@ public class CategoryController {
             return createResponseEntity(categories, "Categories retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -54,23 +54,38 @@ public class CategoryController {
             Optional<CategoryEntity> category = categoryService.getCategoryById(id);
             return category.map(c -> createResponseEntity(c, "Category retrieved successfully for this id"))
                     .orElseGet(
-                            () -> ResponseEntity.status(HttpStatus.ACCEPTED)
+                            () -> ResponseEntity.status(HttpStatus.OK)
                                     .body(new ApiResponse<>(null, new Status("error", "NOT FOUND"),
                                             LocalDateTime.now())));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
     @PostMapping(value = "/categories")
-    public ResponseEntity<ApiResponse<CategoryEntity>> createCategory(
+    public ResponseEntity<ApiResponse<CategoryEntity>> createCategory(HttpServletRequest request,
             @Valid @RequestBody CategoryEntity category) {
         try {
-            CategoryEntity createdCategory = categoryService.insertCustom(category);
-            return createResponseEntity(createdCategory, "Categories created successfully");
+            if (request.getHeader("Authorization") != null) {
+
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
+                    CategoryEntity createdCategory = categoryService.insertCustom(category);
+                    return createResponseEntity(createdCategory, "Categories created successfully");
+                }
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+
+            } else {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
+                                LocalDateTime.now()));
+            }
+
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -93,18 +108,18 @@ public class CategoryController {
                         return createResponseEntity(null, "nothing updated ");
                     }
                 }
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
                                 LocalDateTime.now()));
 
             } else {
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -124,17 +139,17 @@ public class CategoryController {
                     }
 
                 }
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
                                 LocalDateTime.now()));
             } else {
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }

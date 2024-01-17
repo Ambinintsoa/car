@@ -38,16 +38,29 @@ public class ModelService {
         return modelRepository.findByMake(id);
     }
 
-    public Optional<ModelEntity> getMakeById(String id) {
+    public Optional<ModelEntity> getModelById(String id) {
         return modelRepository.findByIdActive(id);
     }
 
-    public Optional<ModelEntity> deleteModel(String id) {
+    public Optional<ModelEntity> delete(String id) {
         ModelEntity existingCategory = modelRepository.findById(id).orElse(null);
 
         if (existingCategory != null) {
             existingCategory.setState(0);
             return Optional.of(modelRepository.save(existingCategory));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public Optional<ModelEntity> update(String id, ModelEntity updatedMake) {
+        Optional<ModelEntity> existingMake = modelRepository.findById(id);
+
+        if (existingMake.isPresent()) {
+            // Effectuez la mise à jour du make existant avec les nouvelles données
+            updatedMake.setId(id);
+            updatedMake.verify(existingMake.get());
+            return Optional.of(modelRepository.save(updatedMake));
         } else {
             return Optional.empty();
         }

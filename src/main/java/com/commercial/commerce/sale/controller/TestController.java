@@ -37,7 +37,7 @@ public class TestController {
             return createResponseEntity(categories, "Categories retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }

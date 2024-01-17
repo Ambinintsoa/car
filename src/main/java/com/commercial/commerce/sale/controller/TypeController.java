@@ -46,7 +46,7 @@ public class TypeController {
             return createResponseEntity(types, "Types retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -56,22 +56,35 @@ public class TypeController {
         try {
             Optional<TypeEntity> type = typeService.getTypeById(id);
             return type.map(c -> createResponseEntity(c, "Type retrieved successfully for this id"))
-                    .orElseGet(() -> ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.OK)
                             .body(new ApiResponse<>(null, new Status("error", "NOT FOUND"), LocalDateTime.now())));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
     @PostMapping(value = "/types")
-    public ResponseEntity<ApiResponse<TypeEntity>> createType(
+    public ResponseEntity<ApiResponse<TypeEntity>> createType(HttpServletRequest request,
             @Valid @RequestBody TypeEntity type) {
         try {
-            TypeEntity createdType = typeService.insertCustom(type);
-            return createResponseEntity(createdType, "Type created successfully");
+            if (request.getHeader("Authorization") != null) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
+                    TypeEntity createdType = typeService.insertCustom(type);
+                    return createResponseEntity(createdType, "Type created successfully");
+                }
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+
+            } else {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
+                                LocalDateTime.now()));
+            }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -92,18 +105,18 @@ public class TypeController {
                         return createResponseEntity(null, "nothing updated ");
                     }
                 }
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
                                 LocalDateTime.now()));
 
             } else {
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -122,18 +135,18 @@ public class TypeController {
                         return createResponseEntity(null, "nothing deleted ");
                     }
                 }
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
                                 LocalDateTime.now()));
 
             } else {
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }

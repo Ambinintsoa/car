@@ -49,7 +49,7 @@ public class MakeController {
             return createResponseEntity(makes, "Makes retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -59,22 +59,35 @@ public class MakeController {
         try {
             Optional<MakeEntity> make = makeService.getMakeById(id);
             return make.map(c -> createResponseEntity(c, "Make retrieved successfully for this id"))
-                    .orElseGet(() -> ResponseEntity.status(HttpStatus.ACCEPTED)
+                    .orElseGet(() -> ResponseEntity.status(HttpStatus.OK)
                             .body(new ApiResponse<>(null, new Status("error", "NOT FOUND"), LocalDateTime.now())));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
     @PostMapping(value = "/makes")
-    public ResponseEntity<ApiResponse<MakeEntity>> createMake(
+    public ResponseEntity<ApiResponse<MakeEntity>> createMake(HttpServletRequest request,
             @Valid @RequestBody MakeEntity make) {
         try {
-            MakeEntity createdMake = makeService.insertCustom(make);
-            return createResponseEntity(createdMake, "Make created successfully");
+            if (request.getHeader("Authorization") != null) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
+                    MakeEntity createdMake = makeService.insertCustom(make);
+                    return createResponseEntity(createdMake, "Make created successfully");
+                }
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+
+            } else {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
+                                LocalDateTime.now()));
+            }
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -94,18 +107,18 @@ public class MakeController {
                         return createResponseEntity(null, "nothing updated ");
                     }
                 }
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
                                 LocalDateTime.now()));
 
             } else {
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -121,7 +134,7 @@ public class MakeController {
                     // supprime recursivement les models associes
                     List<ModelEntity> models = modelService.getModelsByMake(id);
                     for (int i = 0; i < models.size(); i++) {
-                        modelService.deleteModel(models.get(i).getId());
+                        modelService.delete(models.get(i).getId());
                     }
                     if (existingMake.isPresent()) {
 
@@ -130,18 +143,18 @@ public class MakeController {
                         return createResponseEntity(null, "nothing deleted ");
                     }
                 }
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
                                 LocalDateTime.now()));
 
             } else {
-                return ResponseEntity.status(HttpStatus.ACCEPTED)
+                return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
                                 LocalDateTime.now()));
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.ACCEPTED)
+            return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
