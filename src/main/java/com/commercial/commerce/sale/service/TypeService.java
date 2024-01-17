@@ -58,6 +58,7 @@ public class TypeService {
 
     public TypeEntity insertCustom(TypeEntity type) {
         String id = typeRepository.insertCustom(type.getNom());
+        type.setState(1);
         type.setId(id);
         return type;
     }

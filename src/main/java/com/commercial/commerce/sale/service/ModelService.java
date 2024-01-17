@@ -29,6 +29,7 @@ public class ModelService {
         modelEntity
                 .setId(modelRepository.insertCustom(modelEntity.getNom(), modelEntity.getDate(), modelEntity.getDoors(),
                         modelEntity.getPlaces(), modelEntity.getType().getId(), modelEntity.getMake().getId()));
+        modelEntity.setState(1);
         modelEntity.setMake(makeRepository.findByIdActive(modelEntity.getMake().getId()).get());
         modelEntity.setType(typeRepository.findByIdActive(modelEntity.getType().getId()).get());
         return modelEntity;
@@ -59,6 +60,7 @@ public class ModelService {
         if (existingMake.isPresent()) {
             // Effectuez la mise à jour du make existant avec les nouvelles données
             updatedMake.setId(id);
+
             updatedMake.verify(existingMake.get());
             return Optional.of(modelRepository.save(updatedMake));
         } else {

@@ -59,6 +59,7 @@ public class MakeService {
 
     public MakeEntity insertCustom(MakeEntity make) {
         String id = makeRepository.insertCustom(make.getNom());
+        make.setState(1);
         make.setId(id);
         return make;
 

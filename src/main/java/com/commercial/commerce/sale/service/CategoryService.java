@@ -57,6 +57,7 @@ public class CategoryService {
 
     public CategoryEntity insertCustom(CategoryEntity category) {
         String id = categoryRepository.insertCustom(category.getNom());
+        category.setState(1);
         category.setId(id);
         return category;
 

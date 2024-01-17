@@ -58,6 +58,7 @@ public class MotorService {
 
     public MotorEntity insertCustom(MotorEntity motor) {
         String id = motorRepository.insertCustom(motor.getNom());
+        motor.setState(1);
         motor.setId(id);
         return motor;
     }
