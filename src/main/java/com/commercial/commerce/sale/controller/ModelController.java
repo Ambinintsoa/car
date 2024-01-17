@@ -48,7 +48,7 @@ public class ModelController {
             modelEntity = modelService.insertCustom(modelEntity);
             return createResponseEntity(modelEntity, "Model created successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -60,7 +60,7 @@ public class ModelController {
             return createResponseEntity(models, "models retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -73,7 +73,7 @@ public class ModelController {
             return model.map(c -> createResponseEntity(c, "Make retrieved successfully for this id"))
                     .orElseGet(() -> createResponseEntity(model.get(), "Not found"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }

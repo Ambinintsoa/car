@@ -53,7 +53,7 @@ public class MakeController {
             return createResponseEntity(makes, "Makes retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -65,12 +65,12 @@ public class MakeController {
             return make.map(c -> createResponseEntity(c, "Make retrieved successfully for this id"))
                     .orElseGet(() -> ResponseEntity.notFound().build());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @PostMapping(value = "/makes", consumes = "multipart/form-data")
+    @PostMapping(value = "/makes")
     public ResponseEntity<ApiResponse<MakeEntity>> createMake(
             @RequestParam("nom") String nom) {
         try {
@@ -79,7 +79,7 @@ public class MakeController {
             MakeEntity createdMake = makeService.insertCustom(make);
             return createResponseEntity(createdMake, "Make created successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -110,7 +110,7 @@ public class MakeController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -122,7 +122,6 @@ public class MakeController {
             if (request.getHeader("Authorization") != null) {
                 String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
                 if (refreshTokenService.verification(token)) {
-                    Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
                     Optional<MakeEntity> existingMake = makeService.deleteMake(id);
                     // supprime recursivement les models associes
                     List<ModelEntity> models = modelService.getModelsByMake(id);
@@ -147,7 +146,7 @@ public class MakeController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }

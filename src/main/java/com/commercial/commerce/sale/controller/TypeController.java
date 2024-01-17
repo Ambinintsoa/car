@@ -46,7 +46,7 @@ public class TypeController {
             return createResponseEntity(types, "Types retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -58,12 +58,12 @@ public class TypeController {
             return type.map(c -> createResponseEntity(c, "Type retrieved successfully for this id"))
                     .orElseGet(() -> ResponseEntity.notFound().build());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @PostMapping(value = "/types", consumes = "multipart/form-data")
+    @PostMapping(value = "/types")
     public ResponseEntity<ApiResponse<TypeEntity>> createType(
             @RequestParam("nom") String nom) {
         try {
@@ -72,7 +72,7 @@ public class TypeController {
             TypeEntity createdType = typeService.insertCustom(type);
             return createResponseEntity(createdType, "Type created successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -104,7 +104,7 @@ public class TypeController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -134,7 +134,7 @@ public class TypeController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }

@@ -45,7 +45,7 @@ public class CategoryController {
             return createResponseEntity(categories, "Categories retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -58,12 +58,12 @@ public class CategoryController {
                     .orElseGet(
                             () -> createResponseEntity(category.get(), "Category retrieved successfully for this id"));
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @PostMapping(value = "/categories", consumes = "multipart/form-data")
+    @PostMapping(value = "/categories")
     public ResponseEntity<ApiResponse<CategoryEntity>> createCategory(
             @RequestParam("nom") String nom) {
         try {
@@ -72,7 +72,7 @@ public class CategoryController {
             CategoryEntity createdCategory = categoryService.insertCustom(category);
             return createResponseEntity(createdCategory, "Categories created successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }

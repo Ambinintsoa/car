@@ -37,13 +37,6 @@ public class MotorController {
         return ResponseEntity.ok(response);
     }
 
-    private ResponseEntity<ApiResponse<Void>> createVoidResponseEntity(String message) {
-        ApiResponse<Void> response = new ApiResponse<>();
-        response.setStatus(new Status("ok", message));
-        response.setTimestamp(LocalDateTime.now());
-        return ResponseEntity.ok(response);
-    }
-
     @GetMapping("/motors")
     public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllMotors() {
         try {
@@ -51,7 +44,7 @@ public class MotorController {
             return createResponseEntity(motors, "Motors retrieved successfully");
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -63,12 +56,12 @@ public class MotorController {
             return motor.map(c -> createResponseEntity(c, "Motor retrieved successfully for this id"))
                     .orElseGet(() -> ResponseEntity.notFound().build());
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @PostMapping(value = "/motors", consumes = "multipart/form-data")
+    @PostMapping(value = "/motors")
     public ResponseEntity<ApiResponse<MotorEntity>> createMotor(
             @RequestParam("nom") String nom) {
         try {
@@ -77,7 +70,7 @@ public class MotorController {
             MotorEntity createdMotor = motorService.insertCustom(motor);
             return createResponseEntity(createdMotor, "Motor created successfully");
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -109,7 +102,7 @@ public class MotorController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
@@ -140,7 +133,7 @@ public class MotorController {
             }
 
         } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+            return ResponseEntity.status(HttpStatus.ACCEPTED)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
