@@ -65,10 +65,8 @@ public class CategoryController {
 
     @PostMapping(value = "/categories")
     public ResponseEntity<ApiResponse<CategoryEntity>> createCategory(
-            @RequestParam("nom") String nom) {
+            @Valid @RequestBody CategoryEntity category) {
         try {
-            CategoryEntity category = new CategoryEntity();
-            category.setNom(nom);
             CategoryEntity createdCategory = categoryService.insertCustom(category);
             return createResponseEntity(createdCategory, "Categories created successfully");
         } catch (Exception e) {

@@ -72,10 +72,8 @@ public class MakeController {
 
     @PostMapping(value = "/makes")
     public ResponseEntity<ApiResponse<MakeEntity>> createMake(
-            @RequestParam("nom") String nom) {
+            @Valid @RequestBody MakeEntity make) {
         try {
-            MakeEntity make = new MakeEntity();
-            make.setNom(nom);
             MakeEntity createdMake = makeService.insertCustom(make);
             return createResponseEntity(createdMake, "Make created successfully");
         } catch (Exception e) {

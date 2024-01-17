@@ -65,10 +65,8 @@ public class TypeController {
 
     @PostMapping(value = "/types")
     public ResponseEntity<ApiResponse<TypeEntity>> createType(
-            @RequestParam("nom") String nom) {
+            @Valid @RequestBody TypeEntity type) {
         try {
-            TypeEntity type = new TypeEntity();
-            type.setNom(nom);
             TypeEntity createdType = typeService.insertCustom(type);
             return createResponseEntity(createdType, "Type created successfully");
         } catch (Exception e) {

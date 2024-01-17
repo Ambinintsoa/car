@@ -63,10 +63,8 @@ public class MotorController {
 
     @PostMapping(value = "/motors")
     public ResponseEntity<ApiResponse<MotorEntity>> createMotor(
-            @RequestParam("nom") String nom) {
+            @Valid @RequestBody MotorEntity motor) {
         try {
-            MotorEntity motor = new MotorEntity();
-            motor.setNom(nom);
             MotorEntity createdMotor = motorService.insertCustom(motor);
             return createResponseEntity(createdMotor, "Motor created successfully");
         } catch (Exception e) {
