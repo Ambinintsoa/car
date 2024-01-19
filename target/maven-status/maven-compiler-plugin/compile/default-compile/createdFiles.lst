@@ -28,7 +28,6 @@ com\commercial\commerce\UserAuth\Enum\Role.class
 com\commercial\commerce\sale\controller\TypeController.class
 com\commercial\commerce\UserAuth\Models\User.class
 com\commercial\commerce\UserAuth\Request\RefreshTokenRequest.class
-com\commercial\commerce\sale\utils\Make.class
 com\commercial\commerce\UserAuth\Config\ApplicationConfig.class
 com\commercial\commerce\sale\repository\TypeRepository.class
 com\commercial\commerce\sale\controller\MakeController.class
@@ -61,6 +60,7 @@ com\commercial\commerce\response\Status.class
 com\commercial\commerce\sale\controller\UploadController.class
 com\commercial\commerce\UserAuth\Response\RegisterData$RegisterDataBuilder.class
 com\commercial\commerce\sale\repository\CategoryRepository.class
+com\commercial\commerce\sale\utils\Brand.class
 com\commercial\commerce\UserAuth\Response\AuthenticationResponse.class
 com\commercial\commerce\sale\utils\Motor.class
 com\commercial\commerce\UserAuth\Config\JwtService.class

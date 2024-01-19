@@ -2,7 +2,6 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\Category
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\FileHelper.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Response\CheckStatusResponse.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\response\Status.java
-D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Make.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\CategoryController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Enum\Role.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\MaintainService.java
@@ -11,6 +10,7 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Caracteris
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Repository\RefreshTokenRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Request\AuthenticationRequest.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\FilesBody.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Brand.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\CategoryRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\MakeRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\Utils\Status.java
