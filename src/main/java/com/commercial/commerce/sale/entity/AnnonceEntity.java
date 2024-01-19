@@ -12,6 +12,8 @@ import com.commercial.commerce.sale.utils.Vendeur;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.security.Timestamp;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Getter
@@ -42,13 +44,15 @@ public class AnnonceEntity {
 
     private int commission;
 
-    private String picture;
+    private List<String> picture;
 
     private Motor motor;
 
     private double note;
+
     private int state;
 
-    // Getters and setters
+    private List<String> favoris;
+    private LocalDateTime date;
 
 }

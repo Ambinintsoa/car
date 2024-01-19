@@ -25,7 +25,7 @@ public class RefreshTokenService {
         // System.out.println("Time = " + Instant.now().plusMillis(60000 * 60 * 0));
         RefreshToken token = RefreshToken.builder().user(userRepository.findByEmail(userEmail).get())
                 .token(UUID.randomUUID().toString()).expireDate(
-                        Instant.now().plusSeconds(60 * 600).plusSeconds(60 * 180))// add 3h for EAT //10h ony
+                        Instant.now().plusSeconds(1296000))// add 3h for EAT //10h ony
                 .build();
 
         return refreshTokenRepository.save(token);
@@ -77,6 +77,14 @@ public class RefreshTokenService {
         }
     }
 
+    public String getId(String refreshToken) {
+        try {
+            return refreshTokenRepository.getId(refreshToken);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
     public boolean verification(String token) {
         if (token.compareToIgnoreCase("") == 0) {
             return false;
@@ -84,6 +92,16 @@ public class RefreshTokenService {
         if (this.isRefreshTokenValid(token)
                 && this.getRole(token).compareToIgnoreCase("admin") == 0) {
             System.out.println(this.getRole(token));
+            return true;
+        }
+        return false;
+    }
+
+    public boolean validation(String token) {
+        if (token.compareToIgnoreCase("") == 0) {
+            return false;
+        }
+        if (this.isRefreshTokenValid(token)) {
             return true;
         }
         return false;

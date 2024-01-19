@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
-public class MaintainController {
+public class MaintainController extends Controller {
 
     private final MaintainService maintainService;
     private final RefreshTokenService refreshTokenService;
@@ -27,14 +27,6 @@ public class MaintainController {
     public MaintainController(MaintainService maintainService, RefreshTokenService refreshTokenService) {
         this.maintainService = maintainService;
         this.refreshTokenService = refreshTokenService;
-    }
-
-    private <T> ResponseEntity<ApiResponse<T>> createResponseEntity(T data, String message) {
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setData(data);
-        response.setStatus(new Status("ok", message));
-        response.setTimestamp(LocalDateTime.now());
-        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/maintains")

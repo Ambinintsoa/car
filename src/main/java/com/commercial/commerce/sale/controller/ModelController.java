@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
-public class ModelController {
+public class ModelController extends Controller {
 
     private final ModelService modelService;
     private final RefreshTokenService refreshTokenService;
@@ -27,14 +27,6 @@ public class ModelController {
     public ModelController(ModelService modelService, RefreshTokenService refreshTokenService) {
         this.modelService = modelService;
         this.refreshTokenService = refreshTokenService;
-    }
-
-    private <T> ResponseEntity<ApiResponse<T>> createResponseEntity(T data, String message) {
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setData(data);
-        response.setStatus(new Status("ok", message));
-        response.setTimestamp(LocalDateTime.now());
-        return ResponseEntity.ok(response);
     }
 
     @PostMapping(value = "/models")
@@ -62,7 +54,7 @@ public class ModelController {
         }
     }
 
-    @GetMapping("mark/{mark}/models")
+    @GetMapping("brand/{mark}/models")
     public ResponseEntity<ApiResponse<List<ModelEntity>>> getModelsByMarks(@PathVariable String mark) {
         try {
             List<ModelEntity> models = modelService.getModelsByMake(mark);

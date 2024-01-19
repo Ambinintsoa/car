@@ -18,7 +18,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
-public class CategoryController {
+public class CategoryController extends Controller {
 
     private final CategoryService categoryService;
     private final RefreshTokenService refreshTokenService;
@@ -26,14 +26,6 @@ public class CategoryController {
     public CategoryController(CategoryService categoryService, RefreshTokenService refreshTokenService) {
         this.categoryService = categoryService;
         this.refreshTokenService = refreshTokenService;
-    }
-
-    private <T> ResponseEntity<ApiResponse<T>> createResponseEntity(T data, String message) {
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setData(data);
-        response.setStatus(new Status("ok", message));
-        response.setTimestamp(LocalDateTime.now());
-        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/categories")

@@ -1,4 +1,5 @@
 com\commercial\commerce\Utils\Status.class
+com\commercial\commerce\sale\controller\Controller.class
 com\commercial\commerce\ServletInitializer.class
 com\commercial\commerce\sale\controller\ModelController.class
 com\commercial\commerce\sale\utils\Vendeur.class
@@ -21,6 +22,7 @@ com\commercial\commerce\sale\entity\MakeEntity.class
 com\commercial\commerce\sale\repository\AnnonceRepository.class
 com\commercial\commerce\UserAuth\Request\AuthenticationRequest.class
 com\commercial\commerce\sale\repository\MakeRepository.class
+com\commercial\commerce\sale\entity\FilesBody.class
 com\commercial\commerce\UserAuth\Request\RegisterRequest.class
 com\commercial\commerce\UserAuth\Enum\Role.class
 com\commercial\commerce\sale\controller\TypeController.class
@@ -32,7 +34,6 @@ com\commercial\commerce\sale\repository\TypeRepository.class
 com\commercial\commerce\sale\controller\MakeController.class
 com\commercial\commerce\UserAuth\Repository\UserRepository.class
 com\commercial\commerce\sale\repository\MaintainRepository.class
-com\commercial\commerce\sale\service\TestService.class
 com\commercial\commerce\sale\service\CategoryService.class
 com\commercial\commerce\sale\utils\Caracteristic.class
 com\commercial\commerce\UserAuth\Service\CheckStatusService.class
@@ -41,6 +42,7 @@ com\commercial\commerce\sale\service\TypeService.class
 com\commercial\commerce\UserAuth\Models\RefreshToken.class
 com\commercial\commerce\UserAuth\Response\CheckStatusResponse.class
 com\commercial\commerce\sale\controller\CategoryController.class
+com\commercial\commerce\sale\service\FileHelper.class
 com\commercial\commerce\UserAuth\Response\CheckStatusResponse$CheckStatusResponseBuilder.class
 com\commercial\commerce\sale\service\MotorService.class
 com\commercial\commerce\UserAuth\Config\SecurityConfig.class
@@ -56,7 +58,7 @@ com\commercial\commerce\UserAuth\Service\AuthService.class
 com\commercial\commerce\sale\controller\AnnonceController.class
 com\commercial\commerce\UserAuth\Config\JwtAuthFilter.class
 com\commercial\commerce\response\Status.class
-com\commercial\commerce\sale\repository\TestRepository.class
+com\commercial\commerce\sale\controller\UploadController.class
 com\commercial\commerce\UserAuth\Response\RegisterData$RegisterDataBuilder.class
 com\commercial\commerce\sale\repository\CategoryRepository.class
 com\commercial\commerce\UserAuth\Response\AuthenticationResponse.class
@@ -66,6 +68,4 @@ com\commercial\commerce\UserAuth\Models\RefreshToken$RefreshTokenBuilder.class
 com\commercial\commerce\sale\entity\CategoryEntity.class
 com\commercial\commerce\UserAuth\Service\RefreshTokenService.class
 com\commercial\commerce\response\ApiResponse.class
-com\commercial\commerce\sale\entity\TestEntity.class
-com\commercial\commerce\sale\controller\TestController.class
 com\commercial\commerce\sale\repository\MotorRepository.class

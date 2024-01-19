@@ -1,47 +1,39 @@
 package com.commercial.commerce.sale.controller;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
-import com.commercial.commerce.sale.entity.CategoryEntity;
-import com.commercial.commerce.sale.entity.TestEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
-import com.commercial.commerce.sale.service.CategoryService;
-import com.commercial.commerce.sale.service.TestService;
-
 import jakarta.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/actu")
-public class AnnonceController {
+public class AnnonceController extends Controller {
+
     private final RefreshTokenService refreshTokenService;
     private final AnnonceService annonceService;
 
     public AnnonceController(AnnonceService annonceService, RefreshTokenService refreshTokenService) {
         this.annonceService = annonceService;
         this.refreshTokenService = refreshTokenService;
-    }
-
-    private <T> ResponseEntity<ApiResponse<T>> createResponseEntity(T data, String message) {
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setData(data);
-        response.setStatus(new Status("ok", message));
-        response.setTimestamp(LocalDateTime.now());
-        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/annonces")
@@ -61,13 +53,103 @@ public class AnnonceController {
             @Valid @RequestBody AnnonceEntity annonce) {
         try {
             annonce.setState(1);
+            List<String> favoris = new ArrayList<>();
+            annonce.setFavoris(favoris);
+            annonce.setDate(LocalDateTime.now());
             AnnonceEntity createdAnnonce = annonceService.insert(annonce);
             return createResponseEntity(createdAnnonce, "Categories created successfully");
 
+        } catch (
+
+        Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @PostMapping(value = "/annonces/{id}/favoris")
+    public ResponseEntity<ApiResponse<AnnonceEntity>> addFavoris(HttpServletRequest request, @PathVariable String id) {
+        try {
+            if (request.getHeader("Authorization") != null) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.validation(token)) {
+                    System.out.print(token);
+                    AnnonceEntity createdAnnonce = annonceService.addFavoris(token, id);
+                    return createResponseEntity(createdAnnonce, "Categories created successfully");
+                }
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
+                                LocalDateTime.now()));
+            }
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
+    @DeleteMapping("/annonces/{id}/favoris")
+    public ResponseEntity<ApiResponse<AnnonceEntity>> removeFavoris(HttpServletRequest request,
+            @PathVariable String id) {
+        try {
+            if (request.getHeader("Authorization") != null) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.validation(token)) {
+                    AnnonceEntity updatedAnnonce = annonceService.removeFavoris(token, id);
+                    return createResponseEntity(updatedAnnonce, "Favoris removed successfully");
+                }
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
+                                LocalDateTime.now()));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/annonces/favoris")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getFavoris(HttpServletRequest request) {
+        try {
+            if (request.getHeader("Authorization") != null) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
+                    List<AnnonceEntity> annonces = annonceService.getAnnoncesByFavoris(token);
+                    return createResponseEntity(annonces, "Favoris retrieved successfully");
+                }
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
+                                LocalDateTime.now()));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/annonces/recentes")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getRecentAnnonces(
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<AnnonceEntity> annonces = annonceService.getRecentAnnonces(limit); // Récupère les 5 annonces les plus
+            // récentes
+            return createResponseEntity(annonces, "Favoris retrieved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getLocalizedMessage()),
+                            LocalDateTime.now()));
+        }
+    }
 }

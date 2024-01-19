@@ -22,4 +22,7 @@ public interface RefreshTokenRepository extends JpaRepository<RefreshToken, Long
 
     @Query(value = "SELECT roles FROM v_user where token = :token", nativeQuery = true)
     String getRole(@Param("token") String token);
+
+    @Query(value = "SELECT id FROM v_user where token = :token", nativeQuery = true)
+    String getId(@Param("token") String token);
 }

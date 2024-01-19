@@ -20,7 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
-public class TypeController {
+public class TypeController extends Controller {
 
     private final TypeService typeService;
     private final RefreshTokenService refreshTokenService;
@@ -29,14 +29,6 @@ public class TypeController {
     public TypeController(TypeService typeService, RefreshTokenService refreshTokenService) {
         this.typeService = typeService;
         this.refreshTokenService = refreshTokenService;
-    }
-
-    private <T> ResponseEntity<ApiResponse<T>> createResponseEntity(T data, String message) {
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setData(data);
-        response.setStatus(new Status("ok", message));
-        response.setTimestamp(LocalDateTime.now());
-        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/types")

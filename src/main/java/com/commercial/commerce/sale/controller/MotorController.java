@@ -19,7 +19,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
-public class MotorController {
+public class MotorController extends Controller {
 
     private final MotorService motorService;
     private final RefreshTokenService refreshTokenService;
@@ -27,14 +27,6 @@ public class MotorController {
     public MotorController(MotorService motorService, RefreshTokenService refreshTokenService) {
         this.motorService = motorService;
         this.refreshTokenService = refreshTokenService;
-    }
-
-    private <T> ResponseEntity<ApiResponse<T>> createResponseEntity(T data, String message) {
-        ApiResponse<T> response = new ApiResponse<>();
-        response.setData(data);
-        response.setStatus(new Status("ok", message));
-        response.setTimestamp(LocalDateTime.now());
-        return ResponseEntity.ok(response);
     }
 
     @GetMapping("/motors")
