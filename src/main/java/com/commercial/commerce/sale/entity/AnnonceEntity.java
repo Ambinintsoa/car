@@ -5,7 +5,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.commercial.commerce.sale.utils.Caracteristic;
 import com.commercial.commerce.sale.utils.Maintenance;
-import com.commercial.commerce.sale.utils.Make;
+import com.commercial.commerce.sale.utils.Brand;
 import com.commercial.commerce.sale.utils.Motor;
 import com.commercial.commerce.sale.utils.Vendeur;
 
@@ -24,7 +24,7 @@ public class AnnonceEntity {
     @Id
     private String id;
 
-    private Make make;
+    private Brand brand;
 
     private List<Caracteristic> caracteristic;
 
@@ -53,6 +53,7 @@ public class AnnonceEntity {
     private int state;
 
     private List<String> favoris;
+
     private LocalDateTime date;
 
 }

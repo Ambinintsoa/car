@@ -6,6 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Caracteristic {
-    private String idcaracteristic;
-    private String name;
+    private String key;
+    private String value;
 }

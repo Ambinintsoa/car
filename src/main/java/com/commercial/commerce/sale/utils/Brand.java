@@ -5,7 +5,7 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Make {
-    private String idmake;
+public class Brand {
+    private String idbrand;
     private String name;
 }
