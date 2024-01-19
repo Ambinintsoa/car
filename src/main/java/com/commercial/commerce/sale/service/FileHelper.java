@@ -8,7 +8,7 @@ import java.util.Base64;
 
 public class FileHelper {
 
-    String uploadFolder = "./uploads";
+    String uploadFolder = "uploads";
 
     // public final static String PNG = "png";
     public final static String JPG = "jpg";
