@@ -21,7 +21,7 @@ public class FileHelper {
 
         File folder = checkFolder(uploadFolder);
         String fileName = System.currentTimeMillis() + "";
-        folder = new File(removeLocalMark(folder.getAbsolutePath()) + File.separator + fileName + "."
+        folder = new File(File.separator + fileName + "."
                 + JPG);
 
         try {
