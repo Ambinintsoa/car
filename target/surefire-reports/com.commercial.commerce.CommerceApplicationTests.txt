@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: com.commercial.commerce.CommerceApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.584 s - in com.commercial.commerce.CommerceApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 18.484 s - in com.commercial.commerce.CommerceApplicationTests

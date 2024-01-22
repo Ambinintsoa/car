@@ -26,9 +26,9 @@ public class FileHelper {
 
         try {
             byte[] bytesDecoded = Base64.getDecoder().decode(base64Image);
-            Path path = Paths.get(folder.getAbsolutePath());
+            Path path = Paths.get(folder.getPath());
             Files.write(path, bytesDecoded);// manoratra anlleh fichier sy miteny oe foronina aiza le fichier
-            System.out.println(path.toAbsolutePath().toString());
+            System.out.println(path.toString());
         } catch (Exception e) {
             System.out.println(e.getMessage());
         }
