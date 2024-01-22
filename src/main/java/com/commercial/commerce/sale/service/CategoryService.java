@@ -2,13 +2,9 @@ package com.commercial.commerce.sale.service;
 
 import com.commercial.commerce.sale.entity.CategoryEntity;
 import com.commercial.commerce.sale.repository.CategoryRepository;
-
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -61,5 +57,9 @@ public class CategoryService {
         category.setId(id);
         return category;
 
+    }
+
+    public List<CategoryEntity> selectWithPagination(String id, int limit) {
+        return categoryRepository.selectWithPagination(id, limit);
     }
 }

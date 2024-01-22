@@ -2,13 +2,11 @@ package com.commercial.commerce.sale.service;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.repository.AnnonceRepository;

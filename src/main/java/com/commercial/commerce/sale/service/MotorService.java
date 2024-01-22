@@ -2,13 +2,9 @@ package com.commercial.commerce.sale.service;
 
 import com.commercial.commerce.sale.entity.MotorEntity;
 import com.commercial.commerce.sale.repository.MotorRepository;
-
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -62,4 +58,9 @@ public class MotorService {
         motor.setId(id);
         return motor;
     }
+
+    public List<MotorEntity> selectWithPagination(String id, int limit) {
+        return motorRepository.selectWithPagination(id, limit);
+    }
+
 }

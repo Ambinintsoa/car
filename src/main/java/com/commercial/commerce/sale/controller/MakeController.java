@@ -46,6 +46,20 @@ public class MakeController extends Controller {
         }
     }
 
+    @GetMapping("/pagination/brands")
+    public ResponseEntity<ApiResponse<List<MakeEntity>>> getAllTypesWithPagination(
+            @RequestParam(name = "after_id") String id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<MakeEntity> types = makeService.selectWithPagination(id, limit);
+            return createResponseEntity(types, "Types retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/brands/{id}")
     public ResponseEntity<ApiResponse<MakeEntity>> getMakeById(@PathVariable String id) {
         try {

@@ -43,6 +43,20 @@ public class TypeController extends Controller {
         }
     }
 
+    @GetMapping("/pagination/types")
+    public ResponseEntity<ApiResponse<List<TypeEntity>>> getAllTypesWithPagination(
+            @RequestParam(name = "after_id") String id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<TypeEntity> types = typeService.selectWithPagination(id, limit);
+            return createResponseEntity(types, "Types retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/types/{id}")
     public ResponseEntity<ApiResponse<TypeEntity>> getTypeById(@PathVariable String id) {
         try {

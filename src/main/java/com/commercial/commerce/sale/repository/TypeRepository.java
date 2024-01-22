@@ -1,12 +1,8 @@
 package com.commercial.commerce.sale.repository;
 
-import com.commercial.commerce.sale.entity.CategoryEntity;
-import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.entity.TypeEntity;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -22,4 +18,8 @@ public interface TypeRepository extends JpaRepository<TypeEntity, String> {
 
     @Query(value = "select * from type where idtype = :id and state =1", nativeQuery = true)
     Optional<TypeEntity> findByIdActive(@Param("id") String id);
+
+    @Query(value = "SELECT * FROM type WHERE CAST(SUBSTRING(idtype FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idtype FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
+    List<TypeEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
+
 }

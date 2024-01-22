@@ -2,11 +2,9 @@ package com.commercial.commerce.sale.service;
 
 import com.commercial.commerce.sale.entity.MaintainEntity;
 import com.commercial.commerce.sale.repository.MaintainRepository;
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -59,5 +57,9 @@ public class MaintainService {
         maintain.setState(1);
         maintain.setId(id);
         return maintain;
+    }
+
+    public List<MaintainEntity> selectWithPagination(String id, int limit) {
+        return maintainRepository.selectWithPagination(id, limit);
     }
 }

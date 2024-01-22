@@ -40,6 +40,20 @@ public class CategoryController extends Controller {
         }
     }
 
+    @GetMapping("/pagination/categories")
+    public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllTypesWithPagination(
+            @RequestParam(name = "after_id") String id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<CategoryEntity> types = categoryService.selectWithPagination(id, limit);
+            return createResponseEntity(types, "Types retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/categories/{id}")
     public ResponseEntity<ApiResponse<CategoryEntity>> getCategoryById(@PathVariable String id) {
         try {

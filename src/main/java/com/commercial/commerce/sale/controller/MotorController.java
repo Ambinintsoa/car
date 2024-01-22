@@ -41,6 +41,20 @@ public class MotorController extends Controller {
         }
     }
 
+    @GetMapping("/pagination/motors")
+    public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllTypesWithPagination(
+            @RequestParam(name = "after_id") String id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<MotorEntity> types = motorService.selectWithPagination(id, limit);
+            return createResponseEntity(types, "Types retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/motors/{id}")
     public ResponseEntity<ApiResponse<MotorEntity>> getMotorById(@PathVariable String id) {
         try {

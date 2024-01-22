@@ -2,13 +2,9 @@ package com.commercial.commerce.sale.service;
 
 import com.commercial.commerce.sale.entity.TypeEntity;
 import com.commercial.commerce.sale.repository.TypeRepository;
-
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -61,5 +57,9 @@ public class TypeService {
         type.setState(1);
         type.setId(id);
         return type;
+    }
+
+    public List<TypeEntity> selectWithPagination(String id, int limit) {
+        return typeRepository.selectWithPagination(id, limit);
     }
 }

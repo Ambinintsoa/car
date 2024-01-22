@@ -1,10 +1,6 @@
 package com.commercial.commerce.sale.entity;
 
 import java.sql.Date;
-
-import org.springframework.data.mongodb.core.aggregation.ArithmeticOperators.Mod;
-import org.springframework.data.repository.query.Param;
-
 import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
 
@@ -38,18 +34,18 @@ public class ModelEntity {
 
     @ManyToOne
     @JoinColumn(name = "idmake", referencedColumnName = "idmake")
-    private MakeEntity make;
+    private MakeEntity brand;
 
     @ManyToOne
     @JoinColumn(name = "idtype", referencedColumnName = "idtype")
     private TypeEntity type;
 
-    public MakeEntity getMake() {
-        return make;
+    public MakeEntity getBrand() {
+        return brand;
     }
 
-    public void setMake(MakeEntity make) {
-        this.make = make;
+    public void setBrand(MakeEntity make) {
+        this.brand = make;
     }
 
     public TypeEntity getType() {
@@ -115,8 +111,8 @@ public class ModelEntity {
         this.setPlaces(places);
         this.setType(new TypeEntity());
         this.getType().setId(type);
-        this.setMake(new MakeEntity());
-        this.getMake().setId(make);
+        this.setBrand(new MakeEntity());
+        this.getBrand().setId(make);
     }
 
     public void verify(ModelEntity update) {
@@ -135,8 +131,8 @@ public class ModelEntity {
         if (this.getType() == null) {
             this.setType(update.getType());
         }
-        if (this.getMake() == null) {
-            this.setMake(update.getMake());
+        if (this.getBrand() == null) {
+            this.setBrand(update.getBrand());
         }
 
     }

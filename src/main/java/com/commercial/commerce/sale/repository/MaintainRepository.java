@@ -1,10 +1,8 @@
 package com.commercial.commerce.sale.repository;
 
 import com.commercial.commerce.sale.entity.MaintainEntity;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -20,4 +18,7 @@ public interface MaintainRepository extends JpaRepository<MaintainEntity, String
 
     @Query(value = "select * from maintains where idmaintains = :id and state =1", nativeQuery = true)
     Optional<MaintainEntity> findByIdActive(@Param("id") String id);
+
+    @Query(value = "SELECT * FROM maintains WHERE CAST(SUBSTRING(idmaintains FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idmaintains FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
+    List<MaintainEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
 }

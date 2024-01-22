@@ -54,6 +54,20 @@ public class ModelController extends Controller {
         }
     }
 
+    @GetMapping("/pagination/models")
+    public ResponseEntity<ApiResponse<List<ModelEntity>>> getAllTypesWithPagination(
+            @RequestParam(name = "after_id") String id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<ModelEntity> types = modelService.selectWithPagination(id, limit);
+            return createResponseEntity(types, "Types retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("brand/{mark}/models")
     public ResponseEntity<ApiResponse<List<ModelEntity>>> getModelsByMarks(@PathVariable String mark) {
         try {

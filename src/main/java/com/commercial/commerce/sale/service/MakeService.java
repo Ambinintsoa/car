@@ -2,13 +2,9 @@ package com.commercial.commerce.sale.service;
 
 import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.repository.MakeRepository;
-
-import jakarta.persistence.*;
 import lombok.RequiredArgsConstructor;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import java.util.List;
 import java.util.Optional;
 
@@ -63,5 +59,9 @@ public class MakeService {
         make.setId(id);
         return make;
 
+    }
+
+    public List<MakeEntity> selectWithPagination(String id, int limit) {
+        return makeRepository.selectWithPagination(id, limit);
     }
 }

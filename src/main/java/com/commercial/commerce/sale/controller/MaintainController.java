@@ -41,6 +41,20 @@ public class MaintainController extends Controller {
         }
     }
 
+    @GetMapping("/pagination/maintains")
+    public ResponseEntity<ApiResponse<List<MaintainEntity>>> getAllTypesWithPagination(
+            @RequestParam(name = "after_id") String id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<MaintainEntity> types = maintainService.selectWithPagination(id, limit);
+            return createResponseEntity(types, "Types retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/maintains/{id}")
     public ResponseEntity<ApiResponse<MaintainEntity>> getMaintainById(@PathVariable String id) {
         try {

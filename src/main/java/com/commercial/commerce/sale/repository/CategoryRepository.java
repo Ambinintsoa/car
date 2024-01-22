@@ -1,11 +1,8 @@
 package com.commercial.commerce.sale.repository;
 
 import com.commercial.commerce.sale.entity.CategoryEntity;
-import com.commercial.commerce.sale.entity.MakeEntity;
-
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -21,4 +18,7 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, String
 
     @Query(value = "select * from category where idcategory = :id and state =1", nativeQuery = true)
     Optional<CategoryEntity> findByIdActive(@Param("id") String id);
+
+    @Query(value = "SELECT * FROM category WHERE CAST(SUBSTRING(idcategory FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idcategory FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
+    List<CategoryEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
 }

@@ -1,6 +1,5 @@
 package com.commercial.commerce.sale.service;
 
-import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.entity.ModelEntity;
 import com.commercial.commerce.sale.repository.MakeRepository;
 import com.commercial.commerce.sale.repository.ModelRepository;
@@ -28,9 +27,9 @@ public class ModelService {
 
         modelEntity
                 .setId(modelRepository.insertCustom(modelEntity.getNom(), modelEntity.getDate(), modelEntity.getDoors(),
-                        modelEntity.getPlaces(), modelEntity.getType().getId(), modelEntity.getMake().getId()));
+                        modelEntity.getPlaces(), modelEntity.getType().getId(), modelEntity.getBrand().getId()));
         modelEntity.setState(1);
-        modelEntity.setMake(makeRepository.findByIdActive(modelEntity.getMake().getId()).get());
+        modelEntity.setBrand(makeRepository.findByIdActive(modelEntity.getBrand().getId()).get());
         modelEntity.setType(typeRepository.findByIdActive(modelEntity.getType().getId()).get());
         return modelEntity;
     }
@@ -68,4 +67,7 @@ public class ModelService {
         }
     }
 
+    public List<ModelEntity> selectWithPagination(String id, int limit) {
+        return modelRepository.selectWithPagination(id, limit);
+    }
 }
