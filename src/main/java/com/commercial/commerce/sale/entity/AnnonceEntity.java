@@ -2,7 +2,6 @@ package com.commercial.commerce.sale.entity;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
-
 import com.commercial.commerce.sale.utils.Caracteristic;
 import com.commercial.commerce.sale.utils.Maintenance;
 import com.commercial.commerce.sale.utils.Model;
@@ -10,11 +9,8 @@ import com.commercial.commerce.sale.utils.Brand;
 import com.commercial.commerce.sale.utils.Motor;
 import com.commercial.commerce.sale.utils.Type;
 import com.commercial.commerce.sale.utils.Vendeur;
-
 import lombok.Getter;
 import lombok.Setter;
-
-import java.security.Timestamp;
 import java.time.LocalDateTime;
 import java.util.List;
 

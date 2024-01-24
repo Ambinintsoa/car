@@ -1,17 +1,14 @@
 package com.commercial.commerce.sale.controller;
 
-import com.commercial.commerce.sale.entity.MakeEntity; // Importe la classe MakeEntity
+import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.entity.ModelEntity;
-import com.commercial.commerce.sale.service.MakeService; // Importe le service pour les makes
+import com.commercial.commerce.sale.service.MakeService;
 import com.commercial.commerce.sale.service.ModelService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -48,7 +45,7 @@ public class MakeController extends Controller {
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MakeEntity> types = makeService.selectWithPagination(id, limit);
-            return createResponseEntity(types, "Types retrieved successfully");
+            return createResponseEntity(types, "Brands retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)

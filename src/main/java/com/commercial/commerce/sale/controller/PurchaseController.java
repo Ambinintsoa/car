@@ -2,9 +2,7 @@ package com.commercial.commerce.sale.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
 import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -24,7 +22,6 @@ import com.commercial.commerce.sale.entity.PurchaseEntity;
 import com.commercial.commerce.sale.entity.TransactionEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
 import com.commercial.commerce.sale.service.PurchaseService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
@@ -95,7 +92,7 @@ public class PurchaseController extends Controller {
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getAllPurchases() {
         try {
             List<PurchaseEntity> categories = purchaseService.getAllPurchase();
-            return createResponseEntity(categories, "Categories retrieved successfully");
+            return createResponseEntity(categories, "Purchases retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -112,7 +109,7 @@ public class PurchaseController extends Controller {
                 String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
                 if (refreshTokenService.verification(token)) {
                     List<PurchaseEntity> annonces = purchaseService.getAllPurchaseValid(token, id, limit);
-                    return createResponseEntity(annonces, "Favoris retrieved successfully");
+                    return createResponseEntity(annonces, "Purchases retrieved successfully");
                 }
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
@@ -134,7 +131,7 @@ public class PurchaseController extends Controller {
     ) {
         try {
             PurchaseEntity categories = purchaseService.getById(id).get();
-            return createResponseEntity(categories, "Categories retrieved successfully");
+            return createResponseEntity(categories, "Purchases retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -151,7 +148,7 @@ public class PurchaseController extends Controller {
                 String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
                 if (refreshTokenService.verification(token)) {
                     List<PurchaseEntity> annonces = purchaseService.selectPurchase(token, id, limit);
-                    return createResponseEntity(annonces, "Favoris retrieved successfully");
+                    return createResponseEntity(annonces, "Purchases retrieved successfully");
                 }
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
@@ -173,7 +170,7 @@ public class PurchaseController extends Controller {
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<PurchaseEntity> types = purchaseService.selectWithPagination(id, limit);
-            return createResponseEntity(types, "Types retrieved successfully");
+            return createResponseEntity(types, "Purchases retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)

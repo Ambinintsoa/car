@@ -2,18 +2,14 @@ package com.commercial.commerce.sale.controller;
 
 import com.commercial.commerce.sale.entity.TypeEntity;
 import com.commercial.commerce.sale.service.TypeService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;

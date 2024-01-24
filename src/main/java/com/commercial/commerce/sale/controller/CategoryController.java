@@ -44,7 +44,7 @@ public class CategoryController extends Controller {
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<CategoryEntity> types = categoryService.selectWithPagination(id, limit);
-            return createResponseEntity(types, "Types retrieved successfully");
+            return createResponseEntity(types, "Categories retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)

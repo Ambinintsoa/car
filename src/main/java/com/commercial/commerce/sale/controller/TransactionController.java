@@ -2,30 +2,19 @@ package com.commercial.commerce.sale.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
-
-import javax.validation.Valid;
-
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.commercial.commerce.UserAuth.Enum.Role;
-import com.commercial.commerce.UserAuth.Models.User;
-import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
+// import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
-import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.entity.TransactionEntity;
 import com.commercial.commerce.sale.service.TransactionService;
-
-import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -34,7 +23,7 @@ import lombok.AllArgsConstructor;
 public class TransactionController extends Controller {
 
     private final TransactionService transactionService;
-    private final RefreshTokenService refreshTokenService;
+    // private final RefreshTokenService refreshTokenService;
 
     // @PostMapping(value = "/transactions")
     // public ResponseEntity<ApiResponse<TransactionEntity>> save(HttpServletRequest

@@ -2,17 +2,14 @@ package com.commercial.commerce.sale.controller;
 
 import com.commercial.commerce.sale.entity.MotorEntity;
 import com.commercial.commerce.sale.service.MotorService;
-
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
 import javax.validation.Valid;
 import java.time.LocalDateTime;
 import java.util.List;
@@ -44,7 +41,7 @@ public class MotorController extends Controller {
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MotorEntity> types = motorService.selectWithPagination(id, limit);
-            return createResponseEntity(types, "Types retrieved successfully");
+            return createResponseEntity(types, "Motors retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
