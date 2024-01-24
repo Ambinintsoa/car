@@ -20,4 +20,11 @@ public class WSController {
         System.out.println(message.toString());
         service.notifyUser(id, message);
     }
+
+    @PostMapping("/send-message")
+    public void sendMessage(
+            @RequestBody Message message) {
+        System.out.println(message.toString());
+        service.notifyUser(message.getReceiver_id(), message);
+    }
 }
