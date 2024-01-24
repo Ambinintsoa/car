@@ -28,6 +28,7 @@ public class SecurityConfig {
                                 .authorizeHttpRequests(authorize -> authorize
                                                 .requestMatchers("/actu/**").permitAll()
                                                 .requestMatchers("/auth/**").permitAll()
+                                                .requestMatchers("/websocket/**").permitAll()
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sessionManagement -> sessionManagement
