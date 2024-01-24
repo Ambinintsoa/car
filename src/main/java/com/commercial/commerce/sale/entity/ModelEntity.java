@@ -53,6 +53,7 @@ public class ModelEntity {
         this.getType().setId(type);
         this.setBrand(new MakeEntity());
         this.getBrand().setId(make);
+
     }
 
     public void verify(ModelEntity update) {

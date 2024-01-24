@@ -16,10 +16,12 @@ public class CommerceApplication {
 		CorsConfiguration config = new CorsConfiguration();
 
 		// Configure allowed origins, methods, headers, etc.
-		config.addAllowedOrigin("*"); // Replace with your allowed origins
+		config.addAllowedOrigin("http://localhost:8100"); // Replace with yourallowed origins
+		config.addAllowedOrigin("http://localhost");
 		config.addAllowedMethod("*");
 		config.addAllowedHeader("*");
 
+		config.setAllowCredentials(true);
 		source.registerCorsConfiguration("/**", config);
 		return new CorsFilter(source);
 	}
