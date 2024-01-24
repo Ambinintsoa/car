@@ -1,5 +1,6 @@
 package com.commercial.commerce.sale.service;
 
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
+import com.commercial.commerce.chat.model.JsonResponse;
 import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.repository.AnnonceRepository;
@@ -30,9 +32,12 @@ public class AnnonceService {
 
     public AnnonceEntity insert(AnnonceEntity annonce) throws Exception {
         FileHelper file = new FileHelper();
+        List<String> pictures = new ArrayList<String>();
         for (String fileBase64 : annonce.getPictures()) {
-            file.uploadOnline(fileBase64);
+            JsonResponse json = file.uploadOnline(fileBase64);
+            pictures.add(json.getData().getUrl());
         }
+        annonce.setPictures(pictures);
         return annonceRepository.save(annonce);
     }
 

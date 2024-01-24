@@ -54,12 +54,11 @@ public class FileHelper {
         return folder;
     }
 
-    public Object uploadOnline(String base64Image) {
+    public JsonResponse uploadOnline(String base64Image) {
         String key = "key=" + API_KEY;
         try {
             String res = RequestAPI.sendFormData(URL_Server_BB + "?" + key, base64Image);
             JsonResponse jsonResponse = (JsonResponse) Json.fromJson(res, JsonResponse.class);
-            base64Image = jsonResponse.getData().getUrl();
             return jsonResponse;
         } catch (Exception e) {
             System.out.println(e.getMessage());
