@@ -59,8 +59,8 @@ public class MotorService {
         return motor;
     }
 
-    public List<MotorEntity> selectWithPagination(String id, int limit) {
-        return motorRepository.selectWithPagination(id, limit);
+    public List<MotorEntity> selectWithPagination(int offset, int limit) {
+        return motorRepository.selectWithPagination(limit, offset);
     }
 
 }

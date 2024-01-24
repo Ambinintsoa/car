@@ -6,6 +6,8 @@ import com.commercial.commerce.sale.service.MakeService; // Importe le service p
 import com.commercial.commerce.sale.service.ModelService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
+
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
@@ -21,18 +23,12 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
+@AllArgsConstructor
 public class MakeController extends Controller {
 
     private final MakeService makeService;
     private final ModelService modelService;
     private final RefreshTokenService refreshTokenService;
-
-    @Autowired
-    public MakeController(MakeService makeService, ModelService modelService, RefreshTokenService refreshTokenService) {
-        this.makeService = makeService;
-        this.modelService = modelService;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @GetMapping("/brands")
     public ResponseEntity<ApiResponse<List<MakeEntity>>> getAllMakes() {
@@ -47,8 +43,8 @@ public class MakeController extends Controller {
     }
 
     @GetMapping("/pagination/brands")
-    public ResponseEntity<ApiResponse<List<MakeEntity>>> getAllTypesWithPagination(
-            @RequestParam(name = "after_id") String id,
+    public ResponseEntity<ApiResponse<List<MakeEntity>>> getAllBrandsWithPagination(
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MakeEntity> types = makeService.selectWithPagination(id, limit);

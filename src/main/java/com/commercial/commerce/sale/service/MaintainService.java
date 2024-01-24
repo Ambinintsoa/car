@@ -59,7 +59,7 @@ public class MaintainService {
         return maintain;
     }
 
-    public List<MaintainEntity> selectWithPagination(String id, int limit) {
-        return maintainRepository.selectWithPagination(id, limit);
+    public List<MaintainEntity> selectWithPagination(int offset, int limit) {
+        return maintainRepository.selectWithPagination(limit, offset);
     }
 }

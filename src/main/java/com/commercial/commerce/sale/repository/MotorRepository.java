@@ -19,6 +19,6 @@ public interface MotorRepository extends JpaRepository<MotorEntity, String> {
     @Query(value = "select * from motor where idmotor = :id and state =1", nativeQuery = true)
     Optional<MotorEntity> findByIdActive(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM motor WHERE CAST(SUBSTRING(idmotor FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idmotor FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
-    List<MotorEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
+    @Query(value = "SELECT * FROM motor ORDER BY CAST(SUBSTRING(idmotor FROM 4) AS INTEGER) LIMIT :limit OFFSET :offset", nativeQuery = true)
+    List<MotorEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
 }

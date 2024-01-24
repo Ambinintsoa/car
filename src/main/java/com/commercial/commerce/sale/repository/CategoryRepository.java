@@ -19,6 +19,6 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, String
     @Query(value = "select * from category where idcategory = :id and state =1", nativeQuery = true)
     Optional<CategoryEntity> findByIdActive(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM category WHERE CAST(SUBSTRING(idcategory FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idcategory FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
-    List<CategoryEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
+    @Query(value = "SELECT * FROM category ORDER BY CAST(SUBSTRING(idcategory FROM 4) AS INTEGER) LIMIT :limit offset :offset", nativeQuery = true)
+    List<CategoryEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
 }

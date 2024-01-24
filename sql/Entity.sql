@@ -186,54 +186,34 @@ CREATE  TABLE maintains (
     ('Fuel Injector Cleaning');
 
 
+ create sequence seq_purchase;
+CREATE  TABLE purchase ( 
+	idpurchase             varchar(100)  default 'PCH'||NEXTVAL('seq_purchase'),
+	idannouncement                  varchar(100)    ,
+  iduser                  int   ,
+  montant float,
+  "date" date default now(),
+  state int default 1,
+
+	CONSTRAINT pk_purchase PRIMARY KEY ( idpurchase ),
+    CONSTRAINT fk_user FOREIGN KEY ( iduser ) REFERENCES _user( id ) 
+ );
+
+  create sequence seq_transaction;
+CREATE  TABLE transaction ( 
+	idtransaction             varchar(100)  default 'TSC'||NEXTVAL('seq_transaction'),
+	idpurchase                  varchar(100)    ,
+  "date" timestamp,
+  idreceiver int,
+  idsender int,
+  type int default 1,
+  state int default 1,
+
+	CONSTRAINT pk_transaction PRIMARY KEY ( idtransaction ),
+   CONSTRAINT fk_purchase FOREIGN KEY ( idpurchase ) REFERENCES purchase( idpurchase ) ,
+    CONSTRAINT fk_receiver FOREIGN KEY ( idreceiver ) REFERENCES _user( id ) ,
+    CONSTRAINT fk_sender FOREIGN KEY ( idsender ) REFERENCES _user( id ) 
+ );
 
 
-/** 
- * Paste one or more documents here
- */
-{
-  "_id": {
-    "$oid": "65a821866c93603c7a354a84"
-  },
-  "make": {
-    "id": "1",
-    "name": "1"
-  },
-  "caracteristic": [
-    {
-      "id": "1",
-      "name": "1"
-    },
-    {
-      "id": "1",
-      "name": "1"
-    }
-  ],
-  "year": "2020-13-12",
-  "kilometre": 90,
-  "consommation": 20,
-  "maintenance": [
-    {
-      "id": "1",
-      "name": "1"
-    },
-    {
-      "id": "1",
-      "name": "1"
-    }
-  ],
-  "localisation": "tana",
-  "stock": 1,
-  "vendeur": {
-    "id": "1",
-    "name": "aa",
-    "proprietaire": 1
-  },
-  "commission": 20000,
-  "picture": "qsnxiochoh",
-  "motor": {
-    "id": "1",
-    "name": "1"
-  },
-  "note": 4
-}
+

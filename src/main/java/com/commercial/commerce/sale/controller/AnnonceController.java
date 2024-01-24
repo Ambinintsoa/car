@@ -21,6 +21,7 @@ import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
+import com.commercial.commerce.sale.entity.PurchaseEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
 import jakarta.servlet.http.HttpServletRequest;
 
@@ -37,7 +38,7 @@ public class AnnonceController extends Controller {
     }
 
     @GetMapping("/annonces")
-    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllCategories() {
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnonces() {
         try {
             List<AnnonceEntity> categories = annonceService.getAllEntity();
             return createResponseEntity(categories, "Categories retrieved successfully");
@@ -49,15 +50,15 @@ public class AnnonceController extends Controller {
     }
 
     @PostMapping(value = "/annonces")
-    public ResponseEntity<ApiResponse<AnnonceEntity>> createCategory(
+    public ResponseEntity<ApiResponse<AnnonceEntity>> createAnnonce(
             @Valid @RequestBody AnnonceEntity annonce) {
         try {
             annonce.setState(1);
-            List<String> favoris = new ArrayList<>();
+            List<Long> favoris = new ArrayList<>();
             annonce.setFavoris(favoris);
             annonce.setDate(LocalDateTime.now());
             AnnonceEntity createdAnnonce = annonceService.insert(annonce);
-            return createResponseEntity(createdAnnonce, "Categories created successfully");
+            return createResponseEntity(createdAnnonce, "Announcement created successfully");
 
         } catch (
 
@@ -73,7 +74,6 @@ public class AnnonceController extends Controller {
             if (request.getHeader("Authorization") != null) {
                 String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
                 if (refreshTokenService.validation(token)) {
-                    System.out.print(token);
                     AnnonceEntity createdAnnonce = annonceService.addFavoris(token, id);
                     return createResponseEntity(createdAnnonce, "Categories created successfully");
                 }
@@ -139,6 +139,29 @@ public class AnnonceController extends Controller {
         }
     }
 
+    @GetMapping("/own/annonces")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getMyAnnonce(HttpServletRequest request) {
+        try {
+            if (request.getHeader("Authorization") != null) {
+                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
+                if (refreshTokenService.verification(token)) {
+                    List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(token);
+                    return createResponseEntity(annonces, "Announcement retrieved successfully");
+                }
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
+                                LocalDateTime.now()));
+            } else {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
+                                LocalDateTime.now()));
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/annonces/recentes")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getRecentAnnonces(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
@@ -150,6 +173,20 @@ public class AnnonceController extends Controller {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getLocalizedMessage()),
                             LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/annonces/{id}")
+    public ResponseEntity<ApiResponse<AnnonceEntity>> getAnnonceById(@PathVariable String id
+
+    ) {
+        try {
+            AnnonceEntity categories = annonceService.getById(id).get();
+            return createResponseEntity(categories, "Categories retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 }

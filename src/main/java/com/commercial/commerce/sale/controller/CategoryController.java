@@ -4,6 +4,8 @@ import com.commercial.commerce.sale.entity.CategoryEntity;
 import com.commercial.commerce.sale.service.CategoryService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
+
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
@@ -18,15 +20,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
+@AllArgsConstructor
 public class CategoryController extends Controller {
 
     private final CategoryService categoryService;
     private final RefreshTokenService refreshTokenService;
-
-    public CategoryController(CategoryService categoryService, RefreshTokenService refreshTokenService) {
-        this.categoryService = categoryService;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @GetMapping("/categories")
     public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllCategories() {
@@ -41,8 +39,8 @@ public class CategoryController extends Controller {
     }
 
     @GetMapping("/pagination/categories")
-    public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllTypesWithPagination(
-            @RequestParam(name = "after_id") String id,
+    public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllCategoriesWithPagination(
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<CategoryEntity> types = categoryService.selectWithPagination(id, limit);

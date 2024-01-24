@@ -4,6 +4,7 @@ import com.commercial.commerce.sale.entity.TypeEntity;
 import com.commercial.commerce.sale.service.TypeService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
@@ -20,16 +21,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
+@AllArgsConstructor
 public class TypeController extends Controller {
 
     private final TypeService typeService;
     private final RefreshTokenService refreshTokenService;
-
-    @Autowired
-    public TypeController(TypeService typeService, RefreshTokenService refreshTokenService) {
-        this.typeService = typeService;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @GetMapping("/types")
     public ResponseEntity<ApiResponse<List<TypeEntity>>> getAllTypes() {
@@ -45,7 +41,7 @@ public class TypeController extends Controller {
 
     @GetMapping("/pagination/types")
     public ResponseEntity<ApiResponse<List<TypeEntity>>> getAllTypesWithPagination(
-            @RequestParam(name = "after_id") String id,
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<TypeEntity> types = typeService.selectWithPagination(id, limit);

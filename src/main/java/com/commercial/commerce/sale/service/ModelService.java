@@ -67,7 +67,7 @@ public class ModelService {
         }
     }
 
-    public List<ModelEntity> selectWithPagination(String id, int limit) {
-        return modelRepository.selectWithPagination(id, limit);
+    public List<ModelEntity> selectWithPagination(int offset, int limit) {
+        return modelRepository.selectWithPagination(limit, offset);
     }
 }

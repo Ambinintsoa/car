@@ -4,6 +4,7 @@ import com.commercial.commerce.sale.entity.MotorEntity;
 import com.commercial.commerce.sale.service.MotorService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
@@ -19,15 +20,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
+@AllArgsConstructor
 public class MotorController extends Controller {
 
     private final MotorService motorService;
     private final RefreshTokenService refreshTokenService;
-
-    public MotorController(MotorService motorService, RefreshTokenService refreshTokenService) {
-        this.motorService = motorService;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @GetMapping("/motors")
     public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllMotors() {
@@ -42,8 +39,8 @@ public class MotorController extends Controller {
     }
 
     @GetMapping("/pagination/motors")
-    public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllTypesWithPagination(
-            @RequestParam(name = "after_id") String id,
+    public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllMotorsWithPagination(
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MotorEntity> types = motorService.selectWithPagination(id, limit);

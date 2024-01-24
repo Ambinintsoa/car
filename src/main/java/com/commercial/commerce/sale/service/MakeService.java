@@ -61,7 +61,7 @@ public class MakeService {
 
     }
 
-    public List<MakeEntity> selectWithPagination(String id, int limit) {
-        return makeRepository.selectWithPagination(id, limit);
+    public List<MakeEntity> selectWithPagination(int offset, int limit) {
+        return makeRepository.selectWithPagination(limit, offset);
     }
 }

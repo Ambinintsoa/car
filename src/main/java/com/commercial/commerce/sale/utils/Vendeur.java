@@ -6,7 +6,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Vendeur {
-    private String idvendeur;
-    private String name;
+    private Long idvendeur;
     private int proprietaire;
 }

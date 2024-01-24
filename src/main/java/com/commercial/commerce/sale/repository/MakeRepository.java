@@ -19,6 +19,6 @@ public interface MakeRepository extends JpaRepository<MakeEntity, String> {
     @Query(value = "select * from make where idmake = :id and state =1", nativeQuery = true)
     Optional<MakeEntity> findByIdActive(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM make WHERE CAST(SUBSTRING(idmake FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idmake FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
-    List<MakeEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
+    @Query(value = "SELECT * FROM make  ORDER BY CAST(SUBSTRING(idmake FROM 4) AS INTEGER) LIMIT :limit OFFSET :offset", nativeQuery = true)
+    List<MakeEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
 }

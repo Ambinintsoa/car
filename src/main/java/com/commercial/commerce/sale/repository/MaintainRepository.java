@@ -19,6 +19,6 @@ public interface MaintainRepository extends JpaRepository<MaintainEntity, String
     @Query(value = "select * from maintains where idmaintains = :id and state =1", nativeQuery = true)
     Optional<MaintainEntity> findByIdActive(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM maintains WHERE CAST(SUBSTRING(idmaintains FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idmaintains FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
-    List<MaintainEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
+    @Query(value = "SELECT * FROM maintains  ORDER BY CAST(SUBSTRING(idmaintains FROM 4) AS INTEGER) LIMIT :limit OFFSET :offset", nativeQuery = true)
+    List<MaintainEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
 }

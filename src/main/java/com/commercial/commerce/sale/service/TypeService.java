@@ -59,7 +59,7 @@ public class TypeService {
         return type;
     }
 
-    public List<TypeEntity> selectWithPagination(String id, int limit) {
-        return typeRepository.selectWithPagination(id, limit);
+    public List<TypeEntity> selectWithPagination(int offset, int limit) {
+        return typeRepository.selectWithPagination(limit, offset);
     }
 }

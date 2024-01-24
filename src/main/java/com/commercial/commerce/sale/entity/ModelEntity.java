@@ -2,9 +2,13 @@ package com.commercial.commerce.sale.entity;
 
 import java.sql.Date;
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Setter
+@Getter
 @Table(name = "model", schema = "public")
 @RequiredArgsConstructor
 public class ModelEntity {
@@ -39,70 +43,6 @@ public class ModelEntity {
     @ManyToOne
     @JoinColumn(name = "idtype", referencedColumnName = "idtype")
     private TypeEntity type;
-
-    public MakeEntity getBrand() {
-        return brand;
-    }
-
-    public void setBrand(MakeEntity make) {
-        this.brand = make;
-    }
-
-    public TypeEntity getType() {
-        return type;
-    }
-
-    public void setType(TypeEntity type) {
-        this.type = type;
-    }
-
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public int getState() {
-        return this.state;
-    }
-
-    public void setPlaces(int places) {
-        this.places = places;
-    }
-
-    public int getPlaces() {
-        return this.places;
-    }
-
-    public void setDoors(int doors) {
-        this.doors = doors;
-    }
-
-    public int getDoors() {
-        return this.doors;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 
     public ModelEntity(String name, Date date, int doors, int places, String type, String make) {
         this.setNom(name);

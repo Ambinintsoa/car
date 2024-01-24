@@ -4,6 +4,7 @@ import com.commercial.commerce.sale.entity.MaintainEntity;
 import com.commercial.commerce.sale.service.MaintainService;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
@@ -19,15 +20,11 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/actu")
+@AllArgsConstructor
 public class MaintainController extends Controller {
 
     private final MaintainService maintainService;
     private final RefreshTokenService refreshTokenService;
-
-    public MaintainController(MaintainService maintainService, RefreshTokenService refreshTokenService) {
-        this.maintainService = maintainService;
-        this.refreshTokenService = refreshTokenService;
-    }
 
     @GetMapping("/maintains")
     public ResponseEntity<ApiResponse<List<MaintainEntity>>> getAllMaintains() {
@@ -42,8 +39,8 @@ public class MaintainController extends Controller {
     }
 
     @GetMapping("/pagination/maintains")
-    public ResponseEntity<ApiResponse<List<MaintainEntity>>> getAllTypesWithPagination(
-            @RequestParam(name = "after_id") String id,
+    public ResponseEntity<ApiResponse<List<MaintainEntity>>> getAllMaintainssWithPagination(
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MaintainEntity> types = maintainService.selectWithPagination(id, limit);

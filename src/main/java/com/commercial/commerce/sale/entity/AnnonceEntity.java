@@ -5,8 +5,10 @@ import org.springframework.data.mongodb.core.mapping.Document;
 
 import com.commercial.commerce.sale.utils.Caracteristic;
 import com.commercial.commerce.sale.utils.Maintenance;
+import com.commercial.commerce.sale.utils.Model;
 import com.commercial.commerce.sale.utils.Brand;
 import com.commercial.commerce.sale.utils.Motor;
+import com.commercial.commerce.sale.utils.Type;
 import com.commercial.commerce.sale.utils.Vendeur;
 
 import lombok.Getter;
@@ -25,6 +27,7 @@ public class AnnonceEntity {
     private String id;
 
     private Brand brand;
+    private Model modele;
 
     private List<Caracteristic> caracteristic;
 
@@ -44,7 +47,7 @@ public class AnnonceEntity {
 
     private int commission;
 
-    private List<String> picture;
+    private List<String> pictures;
 
     private Motor motor;
 
@@ -52,8 +55,10 @@ public class AnnonceEntity {
 
     private int state;
 
-    private List<String> favoris;
+    private List<Long> favoris;
 
     private LocalDateTime date;
 
+    private String description;
+    private Type type;
 }

@@ -26,6 +26,6 @@ public interface ModelRepository extends JpaRepository<ModelEntity, String> {
         @Query(value = "select * from model where idmake = :id and state =1", nativeQuery = true)
         List<ModelEntity> findByMake(@Param("id") String id);
 
-        @Query(value = "SELECT * FROM model WHERE CAST(SUBSTRING(idmodel FROM 4) AS INTEGER) >= CAST(SUBSTRING(:id FROM 4) AS INTEGER) ORDER BY CAST(SUBSTRING(idmodel FROM 4) AS INTEGER) LIMIT :limit", nativeQuery = true)
-        List<ModelEntity> selectWithPagination(@Param("id") String id, @Param("limit") int limit);
+        @Query(value = "SELECT * FROM model ORDER BY CAST(SUBSTRING(idmodel FROM 4) AS INTEGER) LIMIT :limit OFFSET :offset", nativeQuery = true)
+        List<ModelEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
 }

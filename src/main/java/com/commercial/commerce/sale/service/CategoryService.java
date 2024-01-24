@@ -59,7 +59,7 @@ public class CategoryService {
 
     }
 
-    public List<CategoryEntity> selectWithPagination(String id, int limit) {
-        return categoryRepository.selectWithPagination(id, limit);
+    public List<CategoryEntity> selectWithPagination(int offset, int limit) {
+        return categoryRepository.selectWithPagination(limit, offset);
     }
 }

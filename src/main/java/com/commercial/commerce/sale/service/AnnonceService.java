@@ -1,7 +1,11 @@
 package com.commercial.commerce.sale.service;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Optional;
+import java.util.Set;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -9,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
+import com.commercial.commerce.sale.entity.PurchaseEntity;
 import com.commercial.commerce.sale.repository.AnnonceRepository;
 
 import lombok.RequiredArgsConstructor;
@@ -33,11 +38,11 @@ public class AnnonceService {
 
         AnnonceEntity annonce = annonceRepository.findById(idannonce).orElse(null);
         if (annonce != null) {
-            List<String> pictures = annonce.getFavoris();
-            pictures.add(refreshTokenService.getId(id));
+            annonce.getFavoris().add(Long.parseLong(refreshTokenService.getId(id)));
+            Set<Long> uniqueFavoris = new HashSet<>(annonce.getFavoris());
+            annonce.getFavoris().clear();
+            annonce.getFavoris().addAll(uniqueFavoris);
             annonceRepository.save(annonce);
-            List<String> favoris = new ArrayList<>();
-            annonce.setFavoris(favoris);
         }
         return annonce;
     }
@@ -46,24 +51,21 @@ public class AnnonceService {
         AnnonceEntity annonce = annonceRepository.findById(annonceId).orElse(null);
 
         if (annonce != null) {
-            List<String> favoris = annonce.getFavoris();
-            favoris.remove(refreshTokenService.getId(user));
+            annonce.getFavoris().remove(refreshTokenService.getId(user));
             annonceRepository.save(annonce);
-            annonce.setFavoris(favoris);
-            favoris = new ArrayList<>();
-            annonce.setFavoris(favoris);
 
         }
         return annonce;
     }
 
     public List<AnnonceEntity> getAnnoncesByFavoris(String user) {
-        List<AnnonceEntity> annonce = annonceRepository.findByFavoris(refreshTokenService.getId(user));
-        List<String> favoris = new ArrayList<>();
-        for (int i = 0; i < annonce.size(); i++) {
-            annonce.get(i).setFavoris(favoris);
-        }
+        List<AnnonceEntity> annonce = annonceRepository.findByFavoris(Long.parseLong(refreshTokenService.getId(user)));
+        return annonce;
+    }
 
+    public List<AnnonceEntity> getAnnoncesByVendeur(String user) {
+        List<AnnonceEntity> annonce = annonceRepository
+                .findByVendeurIdvendeur(Long.parseLong(refreshTokenService.getId(user)));
         return annonce;
     }
 
@@ -71,5 +73,9 @@ public class AnnonceService {
         Sort sortByDateDesc = Sort.by(Sort.Direction.DESC, "date");
         Pageable pageable = PageRequest.of(0, limit, sortByDateDesc);
         return annonceRepository.findAll(pageable).getContent();
+    }
+
+    public Optional<AnnonceEntity> getById(String id) {
+        return annonceRepository.findById(id);
     }
 }
