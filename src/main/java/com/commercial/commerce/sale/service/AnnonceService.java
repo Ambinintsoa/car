@@ -10,6 +10,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
+import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.repository.AnnonceRepository;
 
@@ -27,7 +28,11 @@ public class AnnonceService {
         return annonceRepository.findAll();
     }
 
-    public AnnonceEntity insert(AnnonceEntity annonce) {
+    public AnnonceEntity insert(AnnonceEntity annonce) throws Exception {
+        FileHelper file = new FileHelper();
+        for (String fileBase64 : annonce.getPictures()) {
+            file.uploadOnline(fileBase64);
+        }
         return annonceRepository.save(annonce);
     }
 

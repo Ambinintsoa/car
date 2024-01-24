@@ -68,7 +68,6 @@ com\commercial\commerce\response\Status$StatusBuilder.class
 com\commercial\commerce\sale\service\ModelService.class
 com\commercial\commerce\chat\Utils\Status.class
 com\commercial\commerce\sale\repository\AnnonceRepository.class
-com\commercial\commerce\sale\entity\FilesBody.class
 com\commercial\commerce\UserAuth\Request\RegisterRequest.class
 com\commercial\commerce\sale\entity\PurchaseEntity.class
 com\commercial\commerce\sale\controller\TypeController.class

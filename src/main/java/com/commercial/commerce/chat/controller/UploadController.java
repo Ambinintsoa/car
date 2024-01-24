@@ -51,6 +51,7 @@ public class UploadController {
             FileHelper file = new FileHelper();
             for (String fileBase64 : files.getFiles()) {
                 file.uploadOnline(fileBase64);
+
             }
             return Status.builder().status("ok").details("File uploaded").build();
         } catch (Exception e) {

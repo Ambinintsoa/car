@@ -9,7 +9,6 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Caracteris
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\TransactionController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Repository\RefreshTokenRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Request\AuthenticationRequest.java
-D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\FilesBody.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Brand.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\CategoryRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\MakeRepository.java
@@ -44,7 +43,6 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\Purch
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\TypeEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Model.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\PurchaseService.java
-D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\UploadController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Type.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Service\RefreshTokenService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Models\User.java
