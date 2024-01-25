@@ -15,11 +15,11 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
 
     List<AnnonceEntity> findByVendeur(Long idvendeur);
 
-    List<AnnonceEntity> findByPrixLessThanEqualAndPrixGreaterThanEqual(int sup, int inf);
+    List<AnnonceEntity> findByPrixLessThanEqualAndPrixGreaterThanEqual(double sup, double inf);
 
-    List<AnnonceEntity> findByPrixGreaterThanEqual(int inf);
+    List<AnnonceEntity> findByPrixGreaterThanEqual(double inf);
 
-    List<AnnonceEntity> findByPrixLessThanEqual(int sup);
+    List<AnnonceEntity> findByPrixLessThanEqual(double sup);
 
     List<AnnonceEntity> findByBrandIn(String[] brand);
 

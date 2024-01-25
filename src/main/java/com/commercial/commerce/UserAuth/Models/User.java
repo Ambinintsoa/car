@@ -54,6 +54,9 @@ public class User implements UserDetails {
     @Column(name = "gender")
     Integer gender;
 
+    @Column(name = "profile")
+    String profile;
+
     @Enumerated(EnumType.STRING)
     Role roles;
 

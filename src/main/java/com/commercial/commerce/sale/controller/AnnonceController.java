@@ -55,8 +55,7 @@ public class AnnonceController extends Controller {
                 String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
                 if (refreshTokenService.validation(token)) {
                     annonce.setState(1);
-
-                    annonce.setVendeur(refreshTokenService.getId(token));
+                    annonce.getVendeur().setIdvendeur(refreshTokenService.getId(token));
                     List<Long> favoris = new ArrayList<>();
                     annonce.setFavoris(favoris);
                     annonce.setDate(LocalDateTime.now());
@@ -209,7 +208,8 @@ public class AnnonceController extends Controller {
 
     ) {
         try {
-            return createResponseEntity(annonceService.research(parametre), "Announcement retrieved successfully");
+            return createResponseEntity(annonceService.getInf(parametre.getInfMontant()),
+                    "Announcement retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)

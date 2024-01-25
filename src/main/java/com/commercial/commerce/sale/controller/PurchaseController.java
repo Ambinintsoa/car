@@ -72,7 +72,7 @@ public class PurchaseController extends Controller {
                     purchase = purchaseService.getById(id).get();
                     AnnonceEntity annonce = annonceService.getById(purchase.getAnnouncement()).get();
                     TransactionEntity createdAnnonce = purchaseService.achat(purchase,
-                            annonce.getVendeur());
+                            annonce.getVendeur().getIdvendeur());
                     return createResponseEntity(createdAnnonce, "Purchase created successfully");
                 }
                 return ResponseEntity.status(HttpStatus.OK)

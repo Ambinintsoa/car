@@ -92,15 +92,15 @@ public class AnnonceService {
         return annonceRepository.findById(id);
     }
 
-    public List<AnnonceEntity> getBetween(int inf, int sup) {
+    public List<AnnonceEntity> getBetween(double inf, double sup) {
         return annonceRepository.findByPrixLessThanEqualAndPrixGreaterThanEqual(sup, inf);
     }
 
-    public List<AnnonceEntity> getInf(int inf) {
+    public List<AnnonceEntity> getInf(double inf) {
         return annonceRepository.findByPrixLessThanEqual(inf);
     }
 
-    public List<AnnonceEntity> getSup(int sup) {
+    public List<AnnonceEntity> getSup(double sup) {
         return annonceRepository.findByPrixGreaterThanEqual(sup);
     }
 

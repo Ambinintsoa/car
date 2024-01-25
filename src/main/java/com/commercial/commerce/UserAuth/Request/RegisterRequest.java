@@ -19,4 +19,5 @@ public class RegisterRequest {
     private String idcountry;
     private Integer gender;
     private Date dtn;
+    private String profile;
 }

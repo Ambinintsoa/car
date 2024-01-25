@@ -3,6 +3,7 @@ com\commercial\commerce\Utils\Status.class
 com\commercial\commerce\sale\controller\Controller.class
 com\commercial\commerce\ServletInitializer.class
 com\commercial\commerce\sale\controller\ModelController.class
+com\commercial\commerce\sale\utils\Vendeur.class
 com\commercial\commerce\CommerceApplication.class
 com\commercial\commerce\UserAuth\Request\RefreshTokenRequest$RefreshTokenRequestBuilder.class
 com\commercial\commerce\UserAuth\Request\AuthenticationRequest$AuthenticationRequestBuilder.class

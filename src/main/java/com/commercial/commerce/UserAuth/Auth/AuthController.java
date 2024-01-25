@@ -1,5 +1,8 @@
 package com.commercial.commerce.UserAuth.Auth;
 
+import java.time.LocalDateTime;
+
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,6 +20,8 @@ import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.UserAuth.Service.CheckStatusService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.Utils.Status;
+import com.commercial.commerce.response.ApiResponse;
+import com.commercial.commerce.sale.controller.Controller;
 
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
@@ -24,7 +29,7 @@ import lombok.RequiredArgsConstructor;
 @RestController
 @RequestMapping("/auth")
 @RequiredArgsConstructor
-public class AuthController {
+public class AuthController extends Controller {
 
     private final AuthService service;
     private final RefreshTokenService refreshTokenService;
@@ -33,7 +38,14 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<Object> register(
             @RequestBody RegisterRequest request) {
-        return ResponseEntity.ok(service.register(request));
+        try {
+            return ResponseEntity.ok(service.register(request));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new com.commercial.commerce.response.Status("error", e.getMessage()),
+                            LocalDateTime.now()));
+        }
+
     }
 
     @PostMapping("/check")

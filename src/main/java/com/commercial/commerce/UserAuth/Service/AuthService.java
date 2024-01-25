@@ -17,11 +17,15 @@ import com.commercial.commerce.UserAuth.Request.RefreshTokenRequest;
 import com.commercial.commerce.UserAuth.Request.RegisterRequest;
 import com.commercial.commerce.UserAuth.Response.AuthenticationResponse;
 import com.commercial.commerce.Utils.Status;
+import com.commercial.commerce.chat.model.JsonResponse;
+import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.CountryEntity;
 
 import lombok.RequiredArgsConstructor;
 
-@org.springframework.stereotype.Service
+import org.springframework.stereotype.Service;
+
+@Service
 @RequiredArgsConstructor
 public class AuthService {
 
@@ -31,16 +35,27 @@ public class AuthService {
         private final AuthenticationManager authenticationManager;
         private final RefreshTokenService refreshTokenService;
 
-        public AuthenticationResponse register(RegisterRequest request) {
-                User user = User.builder().name(request.getName())
-                                .country(new CountryEntity(request.getIdcountry()))
-                                .gender(request.getGender())
-                                .dtn(request.getDtn())
-                                .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
-                                .roles(Role.USER) // role example
-                                .build();
-                user = repository.save(user);
-                return getAuthResponse(user);
+        public AuthenticationResponse register(RegisterRequest request) throws Exception {
+                if (repository.findByEmail(request.getEmail()).isEmpty()) {
+                        FileHelper file = new FileHelper();
+                        JsonResponse json = file.uploadOnline(request.getProfile());
+                        User user = User.builder().name(request.getName())
+                                        .country(new CountryEntity(request.getIdcountry()))
+                                        .gender(request.getGender())
+                                        .dtn(request.getDtn())
+                                        .profile(json.getData().getUrl())
+                                        .email(request.getEmail())
+                                        .password(passwordEncoder.encode(request.getPassword()))
+                                        .roles(Role.USER) // role example
+                                        .build();
+                        if (user.getGender() < 0 && user.getGender() > 1) {
+                                throw new Exception("Gender is ot valid");
+                        }
+                        user = repository.save(user);
+                        return getAuthResponse(user);
+                }
+                throw new Exception("email is already present");
+
         }
 
         public AuthenticationResponse authenticate(AuthenticationRequest request) {

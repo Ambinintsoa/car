@@ -27,6 +27,7 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Models\Refre
 D:\cloud_project\car\src\main\java\com\commercial\commerce\ServletInitializer.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\MakeEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\TypeController.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Vendeur.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\service\FileHelper.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\AnnonceService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\PurchaseRepository.java

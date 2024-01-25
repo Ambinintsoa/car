@@ -8,6 +8,8 @@ import com.commercial.commerce.sale.utils.Model;
 import com.commercial.commerce.sale.utils.Brand;
 import com.commercial.commerce.sale.utils.Motor;
 import com.commercial.commerce.sale.utils.Type;
+import com.commercial.commerce.sale.utils.Vendeur;
+
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -38,7 +40,7 @@ public class AnnonceEntity {
 
     private int stock;
 
-    private Long vendeur;
+    private Vendeur vendeur;
 
     private int commission;
 
