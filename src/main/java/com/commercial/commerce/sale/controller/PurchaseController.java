@@ -22,6 +22,7 @@ import com.commercial.commerce.sale.entity.PurchaseEntity;
 import com.commercial.commerce.sale.entity.TransactionEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
 import com.commercial.commerce.sale.service.PurchaseService;
+
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
@@ -41,7 +42,7 @@ public class PurchaseController extends Controller {
                 String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
                 if (refreshTokenService.validation(token)) {
                     purchase.setUser(new User());
-                    purchase.getUser().setId(Long.parseLong(refreshTokenService.getId(token)));
+                    purchase.getUser().setId(refreshTokenService.getId(token));
                     PurchaseEntity createdAnnonce = purchaseService.insert(purchase);
                     return createResponseEntity(createdAnnonce, "Purchase created successfully");
                 }
@@ -71,7 +72,7 @@ public class PurchaseController extends Controller {
                     purchase = purchaseService.getById(id).get();
                     AnnonceEntity annonce = annonceService.getById(purchase.getAnnouncement()).get();
                     TransactionEntity createdAnnonce = purchaseService.achat(purchase,
-                            annonce.getVendeur().getIdvendeur());
+                            annonce.getVendeur());
                     return createResponseEntity(createdAnnonce, "Purchase created successfully");
                 }
                 return ResponseEntity.status(HttpStatus.OK)

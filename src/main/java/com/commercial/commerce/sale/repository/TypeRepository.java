@@ -22,4 +22,6 @@ public interface TypeRepository extends JpaRepository<TypeEntity, String> {
     @Query(value = "SELECT * FROM type ORDER BY CAST(SUBSTRING(idtype FROM 4) AS INTEGER) LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<TypeEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
 
+    @Query(value = "SELECT count(*)/:offset as count from type", nativeQuery = true)
+    double pagination(@Param("offset") int offset);
 }

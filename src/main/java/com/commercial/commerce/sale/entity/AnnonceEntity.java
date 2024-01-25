@@ -8,7 +8,6 @@ import com.commercial.commerce.sale.utils.Model;
 import com.commercial.commerce.sale.utils.Brand;
 import com.commercial.commerce.sale.utils.Motor;
 import com.commercial.commerce.sale.utils.Type;
-import com.commercial.commerce.sale.utils.Vendeur;
 import lombok.Getter;
 import lombok.Setter;
 import java.time.LocalDateTime;
@@ -26,7 +25,7 @@ public class AnnonceEntity {
     private Model modele;
 
     private List<Caracteristic> caracteristic;
-
+    private double prix;
     private String year;
 
     private double kilometre;
@@ -39,7 +38,7 @@ public class AnnonceEntity {
 
     private int stock;
 
-    private Vendeur vendeur;
+    private Long vendeur;
 
     private int commission;
 

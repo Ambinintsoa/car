@@ -70,4 +70,8 @@ public class ModelService {
     public List<ModelEntity> selectWithPagination(int offset, int limit) {
         return modelRepository.selectWithPagination(limit, offset);
     }
+
+    public int pagination(int offset) {
+        return (int) Math.ceil(modelRepository.pagination(offset));
+    }
 }

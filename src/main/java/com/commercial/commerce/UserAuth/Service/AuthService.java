@@ -31,7 +31,7 @@ public class AuthService {
         private final RefreshTokenService refreshTokenService;
 
         public AuthenticationResponse register(RegisterRequest request) {
-                User user = User.builder().firstname(request.getFirstname()).lastname(request.getLastname())
+                User user = User.builder().name(request.getName())
                                 .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
                                 .roles(Role.USER) // role example
                                 .build();

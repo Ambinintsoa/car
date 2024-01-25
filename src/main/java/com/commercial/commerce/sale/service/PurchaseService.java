@@ -44,7 +44,7 @@ public class PurchaseService {
 
     public List<PurchaseEntity> getAllPurchaseValid(String id, int offset, int limit) {
 
-        return purchaseRepository.findAllActiveValid(Long.parseLong(refreshTokenService.getId(id)), limit, offset);
+        return purchaseRepository.findAllActiveValid(refreshTokenService.getId(id), limit, offset);
     }
 
     public List<PurchaseEntity> selectWithPagination(int offset, int limit) {

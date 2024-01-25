@@ -63,4 +63,7 @@ public class MotorService {
         return motorRepository.selectWithPagination(limit, offset);
     }
 
+    public int pagination(int offset) {
+        return (int) Math.ceil(motorRepository.pagination(offset));
+    }
 }

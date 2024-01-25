@@ -62,4 +62,8 @@ public class CategoryService {
     public List<CategoryEntity> selectWithPagination(int offset, int limit) {
         return categoryRepository.selectWithPagination(limit, offset);
     }
+
+    public int pagination(int offset) {
+        return (int) Math.ceil(categoryRepository.pagination(offset));
+    }
 }

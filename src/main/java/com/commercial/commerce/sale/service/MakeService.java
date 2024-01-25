@@ -64,4 +64,8 @@ public class MakeService {
     public List<MakeEntity> selectWithPagination(int offset, int limit) {
         return makeRepository.selectWithPagination(limit, offset);
     }
+
+    public int pagination(int offset) {
+        return (int) Math.ceil(makeRepository.pagination(offset));
+    }
 }

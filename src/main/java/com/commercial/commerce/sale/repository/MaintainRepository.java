@@ -21,4 +21,7 @@ public interface MaintainRepository extends JpaRepository<MaintainEntity, String
 
     @Query(value = "SELECT * FROM maintains  ORDER BY CAST(SUBSTRING(idmaintains FROM 4) AS INTEGER) LIMIT :limit OFFSET :offset", nativeQuery = true)
     List<MaintainEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = "SELECT count(*)/:offset as count from maintains", nativeQuery = true)
+    double pagination(@Param("offset") int offset);
 }

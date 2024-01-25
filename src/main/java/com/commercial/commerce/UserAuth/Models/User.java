@@ -1,5 +1,6 @@
 package com.commercial.commerce.UserAuth.Models;
 
+import java.sql.Date;
 import java.util.Collection;
 import java.util.List;
 
@@ -8,6 +9,8 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import com.commercial.commerce.UserAuth.Enum.Role;
+import com.commercial.commerce.sale.entity.CountryEntity;
+import com.commercial.commerce.sale.entity.TypeEntity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -15,6 +18,8 @@ import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.SequenceGenerator;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
@@ -40,14 +45,21 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     String password;
 
-    @Column(name = "firstname")
-    String firstname;
+    @Column(name = "name")
+    String name;
 
-    @Column(name = "lastname")
-    String lastname;
+    @Column(name = "dtn")
+    Date dtn;
+
+    @Column(name = "gender")
+    int gender;
 
     @Enumerated(EnumType.STRING)
     Role roles;
+
+    @ManyToOne
+    @JoinColumn(name = "idcountry", referencedColumnName = "idcountry")
+    private CountryEntity country;
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

@@ -46,4 +46,8 @@ public class TransactionService {
     public void updateState(TransactionEntity transaction, int state) {
         transactionRepository.updateTransactionState(transaction.getId(), state);
     }
+
+    public int pagination(int offset) {
+        return (int) Math.ceil(transactionRepository.pagination(offset));
+    }
 }

@@ -155,4 +155,17 @@ public class MaintainController extends Controller {
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
+
+    @GetMapping("/maintains/pagination")
+    public ResponseEntity<ApiResponse<Integer>> getPagination(
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+
+            return createResponseEntity(maintainService.pagination(limit), "Categories retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
 }

@@ -62,4 +62,8 @@ public class MaintainService {
     public List<MaintainEntity> selectWithPagination(int offset, int limit) {
         return maintainRepository.selectWithPagination(limit, offset);
     }
+
+    public int pagination(int offset) {
+        return (int) Math.ceil(maintainRepository.pagination(offset));
+    }
 }

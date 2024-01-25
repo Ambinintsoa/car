@@ -21,4 +21,7 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, String
 
     @Query(value = "SELECT * FROM category ORDER BY CAST(SUBSTRING(idcategory FROM 4) AS INTEGER) LIMIT :limit offset :offset", nativeQuery = true)
     List<CategoryEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
+
+    @Query(value = "SELECT count(*)/:offset as count from category", nativeQuery = true)
+    double pagination(@Param("offset") int offset);
 }

@@ -62,4 +62,8 @@ public class TypeService {
     public List<TypeEntity> selectWithPagination(int offset, int limit) {
         return typeRepository.selectWithPagination(limit, offset);
     }
+
+    public int pagination(int offset) {
+        return (int) Math.ceil(typeRepository.pagination(offset));
+    }
 }

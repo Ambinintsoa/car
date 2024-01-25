@@ -38,6 +38,19 @@ public class CategoryController extends Controller {
         }
     }
 
+    @GetMapping("/categories/pagination")
+    public ResponseEntity<ApiResponse<Integer>> getPagination(
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+
+            return createResponseEntity(categoryService.pagination(limit), "Categories retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/pagination/categories")
     public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllCategoriesWithPagination(
             @RequestParam(name = "offset") int id,

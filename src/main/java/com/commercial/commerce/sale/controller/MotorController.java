@@ -150,4 +150,17 @@ public class MotorController extends Controller {
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
+
+    @GetMapping("/motors/pagination")
+    public ResponseEntity<ApiResponse<Integer>> getPagination(
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+
+            return createResponseEntity(motorService.pagination(limit), "Categories retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
 }

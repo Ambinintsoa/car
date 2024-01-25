@@ -77,7 +77,7 @@ public class RefreshTokenService {
         }
     }
 
-    public String getId(String refreshToken) {
+    public Long getId(String refreshToken) {
         try {
             return refreshTokenRepository.getId(refreshToken);
         } catch (Exception e) {
