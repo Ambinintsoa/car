@@ -52,7 +52,7 @@ public class User implements UserDetails {
     Date dtn;
 
     @Column(name = "gender")
-    int gender;
+    Integer gender;
 
     @Enumerated(EnumType.STRING)
     Role roles;
