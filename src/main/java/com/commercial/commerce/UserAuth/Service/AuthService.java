@@ -20,6 +20,7 @@ import com.commercial.commerce.Utils.Status;
 import com.commercial.commerce.chat.model.JsonResponse;
 import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.CountryEntity;
+import com.commercial.commerce.sale.service.CountryService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -30,6 +31,7 @@ import org.springframework.stereotype.Service;
 public class AuthService {
 
         private final UserRepository repository;
+        private final CountryService countryService;
         private final PasswordEncoder passwordEncoder;
         private final JwtService jwtService;
         private final AuthenticationManager authenticationManager;
@@ -37,13 +39,18 @@ public class AuthService {
 
         public AuthenticationResponse register(RegisterRequest request) throws Exception {
                 if (repository.findByEmail(request.getEmail()).isEmpty()) {
-                        FileHelper file = new FileHelper();
-                        JsonResponse json = file.uploadOnline(request.getProfile());
+                        String profile = null;
+                        if (request.getProfile() != null) {
+                                FileHelper file = new FileHelper();
+                                JsonResponse json = file.uploadOnline(request.getProfile());
+                                profile = json.getData().getUrl();
+                        }
+
                         User user = User.builder().name(request.getName())
                                         .country(new CountryEntity(request.getIdcountry()))
                                         .gender(request.getGender())
                                         .dtn(request.getDtn())
-                                        .profile(json.getData().getUrl())
+                                        .profile(profile)
                                         .email(request.getEmail())
                                         .password(passwordEncoder.encode(request.getPassword()))
                                         .roles(Role.USER) // role example
@@ -52,6 +59,8 @@ public class AuthService {
                                 throw new Exception("Gender is ot valid");
                         }
                         user = repository.save(user);
+                        user.setCountry(countryService.getCountryById(request.getIdcountry()).get());
+
                         return getAuthResponse(user);
                 }
                 throw new Exception("email is already present");

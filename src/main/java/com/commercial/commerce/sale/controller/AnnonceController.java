@@ -18,22 +18,30 @@ import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
+import com.commercial.commerce.sale.entity.MaintainEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
+import com.commercial.commerce.sale.service.MaintainService;
+import com.commercial.commerce.sale.service.MakeService;
+import com.commercial.commerce.sale.service.ModelService;
+import com.commercial.commerce.sale.service.MotorService;
+import com.commercial.commerce.sale.service.TypeService;
 import com.commercial.commerce.sale.utils.Parameter;
 
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.AllArgsConstructor;
 
 @RestController
 @RequestMapping("/actu")
+@AllArgsConstructor
 public class AnnonceController extends Controller {
 
     private final RefreshTokenService refreshTokenService;
     private final AnnonceService annonceService;
-
-    public AnnonceController(AnnonceService annonceService, RefreshTokenService refreshTokenService) {
-        this.annonceService = annonceService;
-        this.refreshTokenService = refreshTokenService;
-    }
+    private final MotorService motorService;
+    private final TypeService typeService;
+    private final ModelService modelService;
+    private final MakeService makeService;
+    private final MaintainService maintainService;
 
     @GetMapping("/annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnonces() {
@@ -56,6 +64,17 @@ public class AnnonceController extends Controller {
                 if (refreshTokenService.validation(token)) {
                     annonce.setState(1);
                     annonce.getVendeur().setIdvendeur(refreshTokenService.getId(token));
+                    annonce.setBrand(makeService.getMakeById(annonce.getBrand().getId()).get());
+                    annonce.setType(typeService.getTypeById(annonce.getType().getId()).get());
+                    annonce.setModele(modelService.getModelById(annonce.getModele().getId()).get());
+                    annonce.setMotor(motorService.getMotorById(annonce.getMotor().getId()).get());
+                    List<MaintainEntity> maintains = new ArrayList<>();
+                    // MaintainEntity.removeDuplicates(annonce.getMaintenance());
+                    for (int i = 0; i < annonce.getMaintenance().size(); i++) {
+                        maintains.add(maintainService.getMaintainById(annonce.getMaintenance().get(i).getId()).get());
+
+                    }
+                    annonce.setMaintenance(maintains);
                     List<Long> favoris = new ArrayList<>();
                     annonce.setFavoris(favoris);
                     annonce.setDate(LocalDateTime.now());

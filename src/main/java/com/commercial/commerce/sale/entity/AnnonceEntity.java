@@ -4,10 +4,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.commercial.commerce.sale.utils.Caracteristic;
 import com.commercial.commerce.sale.utils.Maintenance;
-import com.commercial.commerce.sale.utils.Model;
-import com.commercial.commerce.sale.utils.Brand;
-import com.commercial.commerce.sale.utils.Motor;
-import com.commercial.commerce.sale.utils.Type;
 import com.commercial.commerce.sale.utils.Vendeur;
 
 import lombok.Getter;
@@ -23,8 +19,8 @@ public class AnnonceEntity {
     @Id
     private String id;
 
-    private Brand brand;
-    private Model modele;
+    private MakeEntity brand;
+    private ModelEntity modele;
 
     private List<Caracteristic> caracteristic;
     private double prix;
@@ -34,7 +30,7 @@ public class AnnonceEntity {
 
     private double consommation;
 
-    private List<Maintenance> maintenance;
+    private List<MaintainEntity> maintenance;
 
     private String localisation;
 
@@ -46,7 +42,7 @@ public class AnnonceEntity {
 
     private List<String> pictures;
 
-    private Motor motor;
+    private MotorEntity motor;
 
     private double note;
 
@@ -57,5 +53,5 @@ public class AnnonceEntity {
     private LocalDateTime date;
 
     private String description;
-    private Type type;
+    private TypeEntity type;
 }
