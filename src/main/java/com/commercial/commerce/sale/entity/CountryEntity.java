@@ -43,4 +43,9 @@ public class CountryEntity {
     public void setNom(String nom) {
         this.nom = nom;
     }
+
+    public CountryEntity(String id) {
+        this.setId(id);
+    }
+
 }

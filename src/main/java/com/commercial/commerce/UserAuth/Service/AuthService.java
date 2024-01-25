@@ -17,6 +17,7 @@ import com.commercial.commerce.UserAuth.Request.RefreshTokenRequest;
 import com.commercial.commerce.UserAuth.Request.RegisterRequest;
 import com.commercial.commerce.UserAuth.Response.AuthenticationResponse;
 import com.commercial.commerce.Utils.Status;
+import com.commercial.commerce.sale.entity.CountryEntity;
 
 import lombok.RequiredArgsConstructor;
 
@@ -32,6 +33,9 @@ public class AuthService {
 
         public AuthenticationResponse register(RegisterRequest request) {
                 User user = User.builder().name(request.getName())
+                                .country(new CountryEntity(request.getIdcountry()))
+                                .gender(request.getGender())
+                                .dtn(request.getDtn())
                                 .email(request.getEmail()).password(passwordEncoder.encode(request.getPassword()))
                                 .roles(Role.USER) // role example
                                 .build();
