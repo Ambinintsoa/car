@@ -211,4 +211,9 @@ public class AnnonceService {
         }
         return list;
     }
+
+    public long pagination(int limit) {
+        long number = annonceRepository.count();
+        return (number + limit - 1) / limit;
+    }
 }

@@ -67,7 +67,7 @@ public class AnnonceController extends Controller {
 
     @GetMapping("/actu/pagination/annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnoncesPagination(
-            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "offset", defaultValue = "0") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<AnnonceEntity> categories = annonceService.getAllWithPagination(id, limit);
@@ -79,21 +79,18 @@ public class AnnonceController extends Controller {
         }
     }
 
-    // @GetMapping("/actu/pagination/annonces")
-    // public ResponseEntity<ApiResponse<List<AnnonceEntity>>>
-    // getAllModelsWithPagination(
-    // @RequestParam(name = "offset") int id,
-    // @RequestParam(name = "limit", defaultValue = "5") int limit) {
-    // try {
-    // List<AnnonceEntity> types = annonceService.selectWithPagination(id, limit);
-    // return createResponseEntity(types, "Models retrieved successfully");
+    @GetMapping("/actu/annonces/pagination")
+    public ResponseEntity<ApiResponse<Long>> getPagination(
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
 
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.OK)
-    // .body(new ApiResponse<>(null, new Status("error", e.getMessage()),
-    // LocalDateTime.now()));
-    // }
-    // }
+            return createResponseEntity(annonceService.pagination(limit), "Categories retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
 
     @PostMapping(value = "/user/{iduser}/annonces")
     public ResponseEntity<ApiResponse<AnnonceEntity>> createAnnonce(HttpServletRequest request,
