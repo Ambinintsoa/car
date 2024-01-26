@@ -73,11 +73,12 @@ public class AnnonceController extends Controller {
             }
             annonce.setState(1);
             annonce.setVendeur(new Vendeur());
+            annonce.setDate(LocalDateTime.now());
             annonce.getVendeur().setIdvendeur(iduser);
             annonce.setBrand(makeService.getMakeById(annonce.getBrand().getId()).get());
-            annonce.setType(typeService.getTypeById(annonce.getType().getId()).get());
             annonce.setLocalisation(countryService.getCountryById(annonce.getLocalisation().getId()).get());
             annonce.setModele(modelService.getModelById(annonce.getModele().getId()).get());
+            annonce.setType(typeService.getTypeById(annonce.getModele().getType().getId()).get());
             annonce.setMotor(motorService.getMotorById(annonce.getMotor().getId()).get());
             if (annonce.getEtat() > 10 || annonce.getEtat() < 0) {
                 return ResponseEntity.status(HttpStatus.OK)
