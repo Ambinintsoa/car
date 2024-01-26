@@ -1,12 +1,11 @@
 package com.commercial.commerce.sale.repository;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.List;
 
-import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.data.mongodb.repository.MongoRepository;
-import org.springframework.data.repository.query.Param;
 
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 

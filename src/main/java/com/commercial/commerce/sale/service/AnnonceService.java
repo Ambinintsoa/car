@@ -8,10 +8,14 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+
+import com.commercial.commerce.UserAuth.Models.User;
+import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.chat.model.JsonResponse;
 import com.commercial.commerce.chat.service.FileHelper;
@@ -30,9 +34,28 @@ public class AnnonceService {
     private AnnonceRepository annonceRepository;
     @Autowired
     private RefreshTokenService refreshTokenService;
+    @Autowired
+    private AuthService authService;
 
     public List<AnnonceEntity> getAllEntity() {
-        return annonceRepository.findAll();
+        List<AnnonceEntity> annonces = annonceRepository.findAll();
+        User user = null;
+        for (AnnonceEntity annonceEntity : annonces) {
+            user = authService.findById(annonceEntity.getVendeur().getId()).get();
+            annonceEntity.getVendeur().setName(user.getName());
+            annonceEntity.getVendeur().setProfile(user.getProfile());
+        }
+        return annonces;
+    }
+
+    public List<AnnonceEntity> selectWithPagination(int offset, int limit) {
+        int page = offset;
+        int size = limit;
+        PageRequest pageRequest = PageRequest.of(page, size);
+
+        Page<AnnonceEntity> annoncesPage = annonceRepository.findAll(pageRequest);
+        List<AnnonceEntity> annoncesList = annoncesPage.getContent();
+        return annoncesList;
     }
 
     public AnnonceEntity insert(AnnonceEntity annonce) throws Exception {

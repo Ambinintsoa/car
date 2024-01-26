@@ -18,11 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.commercial.commerce.UserAuth.Models.User;
+import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.entity.MaintainEntity;
+import com.commercial.commerce.sale.entity.ModelEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
 import com.commercial.commerce.sale.service.CountryService;
 import com.commercial.commerce.sale.service.MaintainService;
@@ -44,18 +46,32 @@ public class AnnonceController extends Controller {
 
     private final AnnonceService annonceService;
     private final MotorService motorService;
-    private final TypeService typeService;
     private final ModelService modelService;
     private final MakeService makeService;
     private final MaintainService maintainService;
     private final RefreshTokenService refreshTokenService;
     private final CountryService countryService;
+    private final AuthService authService;
 
     @GetMapping("/actu/annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnonces() {
         try {
             List<AnnonceEntity> categories = annonceService.getAllEntity();
             return createResponseEntity(categories, "Announcements retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/pagination/annonces")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllModelsWithPagination(
+            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<AnnonceEntity> types = annonceService.selectWithPagination(id, limit);
+            return createResponseEntity(types, "Models retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
