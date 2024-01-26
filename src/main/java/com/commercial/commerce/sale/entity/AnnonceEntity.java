@@ -53,5 +53,4 @@ public class AnnonceEntity {
     private LocalDateTime date;
 
     private String description;
-    private TypeEntity type;
 }
