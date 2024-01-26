@@ -41,7 +41,7 @@ public class AnnonceService {
         List<AnnonceEntity> annonces = annonceRepository.findAll();
         User user = null;
         for (AnnonceEntity annonceEntity : annonces) {
-            user = authService.findById(annonceEntity.getVendeur().getId()).get();
+            user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
             annonceEntity.getVendeur().setName(user.getName());
             annonceEntity.getVendeur().setProfile(user.getProfile());
         }
