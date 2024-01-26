@@ -34,8 +34,6 @@ public class AnnonceService {
     @Autowired
     private AnnonceRepository annonceRepository;
     @Autowired
-    private RefreshTokenService refreshTokenService;
-    @Autowired
     private AuthService authService;
 
     public List<AnnonceEntity> getAllEntity() {
@@ -47,6 +45,18 @@ public class AnnonceService {
             annonceEntity.getVendeur().setProfile(user.getProfile());
         }
         return annonces;
+    }
+
+    public List<AnnonceEntity> getAllWithPagination(int offset, int limit) {
+        PageRequest pageRequest = PageRequest.of(offset, limit);
+        Page<AnnonceEntity> annonces = annonceRepository.findAll(pageRequest);
+        User user = null;
+        for (AnnonceEntity annonceEntity : annonces) {
+            user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+            annonceEntity.getVendeur().setNom(user.getName());
+            annonceEntity.getVendeur().setProfile(user.getProfile());
+        }
+        return annonces.getContent();
     }
 
     // public List<AnnonceEntity> selectWithPagination(int offset, int limit) {

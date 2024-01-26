@@ -11,6 +11,7 @@ import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -69,7 +70,7 @@ public class ModelService {
     }
 
     public List<ModelEntity> selectWithPagination(int offset, int limit) {
-        return modelRepository.selectWithPagination(limit, offset);
+        return modelRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
     public int pagination(int offset) {

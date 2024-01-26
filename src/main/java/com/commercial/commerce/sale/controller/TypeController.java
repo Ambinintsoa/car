@@ -37,7 +37,7 @@ public class TypeController extends Controller {
 
     @GetMapping("/actu/pagination/types")
     public ResponseEntity<ApiResponse<List<TypeEntity>>> getAllTypesWithPagination(
-            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "offset", defaultValue = "0") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<TypeEntity> types = typeService.selectWithPagination(id, limit);

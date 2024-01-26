@@ -4,6 +4,7 @@ import com.commercial.commerce.sale.entity.CountryEntity;
 import com.commercial.commerce.sale.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -60,7 +61,7 @@ public class CountryService {
     }
 
     public List<CountryEntity> selectWithPagination(int offset, int limit) {
-        return countryRepository.selectWithPagination(limit, offset);
+        return countryRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
     public int pagination(int offset) {

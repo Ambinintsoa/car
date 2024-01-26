@@ -65,6 +65,20 @@ public class AnnonceController extends Controller {
         }
     }
 
+    @GetMapping("/actu/pagination/annonces")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnoncesPagination(
+            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<AnnonceEntity> categories = annonceService.getAllWithPagination(id, limit);
+            return createResponseEntity(categories, "Announcements retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     // @GetMapping("/actu/pagination/annonces")
     // public ResponseEntity<ApiResponse<List<AnnonceEntity>>>
     // getAllModelsWithPagination(

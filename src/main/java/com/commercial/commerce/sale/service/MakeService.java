@@ -4,6 +4,7 @@ import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.repository.MakeRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -62,7 +63,7 @@ public class MakeService {
     }
 
     public List<MakeEntity> selectWithPagination(int offset, int limit) {
-        return makeRepository.selectWithPagination(limit, offset);
+        return makeRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
     public int pagination(int offset) {

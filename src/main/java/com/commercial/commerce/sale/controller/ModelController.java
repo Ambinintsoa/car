@@ -38,7 +38,7 @@ public class ModelController extends Controller {
 
     @GetMapping("/actu/pagination/models")
     public ResponseEntity<ApiResponse<List<ModelEntity>>> getAllModelsWithPagination(
-            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "offset", defaultValue = "0") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<ModelEntity> types = modelService.selectWithPagination(id, limit);

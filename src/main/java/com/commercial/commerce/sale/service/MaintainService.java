@@ -4,6 +4,7 @@ import com.commercial.commerce.sale.entity.MaintainEntity;
 import com.commercial.commerce.sale.repository.MaintainRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class MaintainService {
     }
 
     public List<MaintainEntity> selectWithPagination(int offset, int limit) {
-        return maintainRepository.selectWithPagination(limit, offset);
+        return maintainRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
     public int pagination(int offset) {

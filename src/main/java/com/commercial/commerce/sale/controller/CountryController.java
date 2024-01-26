@@ -37,7 +37,7 @@ public class CountryController extends Controller {
 
     @GetMapping("/actu/pagination/countries")
     public ResponseEntity<ApiResponse<List<CountryEntity>>> getAllCountriesWithPagination(
-            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "offset", defaultValue = "0") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<CountryEntity> types = countryService.selectWithPagination(id, limit);

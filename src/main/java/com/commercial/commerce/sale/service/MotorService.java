@@ -4,6 +4,7 @@ import com.commercial.commerce.sale.entity.MotorEntity;
 import com.commercial.commerce.sale.repository.MotorRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
@@ -60,7 +61,7 @@ public class MotorService {
     }
 
     public List<MotorEntity> selectWithPagination(int offset, int limit) {
-        return motorRepository.selectWithPagination(limit, offset);
+        return motorRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
     public int pagination(int offset) {
