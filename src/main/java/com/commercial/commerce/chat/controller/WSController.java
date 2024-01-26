@@ -1,5 +1,6 @@
 package com.commercial.commerce.chat.controller;
 
+import com.commercial.commerce.chat.service.MessageService;
 import com.commercial.commerce.chat.service.WSService;
 import com.commercial.commerce.chat.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +11,16 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.HashMap;
+
 @RestController
 public class WSController {
 
     @Autowired
     private WSService service;
+
+    @Autowired
+    private MessageService messageService;
 
     @PostMapping("/send-private-message/{id}")
     public void sendPrivateMessage(@PathVariable final String id,
@@ -24,10 +30,13 @@ public class WSController {
     }
 
     @PostMapping("/send-message")
-    public void sendMessage(
+    public ResponseEntity<String> sendMessage(
             @RequestBody Message message) {
         System.out.println(message.toString());
         service.notifyUser(message.getReceiver_id(), message);
+        messageService.save(message);
+
+        return ResponseEntity.ok("message sent");
     }
 
     @GetMapping("/msg")
@@ -35,5 +44,9 @@ public class WSController {
         System.out.println(" Ato message");
         return new Message();
     }
+
+    @GetMapping("/contact/{id}")
+    public HashMap<String,Message> getContact(@PathVariable String id){return messageService.getContact(id);}
+
 
 }
