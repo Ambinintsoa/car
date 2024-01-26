@@ -1,3 +1,4 @@
+D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\repository\MessageRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\CategoryService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Response\CheckStatusResponse.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\response\Status.java
@@ -13,6 +14,7 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Request\Auth
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\FilesBody.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\CountryRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Brand.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\service\MessageService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\CountryService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\CategoryRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\MakeRepository.java

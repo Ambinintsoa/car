@@ -48,15 +48,15 @@ public class AnnonceService {
         return annonces;
     }
 
-    public List<AnnonceEntity> selectWithPagination(int offset, int limit) {
-        int page = offset;
-        int size = limit;
-        PageRequest pageRequest = PageRequest.of(page, size);
+    // public List<AnnonceEntity> selectWithPagination(int offset, int limit) {
+    // int page = offset;
+    // int size = limit;
+    // PageRequest pageRequest = PageRequest.of(page, size);
 
-        Page<AnnonceEntity> annoncesPage = annonceRepository.findAll(pageRequest);
-        List<AnnonceEntity> annoncesList = annoncesPage.getContent();
-        return annoncesList;
-    }
+    // Page<AnnonceEntity> annoncesPage = annonceRepository.findAll(pageRequest);
+    // List<AnnonceEntity> annoncesList = annoncesPage.getContent();
+    // return annoncesList;
+    // }
 
     public AnnonceEntity insert(AnnonceEntity annonce) throws Exception {
         FileHelper file = new FileHelper();
