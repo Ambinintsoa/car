@@ -116,7 +116,7 @@ public class AnnonceService {
 
     public List<AnnonceEntity> getAnnoncesByVendeur(Long user) {
         List<AnnonceEntity> annonce = annonceRepository
-                .findByVendeur(user);
+                .findByVendeurIdvendeur(user);
         return annonce;
     }
 

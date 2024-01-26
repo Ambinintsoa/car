@@ -12,7 +12,7 @@ import com.commercial.commerce.sale.entity.AnnonceEntity;
 public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String> {
     List<AnnonceEntity> findByFavoris(Long user);
 
-    List<AnnonceEntity> findByVendeur(Long idvendeur);
+    List<AnnonceEntity> findByVendeurIdvendeur(Long idvendeur);
 
     List<AnnonceEntity> findByPrixLessThanEqualAndPrixGreaterThanEqual(double sup, double inf);
 
