@@ -22,6 +22,7 @@ import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.entity.MaintainEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
+import com.commercial.commerce.sale.service.CountryService;
 import com.commercial.commerce.sale.service.MaintainService;
 import com.commercial.commerce.sale.service.MakeService;
 import com.commercial.commerce.sale.service.ModelService;
@@ -46,6 +47,7 @@ public class AnnonceController extends Controller {
     private final MakeService makeService;
     private final MaintainService maintainService;
     private final RefreshTokenService refreshTokenService;
+    private final CountryService countryService;
 
     @GetMapping("/actu/annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnonces() {
@@ -74,6 +76,7 @@ public class AnnonceController extends Controller {
             annonce.getVendeur().setIdvendeur(iduser);
             annonce.setBrand(makeService.getMakeById(annonce.getBrand().getId()).get());
             annonce.setType(typeService.getTypeById(annonce.getType().getId()).get());
+            annonce.setLocalisation(countryService.getCountryById(annonce.getLocalisation().getId()).get());
             annonce.setModele(modelService.getModelById(annonce.getModele().getId()).get());
             annonce.setMotor(motorService.getMotorById(annonce.getMotor().getId()).get());
             if (annonce.getEtat() > 10 || annonce.getEtat() < 0) {
