@@ -7,7 +7,9 @@ import lombok.Setter;
 
 @Getter
 @Setter
-public class Vendeur extends User {
+public class Vendeur {
     Long idvendeur;
     int proprietaire;
+    String nom;
+    String profile;
 }

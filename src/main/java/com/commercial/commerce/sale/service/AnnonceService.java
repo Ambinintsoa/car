@@ -14,6 +14,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.commercial.commerce.UserAuth.Enum.Role;
 import com.commercial.commerce.UserAuth.Models.User;
 import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
@@ -42,7 +43,7 @@ public class AnnonceService {
         User user = null;
         for (AnnonceEntity annonceEntity : annonces) {
             user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
-            annonceEntity.getVendeur().setName(user.getName());
+            annonceEntity.getVendeur().setNom(user.getName());
             annonceEntity.getVendeur().setProfile(user.getProfile());
         }
         return annonces;
