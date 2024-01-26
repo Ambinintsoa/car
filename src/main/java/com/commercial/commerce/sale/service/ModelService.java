@@ -7,9 +7,9 @@ import com.commercial.commerce.sale.repository.TypeRepository;
 
 import lombok.RequiredArgsConstructor;
 
+import java.sql.Date;
 import java.util.List;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +26,8 @@ public class ModelService {
     public ModelEntity insertCustom(ModelEntity modelEntity) {
 
         modelEntity
-                .setId(modelRepository.insertCustom(modelEntity.getNom(), modelEntity.getDate(), modelEntity.getDoors(),
+                .setId(modelRepository.insertCustom(modelEntity.getNom(), Date.valueOf(modelEntity.getDate()),
+                        modelEntity.getDoors(),
                         modelEntity.getPlaces(), modelEntity.getType().getId(), modelEntity.getBrand().getId()));
         modelEntity.setState(1);
         modelEntity.setBrand(makeRepository.findByIdActive(modelEntity.getBrand().getId()).get());
