@@ -7,6 +7,7 @@ import java.util.UUID;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.commercial.commerce.UserAuth.Config.JwtService;
 import com.commercial.commerce.UserAuth.Models.RefreshToken;
 import com.commercial.commerce.UserAuth.Repository.RefreshTokenRepository;
 import com.commercial.commerce.UserAuth.Repository.UserRepository;
@@ -19,6 +20,9 @@ public class RefreshTokenService {
 
     @Autowired
     UserRepository userRepository;
+
+    @Autowired
+    JwtService jwtService;
 
     public RefreshToken generateRefreshToken(String userEmail) {
         deleteActiveRefreshToken(userEmail);
@@ -67,44 +71,6 @@ public class RefreshTokenService {
             return false;
         }
         return !token.getExpireDate().isBefore(Instant.now());
-    }
-
-    public String getRole(String refreshToken) {
-        try {
-            return refreshTokenRepository.getRole(refreshToken);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public Long getId(String refreshToken) {
-        try {
-            return refreshTokenRepository.getId(refreshToken);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public boolean verification(String token) {
-        if (token.compareToIgnoreCase("") == 0) {
-            return false;
-        }
-        if (this.isRefreshTokenValid(token)
-                && this.getRole(token).compareToIgnoreCase("admin") == 0) {
-            System.out.println(this.getRole(token));
-            return true;
-        }
-        return false;
-    }
-
-    public boolean validation(String token) {
-        if (token.compareToIgnoreCase("") == 0) {
-            return false;
-        }
-        if (this.isRefreshTokenValid(token)) {
-            return true;
-        }
-        return false;
     }
 
     public String splitToken(String header) {

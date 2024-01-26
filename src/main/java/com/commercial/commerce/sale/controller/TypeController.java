@@ -9,6 +9,7 @@ import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -16,14 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/actu")
+@RequestMapping("/bibine")
 @AllArgsConstructor
 public class TypeController extends Controller {
 
     private final TypeService typeService;
-    private final RefreshTokenService refreshTokenService;
 
-    @GetMapping("/types")
+    @GetMapping("/actu/types")
     public ResponseEntity<ApiResponse<List<TypeEntity>>> getAllTypes() {
         try {
             List<TypeEntity> types = typeService.getAllTypes();
@@ -35,7 +35,7 @@ public class TypeController extends Controller {
         }
     }
 
-    @GetMapping("/pagination/types")
+    @GetMapping("/actu/pagination/types")
     public ResponseEntity<ApiResponse<List<TypeEntity>>> getAllTypesWithPagination(
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
@@ -49,7 +49,7 @@ public class TypeController extends Controller {
         }
     }
 
-    @GetMapping("/types/{id}")
+    @GetMapping("/actu/types/{id}")
     public ResponseEntity<ApiResponse<TypeEntity>> getTypeById(@PathVariable String id) {
         try {
             Optional<TypeEntity> type = typeService.getTypeById(id);
@@ -62,55 +62,31 @@ public class TypeController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/types")
     public ResponseEntity<ApiResponse<TypeEntity>> createType(HttpServletRequest request,
             @Valid @RequestBody TypeEntity type) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    TypeEntity createdType = typeService.insertCustom(type);
-                    return createResponseEntity(createdType, "Type created successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            TypeEntity createdType = typeService.insertCustom(type);
+            return createResponseEntity(createdType, "Type created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/types/{id}")
     public ResponseEntity<ApiResponse<TypeEntity>> updateType(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody TypeEntity updatedType) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
 
-                    Optional<TypeEntity> existingType = typeService.updateType(id, updatedType);
+            Optional<TypeEntity> existingType = typeService.updateType(id, updatedType);
 
-                    if (existingType.isPresent()) {
-                        return createResponseEntity(existingType.get(), "Type updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing updated ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingType.isPresent()) {
+                return createResponseEntity(existingType.get(), "Type updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing updated ");
             }
 
         } catch (Exception e) {
@@ -119,28 +95,16 @@ public class TypeController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/types/{id}")
     public ResponseEntity<ApiResponse<TypeEntity>> deleteType(HttpServletRequest request, @PathVariable String id) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<TypeEntity> existingType = typeService.deleteType(id);
+            Optional<TypeEntity> existingType = typeService.deleteType(id);
 
-                    if (existingType.isPresent()) {
-                        return createResponseEntity(existingType.get(), "Type deleted successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing deleted ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingType.isPresent()) {
+                return createResponseEntity(existingType.get(), "Type deleted successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing deleted ");
             }
 
         } catch (Exception e) {
@@ -149,7 +113,7 @@ public class TypeController extends Controller {
         }
     }
 
-    @GetMapping("/types/pagination")
+    @GetMapping("/actu/types/pagination")
     public ResponseEntity<ApiResponse<Integer>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {

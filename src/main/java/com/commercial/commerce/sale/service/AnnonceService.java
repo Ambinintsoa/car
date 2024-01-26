@@ -39,6 +39,10 @@ public class AnnonceService {
         FileHelper file = new FileHelper();
 
         List<String> pictures = new ArrayList<String>();
+        if (annonce.getPictures() == null || annonce.getPictures().isEmpty()) {
+            throw new Exception("Announcement needs pictures");
+
+        }
         for (String fileBase64 : annonce.getPictures()) {
             JsonResponse json = file.uploadOnline(fileBase64);
             pictures.add(json.getData().getUrl());
@@ -47,11 +51,11 @@ public class AnnonceService {
         return annonceRepository.save(annonce);
     }
 
-    public AnnonceEntity addFavoris(String id, String idannonce) {
+    public AnnonceEntity addFavoris(Long id, String idannonce) {
 
         AnnonceEntity annonce = annonceRepository.findById(idannonce).orElse(null);
         if (annonce != null) {
-            annonce.getFavoris().add(refreshTokenService.getId(id));
+            annonce.getFavoris().add(id);
             Set<Long> uniqueFavoris = new HashSet<>(annonce.getFavoris());
             annonce.getFavoris().clear();
             annonce.getFavoris().addAll(uniqueFavoris);
@@ -60,25 +64,25 @@ public class AnnonceService {
         return annonce;
     }
 
-    public AnnonceEntity removeFavoris(String user, String annonceId) {
+    public AnnonceEntity removeFavoris(Long user, String annonceId) {
         AnnonceEntity annonce = annonceRepository.findById(annonceId).orElse(null);
 
         if (annonce != null) {
-            annonce.getFavoris().remove(refreshTokenService.getId(user));
+            annonce.getFavoris().remove(user);
             annonceRepository.save(annonce);
 
         }
         return annonce;
     }
 
-    public List<AnnonceEntity> getAnnoncesByFavoris(String user) {
-        List<AnnonceEntity> annonce = annonceRepository.findByFavoris(refreshTokenService.getId(user));
+    public List<AnnonceEntity> getAnnoncesByFavoris(Long user) {
+        List<AnnonceEntity> annonce = annonceRepository.findByFavoris(user);
         return annonce;
     }
 
-    public List<AnnonceEntity> getAnnoncesByVendeur(String user) {
+    public List<AnnonceEntity> getAnnoncesByVendeur(Long user) {
         List<AnnonceEntity> annonce = annonceRepository
-                .findByVendeur(refreshTokenService.getId(user));
+                .findByVendeur(user);
         return annonce;
     }
 

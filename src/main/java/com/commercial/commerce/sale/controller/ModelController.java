@@ -9,6 +9,7 @@ import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -16,39 +17,26 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/actu")
+@RequestMapping("/bibine")
 @AllArgsConstructor
 public class ModelController extends Controller {
 
     private final ModelService modelService;
-    private final RefreshTokenService refreshTokenService;
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/models")
     public ResponseEntity<ApiResponse<ModelEntity>> createModel(HttpServletRequest request,
             @Valid @RequestBody ModelEntity modelEntity) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    modelEntity = modelService.insertCustom(modelEntity);
-                    return createResponseEntity(modelEntity, "Model created successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            modelEntity = modelService.insertCustom(modelEntity);
+            return createResponseEntity(modelEntity, "Model created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @GetMapping("/pagination/models")
+    @GetMapping("/actu/pagination/models")
     public ResponseEntity<ApiResponse<List<ModelEntity>>> getAllModelsWithPagination(
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
@@ -62,7 +50,7 @@ public class ModelController extends Controller {
         }
     }
 
-    @GetMapping("brand/{mark}/models")
+    @GetMapping("/actu/brand/{mark}/models")
     public ResponseEntity<ApiResponse<List<ModelEntity>>> getModelsByMarks(@PathVariable String mark) {
         try {
             List<ModelEntity> models = modelService.getModelsByMake(mark);
@@ -74,7 +62,7 @@ public class ModelController extends Controller {
         }
     }
 
-    @GetMapping("/models/{id}")
+    @GetMapping("/actu/models/{id}")
     public ResponseEntity<ApiResponse<ModelEntity>> getModelById(@PathVariable String id) {
         try {
             Optional<ModelEntity> model = modelService.getModelById(id);
@@ -87,29 +75,17 @@ public class ModelController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/models/{id}")
     public ResponseEntity<ApiResponse<ModelEntity>> updateModel(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody ModelEntity updatedMake) { // Change le nom du type d'entité
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<ModelEntity> existingMake = modelService.update(id, updatedMake);
+            Optional<ModelEntity> existingMake = modelService.update(id, updatedMake);
 
-                    if (existingMake.isPresent()) {
-                        return createResponseEntity(existingMake.get(), "Model updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing updated ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingMake.isPresent()) {
+                return createResponseEntity(existingMake.get(), "Model updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing updated ");
             }
 
         } catch (Exception e) {
@@ -118,29 +94,17 @@ public class ModelController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/models/{id}")
     public ResponseEntity<ApiResponse<ModelEntity>> deleteModel(HttpServletRequest request, @PathVariable String id,
             String authorizationHeader) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<ModelEntity> existingMake = modelService.delete(id);
-                    if (existingMake.isPresent()) {
+            Optional<ModelEntity> existingMake = modelService.delete(id);
+            if (existingMake.isPresent()) {
 
-                        return createResponseEntity(existingMake.get(), "Model deleted successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing deleted ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+                return createResponseEntity(existingMake.get(), "Model deleted successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing deleted ");
             }
 
         } catch (Exception e) {
@@ -149,7 +113,7 @@ public class ModelController extends Controller {
         }
     }
 
-    @GetMapping("/models/pagination")
+    @GetMapping("/actu/models/pagination")
     public ResponseEntity<ApiResponse<Integer>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {

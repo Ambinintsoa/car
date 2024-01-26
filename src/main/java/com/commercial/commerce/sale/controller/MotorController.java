@@ -9,6 +9,7 @@ import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 import javax.validation.Valid;
 import java.time.LocalDateTime;
@@ -16,14 +17,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/actu")
+@RequestMapping("/bibine")
 @AllArgsConstructor
 public class MotorController extends Controller {
 
     private final MotorService motorService;
-    private final RefreshTokenService refreshTokenService;
 
-    @GetMapping("/motors")
+    @GetMapping("/actu/motors")
     public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllMotors() {
         try {
             List<MotorEntity> motors = motorService.getAllMotors();
@@ -35,7 +35,7 @@ public class MotorController extends Controller {
         }
     }
 
-    @GetMapping("/pagination/motors")
+    @GetMapping("/actu/pagination/motors")
     public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllMotorsWithPagination(
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
@@ -49,7 +49,7 @@ public class MotorController extends Controller {
         }
     }
 
-    @GetMapping("/motors/{id}")
+    @GetMapping("/actu/motors/{id}")
     public ResponseEntity<ApiResponse<MotorEntity>> getMotorById(@PathVariable String id) {
         try {
             Optional<MotorEntity> motor = motorService.getMotorById(id);
@@ -62,56 +62,31 @@ public class MotorController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/motors")
     public ResponseEntity<ApiResponse<MotorEntity>> createMotor(HttpServletRequest request,
             @Valid @RequestBody MotorEntity motor) {
         try {
-            if (request.getHeader("Authorization") != null) {
-
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    MotorEntity createdMotor = motorService.insertCustom(motor);
-                    return createResponseEntity(createdMotor, "Motor created successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            MotorEntity createdMotor = motorService.insertCustom(motor);
+            return createResponseEntity(createdMotor, "Motor created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/motors/{id}")
     public ResponseEntity<ApiResponse<MotorEntity>> updateMotor(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody MotorEntity updatedMotor) {
         try {
-            if (request.getHeader("Authorization") != null) {
 
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<MotorEntity> existingMotor = motorService.updateMotor(id, updatedMotor);
+            Optional<MotorEntity> existingMotor = motorService.updateMotor(id, updatedMotor);
 
-                    if (existingMotor.isPresent()) {
-                        return createResponseEntity(existingMotor.get(), "Motor updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing updated ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingMotor.isPresent()) {
+                return createResponseEntity(existingMotor.get(), "Motor updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing updated ");
             }
 
         } catch (Exception e) {
@@ -120,29 +95,16 @@ public class MotorController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/motors/{id}")
     public ResponseEntity<ApiResponse<MotorEntity>> deleteMotor(HttpServletRequest request, @PathVariable String id) {
         try {
-            if (request.getHeader("Authorization") != null) {
+            Optional<MotorEntity> existingMotor = motorService.deleteMotor(id);
 
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<MotorEntity> existingMotor = motorService.deleteMotor(id);
-
-                    if (existingMotor.isPresent()) {
-                        return createResponseEntity(existingMotor.get(), "Motor updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing deleted ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingMotor.isPresent()) {
+                return createResponseEntity(existingMotor.get(), "Motor updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing deleted ");
             }
 
         } catch (Exception e) {
@@ -151,7 +113,7 @@ public class MotorController extends Controller {
         }
     }
 
-    @GetMapping("/motors/pagination")
+    @GetMapping("/actu/motors/pagination")
     public ResponseEntity<ApiResponse<Integer>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {

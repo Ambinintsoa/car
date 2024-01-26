@@ -11,6 +11,7 @@ import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,14 +20,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/actu")
+@RequestMapping("/bibine")
 @AllArgsConstructor
 public class CategoryController extends Controller {
 
     private final CategoryService categoryService;
-    private final RefreshTokenService refreshTokenService;
 
-    @GetMapping("/categories")
+    @GetMapping("/actu/categories")
     public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllCategories() {
         try {
             List<CategoryEntity> categories = categoryService.getAllCategories();
@@ -38,7 +38,7 @@ public class CategoryController extends Controller {
         }
     }
 
-    @GetMapping("/categories/pagination")
+    @GetMapping("/actu/categories/pagination")
     public ResponseEntity<ApiResponse<Integer>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
@@ -51,7 +51,7 @@ public class CategoryController extends Controller {
         }
     }
 
-    @GetMapping("/pagination/categories")
+    @GetMapping("/actu/pagination/categories")
     public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllCategoriesWithPagination(
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
@@ -65,7 +65,7 @@ public class CategoryController extends Controller {
         }
     }
 
-    @GetMapping("/categories/{id}")
+    @GetMapping("/actu/categories/{id}")
     public ResponseEntity<ApiResponse<CategoryEntity>> getCategoryById(@PathVariable String id) {
         try {
             Optional<CategoryEntity> category = categoryService.getCategoryById(id);
@@ -80,26 +80,13 @@ public class CategoryController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/categories")
     public ResponseEntity<ApiResponse<CategoryEntity>> createCategory(HttpServletRequest request,
             @Valid @RequestBody CategoryEntity category) {
         try {
-            if (request.getHeader("Authorization") != null) {
-
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    CategoryEntity createdCategory = categoryService.insertCustom(category);
-                    return createResponseEntity(createdCategory, "Categories created successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            CategoryEntity createdCategory = categoryService.insertCustom(category);
+            return createResponseEntity(createdCategory, "Categories created successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -107,32 +94,19 @@ public class CategoryController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/categories/{id}")
     public ResponseEntity<ApiResponse<CategoryEntity>> updateCategory(HttpServletRequest request,
             @PathVariable String id,
             @Valid @RequestBody CategoryEntity updatedCategory) {
         try {
-            if (request.getHeader("Authorization") != null) {
 
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
+            Optional<CategoryEntity> existingCategory = categoryService.updateCategory(id, updatedCategory);
 
-                    Optional<CategoryEntity> existingCategory = categoryService.updateCategory(id, updatedCategory);
-
-                    if (existingCategory.isPresent()) {
-                        return createResponseEntity(existingCategory.get(), "Category updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing updated ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingCategory.isPresent()) {
+                return createResponseEntity(existingCategory.get(), "Category updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing updated ");
             }
 
         } catch (Exception e) {
@@ -141,28 +115,16 @@ public class CategoryController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<ApiResponse<CategoryEntity>> deleteCategory(HttpServletRequest request,
             @PathVariable String id) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<CategoryEntity> existingCategory = categoryService.deleteCategory(id);
-                    if (existingCategory.isPresent()) {
-                        return createResponseEntity(existingCategory.get(), "Category updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing deleted ");
-                    }
-
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
+            Optional<CategoryEntity> existingCategory = categoryService.deleteCategory(id);
+            if (existingCategory.isPresent()) {
+                return createResponseEntity(existingCategory.get(), "Category updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing deleted ");
             }
 
         } catch (Exception e) {

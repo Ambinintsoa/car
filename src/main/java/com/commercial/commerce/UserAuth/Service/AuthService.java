@@ -3,6 +3,7 @@ package com.commercial.commerce.UserAuth.Service;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -22,6 +23,7 @@ import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.CountryEntity;
 import com.commercial.commerce.sale.service.CountryService;
 
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
@@ -29,7 +31,6 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class AuthService {
-
         private final UserRepository repository;
         private final CountryService countryService;
         private final PasswordEncoder passwordEncoder;
@@ -56,7 +57,7 @@ public class AuthService {
                                         .roles(Role.USER) // role example
                                         .build();
                         if (user.getGender() < 0 && user.getGender() > 1) {
-                                throw new Exception("Gender is ot valid");
+                                throw new Exception("Gender is not valid");
                         }
                         user = repository.save(user);
                         user.setCountry(countryService.getCountryById(request.getIdcountry()).get());
@@ -74,8 +75,23 @@ public class AuthService {
                 return getAuthResponse(user);
         }
 
+        public AuthenticationResponse authenticateAdmin(AuthenticationRequest request) {
+                authenticationManager.authenticate(
+                                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
+                User user = repository.findByEmail(request.getEmail()).orElseThrow();
+                return getAuthResponseAdmin(user);
+        }
+
         public AuthenticationResponse getAuthResponse(User user) {
                 String jwtToken = jwtService.generateToken(user);
+                RefreshToken tokenRefresh = refreshTokenService.generateRefreshToken(user.getEmail());
+                return AuthenticationResponse.builder().token(jwtToken).user(user)
+                                .refresh_token(tokenRefresh.getToken())
+                                .build();
+        }
+
+        public AuthenticationResponse getAuthResponseAdmin(User user) {
+                String jwtToken = jwtService.generateTokenAdmin(user);
                 RefreshToken tokenRefresh = refreshTokenService.generateRefreshToken(user.getEmail());
                 return AuthenticationResponse.builder().token(jwtToken).user(user)
                                 .refresh_token(tokenRefresh.getToken())
@@ -95,6 +111,19 @@ public class AuthService {
                                 .status("good").details("token removed").build();
         }
 
+        public Status useRefreshTokenAdmin(RefreshTokenRequest refreshTokenRequest) {
+                User user = refreshTokenService.findByToken(refreshTokenRequest.getRefresh_token()).map(
+                                refreshTokenService::verifyExpiration).map(RefreshToken::getUser).get();
+                String accesToken = jwtService.generateTokenAdmin(user);
+                var tokenRefresh = refreshTokenService.generateRefreshToken(user.getEmail());
+
+                return Status.builder()
+                                .data(AuthenticationResponse.builder().token(accesToken).user(user)
+                                                .refresh_token(tokenRefresh.getToken())
+                                                .build())
+                                .status("good").details("token removed").build();
+        }
+
         public Boolean chekcIfAlreadyExist(String email) {
                 Boolean exist = false;
                 Optional<User> user = repository.findByEmail(email);
@@ -102,5 +131,10 @@ public class AuthService {
                         exist = true;
 
                 return exist;
+        }
+
+        public Optional<User> findById(Long id) {
+
+                return repository.findById(id);
         }
 }

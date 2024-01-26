@@ -42,16 +42,16 @@ public class PurchaseService {
         return purchaseRepository.findAllActive();
     }
 
-    public List<PurchaseEntity> getAllPurchaseValid(String id, int offset, int limit) {
+    public List<PurchaseEntity> getAllPurchaseValid(Long id, int offset, int limit) {
 
-        return purchaseRepository.findAllActiveValid(refreshTokenService.getId(id), limit, offset);
+        return purchaseRepository.findAllActiveValid(id, limit, offset);
     }
 
     public List<PurchaseEntity> selectWithPagination(int offset, int limit) {
         return purchaseRepository.selectWithPagination(limit, offset);
     }
 
-    public List<PurchaseEntity> selectPurchase(String id, int offset, int limit) {
+    public List<PurchaseEntity> selectPurchase(Long id, int offset, int limit) {
         List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(id);
         System.out.print(annonces.size());
         String[] idannonce = new String[annonces.size()];

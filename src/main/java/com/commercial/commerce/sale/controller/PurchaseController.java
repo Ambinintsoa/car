@@ -27,69 +27,44 @@ import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/actu")
+@RequestMapping("/bibine")
 @AllArgsConstructor
 public class PurchaseController extends Controller {
     private final PurchaseService purchaseService;
-    private final RefreshTokenService refreshTokenService;
     private final AnnonceService annonceService;
 
-    @PostMapping(value = "/purchases")
+    @PostMapping(value = "/user/{iduser}/purchases")
     public ResponseEntity<ApiResponse<PurchaseEntity>> save(HttpServletRequest request,
-            @Valid @RequestBody PurchaseEntity purchase) {
+            @Valid @RequestBody PurchaseEntity purchase, @PathVariable Long iduser) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.validation(token)) {
-                    purchase.setUser(new User());
-                    purchase.getUser().setId(refreshTokenService.getId(token));
-                    PurchaseEntity createdAnnonce = purchaseService.insert(purchase);
-                    return createResponseEntity(createdAnnonce, "Purchase created successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            purchase.setUser(new User());
+            purchase.getUser().setId(iduser);
+            PurchaseEntity createdAnnonce = purchaseService.insert(purchase);
+            return createResponseEntity(createdAnnonce, "Purchase created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @PostMapping(value = "/achat")
+    @PostMapping(value = "/actu/achat")
     public ResponseEntity<ApiResponse<TransactionEntity>> achat(HttpServletRequest request,
             @RequestParam(name = "purchase") String id) {
         try {
             PurchaseEntity purchase = new PurchaseEntity();
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.validation(token)) {
 
-                    purchase = purchaseService.getById(id).get();
-                    AnnonceEntity annonce = annonceService.getById(purchase.getAnnouncement()).get();
-                    TransactionEntity createdAnnonce = purchaseService.achat(purchase,
-                            annonce.getVendeur().getIdvendeur());
-                    return createResponseEntity(createdAnnonce, "Purchase created successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            purchase = purchaseService.getById(id).get();
+            AnnonceEntity annonce = annonceService.getById(purchase.getAnnouncement()).get();
+            TransactionEntity createdAnnonce = purchaseService.achat(purchase,
+                    annonce.getVendeur().getIdvendeur());
+            return createResponseEntity(createdAnnonce, "Purchase created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @GetMapping("/purchases")
+    @GetMapping("/actu/purchases")
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getAllPurchases() {
         try {
             List<PurchaseEntity> categories = purchaseService.getAllPurchase();
@@ -101,32 +76,21 @@ public class PurchaseController extends Controller {
         }
     }
 
-    @GetMapping("/accepted/purchases")
+    @GetMapping("/user/{iduser}/accepted")
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getAllValid(HttpServletRequest request,
             @RequestParam(name = "offset") int id,
-            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+            @RequestParam(name = "limit", defaultValue = "5") int limit,
+            @PathVariable Long iduser) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    List<PurchaseEntity> annonces = purchaseService.getAllPurchaseValid(token, id, limit);
-                    return createResponseEntity(annonces, "Purchases retrieved successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            List<PurchaseEntity> annonces = purchaseService.getAllPurchaseValid(iduser, id, limit);
+            return createResponseEntity(annonces, "Purchases retrieved successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @GetMapping("/purchases/{id}")
+    @GetMapping("/actu/purchases/{id}")
     public ResponseEntity<ApiResponse<PurchaseEntity>> getPurchaseById(@PathVariable String id
 
     ) {
@@ -140,32 +104,21 @@ public class PurchaseController extends Controller {
         }
     }
 
-    @GetMapping("/valid/purchases")
+    @GetMapping("/user{iduser}/valid/purchases")
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getFavoris(HttpServletRequest request,
             @RequestParam(name = "offset") int id,
-            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+            @RequestParam(name = "limit", defaultValue = "5") int limit,
+            @PathVariable Long iduser) {
         try {
-            if (request.getHeader("Authorization") != null) {
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    List<PurchaseEntity> annonces = purchaseService.selectPurchase(token, id, limit);
-                    return createResponseEntity(annonces, "Purchases retrieved successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            List<PurchaseEntity> annonces = purchaseService.selectPurchase(iduser, id, limit);
+            return createResponseEntity(annonces, "Purchases retrieved successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
-    @GetMapping("/pagination/purchases")
+    @GetMapping("/actu/pagination/purchases")
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getAllPurchasesWithPagination(
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
@@ -179,7 +132,7 @@ public class PurchaseController extends Controller {
         }
     }
 
-    @PutMapping("/valid/purchases/{id}")
+    @PutMapping("/actu/valid/purchases/{id}")
     public ResponseEntity<ApiResponse<PurchaseEntity>> validePurchase(@PathVariable String id
 
     ) {
@@ -194,7 +147,7 @@ public class PurchaseController extends Controller {
         }
     }
 
-    @PutMapping("/unvalid/purchases/{id}")
+    @PutMapping("/actu/unvalid/purchases/{id}")
     public ResponseEntity<ApiResponse<PurchaseEntity>> unvalidePurchase(@PathVariable String id
 
     ) {

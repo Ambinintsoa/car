@@ -48,23 +48,18 @@ public class MaintainEntity {
         this.nom = nom;
     }
 
-    public MaintainEntity(String id, String nom, int state) {
+    public MaintainEntity(String id) {
         this.setId(id);
-        this.setNom(nom);
-        this.setState(state);
 
     }
 
     public static List<MaintainEntity> removeDuplicates(List<MaintainEntity> maintains) {
-        HashSet<MaintainEntity> uniqueSet = new HashSet<>();
+        HashSet<String> uniqueSet = new HashSet<>();
         List<MaintainEntity> uniqueMaintains = new ArrayList<>();
 
         for (MaintainEntity maintain : maintains) {
             String id = maintain.getId();
-            String nom = maintain.getNom();
-            int state = maintain.getState();
-            String key = id + nom + state;
-            if (uniqueSet.add(new MaintainEntity(id, nom, state))) {
+            if (uniqueSet.add(id)) {
                 uniqueMaintains.add(maintain);
             }
         }

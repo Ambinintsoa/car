@@ -11,6 +11,7 @@ import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -19,14 +20,13 @@ import java.util.List;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/actu")
+@RequestMapping("/bibine")
 @AllArgsConstructor
 public class MaintainController extends Controller {
 
     private final MaintainService maintainService;
-    private final RefreshTokenService refreshTokenService;
 
-    @GetMapping("/maintains")
+    @GetMapping("/actu/maintains")
     public ResponseEntity<ApiResponse<List<MaintainEntity>>> getAllMaintains() {
         try {
             List<MaintainEntity> maintains = maintainService.getAllMaintains();
@@ -38,7 +38,7 @@ public class MaintainController extends Controller {
         }
     }
 
-    @GetMapping("/pagination/maintains")
+    @GetMapping("/actu/pagination/maintains")
     public ResponseEntity<ApiResponse<List<MaintainEntity>>> getAllMaintainssWithPagination(
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
@@ -52,7 +52,7 @@ public class MaintainController extends Controller {
         }
     }
 
-    @GetMapping("/maintains/{id}")
+    @GetMapping("/actu/maintains/{id}")
     public ResponseEntity<ApiResponse<MaintainEntity>> getMaintainById(@PathVariable String id) {
         try {
             Optional<MaintainEntity> maintain = maintainService.getMaintainById(id);
@@ -65,57 +65,31 @@ public class MaintainController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/maintains")
     public ResponseEntity<ApiResponse<MaintainEntity>> createMaintain(HttpServletRequest request,
             @Valid @RequestBody MaintainEntity maintain) {
         try {
-            if (request.getHeader("Authorization") != null) {
-
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    MaintainEntity createdMaintain = maintainService.insertCustom(maintain);
-                    return createResponseEntity(createdMaintain, "Maintain created successfully");
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
-            } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
-            }
+            MaintainEntity createdMaintain = maintainService.insertCustom(maintain);
+            return createResponseEntity(createdMaintain, "Maintain created successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/maintains/{id}")
     public ResponseEntity<ApiResponse<MaintainEntity>> updateMaintain(HttpServletRequest request,
             @PathVariable String id,
             @Valid @RequestBody MaintainEntity updatedMaintain) {
         try {
-            if (request.getHeader("Authorization") != null) {
+            Optional<MaintainEntity> existingMaintain = maintainService.updateMaintain(id, updatedMaintain);
 
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<MaintainEntity> existingMaintain = maintainService.updateMaintain(id, updatedMaintain);
-
-                    if (existingMaintain.isPresent()) {
-                        return createResponseEntity(existingMaintain.get(), "Maintain updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing updated ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingMaintain.isPresent()) {
+                return createResponseEntity(existingMaintain.get(), "Maintain updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing updated ");
             }
 
         } catch (Exception e) {
@@ -124,30 +98,17 @@ public class MaintainController extends Controller {
         }
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/maintains/{id}")
     public ResponseEntity<ApiResponse<MaintainEntity>> deleteMaintain(HttpServletRequest request,
             @PathVariable String id) {
         try {
-            if (request.getHeader("Authorization") != null) {
+            Optional<MaintainEntity> existingMaintain = maintainService.deleteMaintain(id);
 
-                String token = refreshTokenService.splitToken(request.getHeader("Authorization"));
-                if (refreshTokenService.verification(token)) {
-                    Optional<MaintainEntity> existingMaintain = maintainService.deleteMaintain(id);
-
-                    if (existingMaintain.isPresent()) {
-                        return createResponseEntity(existingMaintain.get(), "Maintain updated successfully");
-                    } else {
-                        return createResponseEntity(null, "nothing deleted ");
-                    }
-                }
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("refused", "you can't access to this url"),
-                                LocalDateTime.now()));
-
+            if (existingMaintain.isPresent()) {
+                return createResponseEntity(existingMaintain.get(), "Maintain updated successfully");
             } else {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-                                LocalDateTime.now()));
+                return createResponseEntity(null, "nothing deleted ");
             }
 
         } catch (Exception e) {
@@ -156,7 +117,7 @@ public class MaintainController extends Controller {
         }
     }
 
-    @GetMapping("/maintains/pagination")
+    @GetMapping("/actu/maintains/pagination")
     public ResponseEntity<ApiResponse<Integer>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {

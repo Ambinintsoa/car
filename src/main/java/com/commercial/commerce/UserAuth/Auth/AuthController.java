@@ -61,6 +61,13 @@ public class AuthController extends Controller {
         return ResponseEntity.ok(service.authenticate(request));
     }
 
+    @PostMapping("/authenticate_admin")
+    public ResponseEntity<AuthenticationResponse> authenticateAdmin(
+            @RequestBody AuthenticationRequest request) {
+        ///
+        return ResponseEntity.ok(service.authenticateAdmin(request));
+    }
+
     @PostMapping("/checkTokenStatus")
     public ResponseEntity<Object> checkStatus(
             @RequestBody CheckStatusResponse request) {
@@ -87,4 +94,15 @@ public class AuthController extends Controller {
 
     }
 
+    @PostMapping("/refresh_token_admin")
+    public ResponseEntity<Object> refreshTokenAdmin(
+            @RequestBody RefreshTokenRequest request) {
+        ///
+        try {
+            return ResponseEntity.ok(service.useRefreshTokenAdmin(request));
+        } catch (Exception e) {
+            return ResponseEntity.ok(Status.builder().status("error").details(e.getMessage()).build());
+        }
+
+    }
 }

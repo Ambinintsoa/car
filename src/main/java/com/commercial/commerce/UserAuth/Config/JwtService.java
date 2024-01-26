@@ -1,6 +1,9 @@
 package com.commercial.commerce.UserAuth.Config;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import javax.crypto.SecretKey;
@@ -14,6 +17,7 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.impl.lang.Function;
 import io.jsonwebtoken.io.Decoders;
+import io.jsonwebtoken.lang.Arrays;
 import io.jsonwebtoken.security.Keys;
 
 @Service
@@ -36,15 +40,29 @@ public class JwtService {
     }
 
     public String generateToken(UserDetails userDetails) {
-        return generateToken(null, userDetails);
+        Map<String, Object> claims = new HashMap<>();
+        List<String> roles = new ArrayList<>();
+        roles.add("USER");
+        claims.put("roles", roles);
+        return generateToken(claims, userDetails);
+    }
+
+    public String generateTokenAdmin(UserDetails userDetails) {
+        Map<String, Object> claims = new HashMap<>();
+        List<String> roles = new ArrayList<>();
+        roles.add("ADMIN");
+        claims.put("roles", roles);
+        return generateToken(claims, userDetails);
     }
 
     public String generateToken(Map<String, Object> claims, UserDetails userDetails) {
+
         return Jwts.builder().claims(claims).subject(userDetails.getUsername())
                 .issuedAt(new Date(System.currentTimeMillis()))
-                .expiration(new Date(System.currentTimeMillis() + 1000 * 60 * (900 * 1)))// 900min le entre parenthèse
-                                                                                         // io
-                                                                                         // le min
+                .expiration(new Date(System.currentTimeMillis() + (1000 * 60 * 60 * 24 * 15)))// 900min le entre
+                                                                                              // parenthèse
+                // io
+                // le min
                 .signWith(
                         getSigninKey(), Jwts.SIG.HS256)
                 .compact();

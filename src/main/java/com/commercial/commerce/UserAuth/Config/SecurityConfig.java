@@ -26,7 +26,7 @@ public class SecurityConfig {
                 return http
                                 .csrf(csrf -> csrf.disable())
                                 .authorizeHttpRequests(authorize -> authorize
-                                                .requestMatchers("/actu/**").permitAll()
+                                                .requestMatchers("/bibine/actu/**").permitAll()
                                                 .requestMatchers("/auth/**").permitAll()
                                                 .requestMatchers("/websocket/**").permitAll()
                                                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
