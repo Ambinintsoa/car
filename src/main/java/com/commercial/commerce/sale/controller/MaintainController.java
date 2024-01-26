@@ -118,7 +118,7 @@ public class MaintainController extends Controller {
     }
 
     @GetMapping("/actu/maintains/pagination")
-    public ResponseEntity<ApiResponse<Integer>> getPagination(
+    public ResponseEntity<ApiResponse<Long>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
 

@@ -114,7 +114,7 @@ public class ModelController extends Controller {
     }
 
     @GetMapping("/actu/models/pagination")
-    public ResponseEntity<ApiResponse<Integer>> getPagination(
+    public ResponseEntity<ApiResponse<Long>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
 

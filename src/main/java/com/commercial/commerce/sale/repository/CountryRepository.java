@@ -20,9 +20,4 @@ public interface CountryRepository extends JpaRepository<CountryEntity, String> 
     @Query(value = "select * from country where idcountry = :id and state =1", nativeQuery = true)
     Optional<CountryEntity> findByIdActive(@Param("id") String id);
 
-    @Query(value = "SELECT * FROM country ORDER BY CAST(SUBSTRING(idcountry FROM 4) AS INTEGER) LIMIT :limit OFFSET :offset", nativeQuery = true)
-    List<CountryEntity> selectWithPagination(@Param("limit") int limit, @Param("offset") int offset);
-
-    @Query(value = "SELECT count(*)/:offset as count from country", nativeQuery = true)
-    double pagination(@Param("offset") int offset);
 }

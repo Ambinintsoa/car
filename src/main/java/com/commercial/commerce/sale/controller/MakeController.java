@@ -125,7 +125,7 @@ public class MakeController extends Controller {
     }
 
     @GetMapping("/actu/brands/pagination")
-    public ResponseEntity<ApiResponse<Integer>> getPagination(
+    public ResponseEntity<ApiResponse<Long>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
 

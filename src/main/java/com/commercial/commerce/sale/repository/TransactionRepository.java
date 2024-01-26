@@ -33,6 +33,4 @@ public interface TransactionRepository extends JpaRepository<TransactionEntity, 
     @Query(value = "UPDATE transaction set state = :state where idtransaction =:purchase", nativeQuery = true)
     void updateTransactionState(@Param("purchase") String purchase, @Param("state") int state);
 
-    @Query(value = "SELECT count(*)/:offset as count from transaction", nativeQuery = true)
-    double pagination(@Param("offset") int offset);
 }

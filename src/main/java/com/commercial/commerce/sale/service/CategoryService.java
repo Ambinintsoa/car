@@ -65,7 +65,8 @@ public class CategoryService {
         return categoryRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
-    public int pagination(int offset) {
-        return (int) Math.ceil(categoryRepository.pagination(offset));
+    public long pagination(int limit) {
+        long number = categoryRepository.count();
+        return (number + limit - 1) / limit;
     }
 }

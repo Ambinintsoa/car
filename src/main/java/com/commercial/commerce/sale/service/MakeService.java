@@ -66,7 +66,8 @@ public class MakeService {
         return makeRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
-    public int pagination(int offset) {
-        return (int) Math.ceil(makeRepository.pagination(offset));
+    public long pagination(int limit) {
+        long number = makeRepository.count();
+        return (number + limit - 1) / limit;
     }
 }

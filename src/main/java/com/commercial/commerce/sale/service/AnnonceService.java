@@ -126,8 +126,14 @@ public class AnnonceService {
         return annonceRepository.findAll(pageable).getContent();
     }
 
-    public Optional<AnnonceEntity> getById(String id) {
-        return annonceRepository.findById(id);
+    public AnnonceEntity getById(String id) {
+        AnnonceEntity annonceEntity = annonceRepository.findById(id).get();
+        User user = null;
+        user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+        annonceEntity.getVendeur().setNom(user.getName());
+        annonceEntity.getVendeur().setProfile(user.getProfile());
+        return annonceEntity;
+
     }
 
     public List<AnnonceEntity> getBetween(double inf, double sup) {

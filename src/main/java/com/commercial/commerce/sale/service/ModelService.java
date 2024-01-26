@@ -73,7 +73,8 @@ public class ModelService {
         return modelRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
-    public int pagination(int offset) {
-        return (int) Math.ceil(modelRepository.pagination(offset));
+    public long pagination(int limit) {
+        long number = modelRepository.count();
+        return (number + limit - 1) / limit;
     }
 }

@@ -231,7 +231,7 @@ public class AnnonceController extends Controller {
 
     ) {
         try {
-            AnnonceEntity categories = annonceService.getById(id).get();
+            AnnonceEntity categories = annonceService.getById(id);
             return createResponseEntity(categories, "Announcement retrieved successfully");
 
         } catch (Exception e) {

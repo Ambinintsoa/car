@@ -47,7 +47,8 @@ public class TransactionService {
         transactionRepository.updateTransactionState(transaction.getId(), state);
     }
 
-    public int pagination(int offset) {
-        return (int) Math.ceil(transactionRepository.pagination(offset));
+    public long pagination(int limit) {
+        long number = transactionRepository.count();
+        return (number + limit - 1) / limit;
     }
 }

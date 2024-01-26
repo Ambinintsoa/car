@@ -64,7 +64,8 @@ public class MaintainService {
         return maintainRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
-    public int pagination(int offset) {
-        return (int) Math.ceil(maintainRepository.pagination(offset));
+    public long pagination(int limit) {
+        long number = maintainRepository.count();
+        return (number + limit - 1) / limit;
     }
 }

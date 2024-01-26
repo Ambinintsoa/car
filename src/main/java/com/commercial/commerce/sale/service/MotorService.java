@@ -64,7 +64,8 @@ public class MotorService {
         return motorRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
-    public int pagination(int offset) {
-        return (int) Math.ceil(motorRepository.pagination(offset));
+    public long pagination(int limit) {
+        long number = motorRepository.count();
+        return (number + limit - 1) / limit;
     }
 }

@@ -114,7 +114,7 @@ public class MotorController extends Controller {
     }
 
     @GetMapping("/actu/motors/pagination")
-    public ResponseEntity<ApiResponse<Integer>> getPagination(
+    public ResponseEntity<ApiResponse<Long>> getPagination(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
 

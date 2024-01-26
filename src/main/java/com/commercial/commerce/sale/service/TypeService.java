@@ -64,7 +64,8 @@ public class TypeService {
         return typeRepository.findAll(PageRequest.of(offset, limit)).getContent();
     }
 
-    public int pagination(int offset) {
-        return (int) Math.ceil(typeRepository.pagination(offset));
+    public long pagination(int limit) {
+        long number = typeRepository.count();
+        return (number + limit - 1) / limit;
     }
 }
