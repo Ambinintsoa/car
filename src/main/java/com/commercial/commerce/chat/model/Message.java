@@ -95,5 +95,4 @@ public class Message {
                 ", receiver_id='" + receiver_id + '\'' +
                 '}';
     }
-
 }
