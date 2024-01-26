@@ -1,11 +1,11 @@
 package com.commercial.commerce.chat.service;
 
-import com.websocket.chat.model.Message;
-import com.websocket.chat.repository.MessageRepository;
+import com.commercial.commerce.chat.model.Message;
+import com.commercial.commerce.chat.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import com.websocket.chat.model.Message;
-import com.websocket.chat.repository.MessageRepository;
+import com.commercial.commerce.chat.model.Message;
+import com.commercial.commerce.chat.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
