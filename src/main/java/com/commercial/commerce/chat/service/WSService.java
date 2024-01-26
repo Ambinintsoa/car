@@ -15,7 +15,7 @@ public class WSService {
     }
 
     public void notifyUser(final String id, final Message message) {
-        ResponseMessage response = new ResponseMessage(message.getcontent(), message.getSender());
+        ResponseMessage response = new ResponseMessage(message.getcontent(), message.getSender_id(),message.getSender_name(),message.getPicturePath());
 
         // eto ndray ilay mi specifier hoe alefa any amin'iza ilay msg (id)
         messagingTemplate.convertAndSendToUser(id, "/topic/private-messages", response);

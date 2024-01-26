@@ -38,17 +38,17 @@ public class MessageService {
         HashMap<String, Message> utilisateurAvecEchange = new HashMap<>();
 
         List<Message> messageUtilisateur = messageList.stream()
-                .filter(message -> message.getIdSender().equals(idUser) || message.getIdReceiver().equals(idUser))
+                .filter(message -> message.getSender_id().equals(idUser) || message.getReceiver_id().equals(idUser))
                 .toList();
 
         for(Message message : messageUtilisateur){
-            String autreUser = message.getIdSender().equals(idUser) ? message.getIdReceiver() : message.getIdSender();
+            String autreUser = message.getSender_id().equals(idUser) ? message.getReceiver_id() : message.getSender_id();
             Message lastMessage = utilisateurAvecEchange.get(autreUser);
             if(lastMessage == null){
-                utilisateurAvecEchange.put(autreUser, new Message(message.getSender_id(),"Sender", message.getReceiver_id(),message.getContent(),message.getDate()));
+                utilisateurAvecEchange.put(autreUser, new Message(message.getSender_id(),"Sender", message.getReceiver_id(),message.getContent(),message.getDate(),message.getPicturePath()));
             }else {
                 if(message.getDate().compareTo(lastMessage.getDate()) > 0){
-                    lastMessage.setMessageContent(message.getMessageContent());
+                    lastMessage.setContent(message.getContent());
                     lastMessage.setDate(message.getDate());
                 }
             }

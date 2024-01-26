@@ -12,6 +12,7 @@ public class Message {
     private String receiver_id;
     private String content;
     private Date date;
+    private String picturePath;
 
     public Message(String id, String sender_id, String content, String receiver_id, Date date) {
         this.id = id;
@@ -21,12 +22,13 @@ public class Message {
         this.date = date;
     }
 
-    public Message(String sender_id,String sender_name,String receiver_id,String content,Date date){
+    public Message(String sender_id,String sender_name,String receiver_id,String content,Date date,String picturePath){
         this.sender_id = sender_id;
         this.sender_name = sender_name;
         this.receiver_id = receiver_id;
         this.content = content;
         this.date = date;   
+        this.picturePath = picturePath;
     }
 
     public String getcontent() {
@@ -84,6 +86,13 @@ public class Message {
 
     public void setDate(Date date) {
         this.date = date;
+    }
+
+    public String getPicturePath(){
+        return picturePath;
+    }
+    public void setPicturePath(String picturePath){
+        this.picturePath = picturePath;
     }
 
     @Override
