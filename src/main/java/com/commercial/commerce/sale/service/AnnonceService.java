@@ -120,6 +120,12 @@ public class AnnonceService {
         return annonce;
     }
 
+    public List<AnnonceEntity> getByType(String type) {
+        List<AnnonceEntity> annonce = annonceRepository
+                .findByModeleTypeId(type);
+        return annonce;
+    }
+
     public List<AnnonceEntity> getRecentAnnonces(int limit) {
         Sort sortByDateDesc = Sort.by(Sort.Direction.DESC, "date");
         Pageable pageable = PageRequest.of(0, limit, sortByDateDesc);

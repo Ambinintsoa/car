@@ -209,6 +209,18 @@ public class AnnonceController extends Controller {
         }
     }
 
+    @GetMapping("/actu/type/{idtype}/annonces")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAnnonceType(HttpServletRequest request,
+            @PathVariable String idtype) {
+        try {
+            List<AnnonceEntity> annonces = annonceService.getByType(idtype);
+            return createResponseEntity(annonces, "Announcement retrieved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/actu/annonces/recentes")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getRecentAnnonces(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {

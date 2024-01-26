@@ -14,6 +14,8 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
 
     List<AnnonceEntity> findByVendeurIdvendeur(Long idvendeur);
 
+    List<AnnonceEntity> findByModeleTypeId(String idtype);
+
     List<AnnonceEntity> findByPrixLessThanEqualAndPrixGreaterThanEqual(double sup, double inf);
 
     List<AnnonceEntity> findByPrixGreaterThanEqual(double inf);
