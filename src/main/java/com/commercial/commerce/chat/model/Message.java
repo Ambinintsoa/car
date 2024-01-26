@@ -2,32 +2,36 @@ package com.commercial.commerce.chat.model;
 
 import java.util.Date;
 
-@Document(collection = "message")
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
+
+@Document
 public class Message {
 
     @Id
     private String id;
-    private String sender_id;
-    private String sender_name;
-    private String receiver_id;
+    private String senderId;
+    private String senderName;
+    private String receiverEmail;
     private String content;
     private Date date;
     private String picturePath;
 
-    public Message(String id, String sender_id, String content, String receiver_id, Date date) {
+    public Message(String id, String senderId, String content, String receiverEmail, Date date) {
         this.id = id;
-        this.sender_id = sender_id;
+        this.senderId = senderId;
         this.content = content;
-        this.receiver_id = receiver_id;
+        this.receiverEmail = receiverEmail;
         this.date = date;
     }
 
-    public Message(String sender_id,String sender_name,String receiver_id,String content,Date date,String picturePath){
-        this.sender_id = sender_id;
-        this.sender_name = sender_name;
-        this.receiver_id = receiver_id;
+    public Message(String senderId, String senderName, String receiverEmail, String content, Date date,
+            String picturePath) {
+        this.senderId = senderId;
+        this.senderName = senderName;
+        this.receiverEmail = receiverEmail;
         this.content = content;
-        this.date = date;   
+        this.date = date;
         this.picturePath = picturePath;
     }
 
@@ -35,25 +39,24 @@ public class Message {
         return content;
     }
 
-    public String getSender_name() {
-        return sender_name;
+    public String getsenderName() {
+        return senderName;
     }
 
-    public void setSender_name(String sender_name) {
-        this.sender_name = sender_name;
+    public void setsenderName(String senderName) {
+        this.senderName = senderName;
     }
 
     public void setcontent(String content) {
         this.content = content;
     }
 
-
-    public String getReceiver_id() {
-        return receiver_id;
+    public String getreceiverEmail() {
+        return receiverEmail;
     }
 
-    public void setReceiver_id(String receiver_id) {
-        this.receiver_id = receiver_id;
+    public void setreceiverEmail(String receiverEmail) {
+        this.receiverEmail = receiverEmail;
     }
 
     public String getId() {
@@ -64,12 +67,12 @@ public class Message {
         this.id = id;
     }
 
-    public String getSender_id() {
-        return sender_id;
+    public String getsenderId() {
+        return senderId;
     }
 
-    public void setSender_id(String sender_id) {
-        this.sender_id = sender_id;
+    public void setsenderId(String senderId) {
+        this.senderId = senderId;
     }
 
     public String getContent() {
@@ -88,10 +91,11 @@ public class Message {
         this.date = date;
     }
 
-    public String getPicturePath(){
+    public String getPicturePath() {
         return picturePath;
     }
-    public void setPicturePath(String picturePath){
+
+    public void setPicturePath(String picturePath) {
         this.picturePath = picturePath;
     }
 
@@ -99,9 +103,9 @@ public class Message {
     public String toString() {
         return "Message{" +
                 "id='" + id + '\'' +
-                ", sender_id='" + sender_id + '\'' +
+                ", senderId='" + senderId + '\'' +
                 ", content='" + content + '\'' +
-                ", receiver_id='" + receiver_id + '\'' +
+                ", receiverEmail='" + receiverEmail + '\'' +
                 '}';
     }
 }

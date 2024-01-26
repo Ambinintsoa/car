@@ -4,8 +4,8 @@ public class ResponseMessage {
 
     private String content;
 
-    private String sender_id;
-    private String sender_name;
+    private String senderId;
+    private String senderName;
     private String picturePath;
 
     public ResponseMessage() {
@@ -15,10 +15,10 @@ public class ResponseMessage {
         this.content = content;
     }
 
-    public ResponseMessage(String content,String sender_id,String sender_name,String picturePath){
+    public ResponseMessage(String content, String senderId, String senderName, String picturePath) {
         this.content = content;
-        this.sender_id = sender_id;
-        this.sender_name = sender_name;
+        this.senderId = senderId;
+        this.senderName = senderName;
         this.picturePath = picturePath;
     }
 
@@ -30,11 +30,27 @@ public class ResponseMessage {
         this.content = content;
     }
 
-    public User getSender() {
-        return sender;
+    public String getsenderId() {
+        return senderId;
     }
 
-    public void setSender(User sender) {
-        this.sender = sender;
+    public void setsenderId(String senderId) {
+        this.senderId = senderId;
+    }
+
+    public String getsenderName() {
+        return senderName;
+    }
+
+    public void setsenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getPicturePath() {
+        return picturePath;
+    }
+
+    public void setPicturePath(String picturePath) {
+        this.picturePath = picturePath;
     }
 }

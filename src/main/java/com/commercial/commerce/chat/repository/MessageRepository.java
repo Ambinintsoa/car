@@ -5,9 +5,9 @@ import org.springframework.data.mongodb.repository.MongoRepository;
 
 import java.util.List;
 
-public interface MessageRepository extends MongoRepository<Message,String> {
-    List<Message> findByIdSenderAndIdReceiver(String idSender, String idReceiver);
+public interface MessageRepository extends MongoRepository<Message, String> {
+    List<Message> findBySenderIdAndReceiverEmail(String SenderId, String receiverEmail);
 
-    List<Message> findByIdReceiverAndIdSender(String idReceiver, String idSender);
+    List<Message> findByReceiverEmailAndSenderId(String receiverEmail, String SenderId);
 
 }

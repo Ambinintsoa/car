@@ -4,6 +4,7 @@ import com.commercial.commerce.chat.service.MessageService;
 import com.commercial.commerce.chat.service.WSService;
 import com.commercial.commerce.chat.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -33,20 +34,15 @@ public class WSController {
     public ResponseEntity<String> sendMessage(
             @RequestBody Message message) {
         System.out.println(message.toString());
-        service.notifyUser(message.getReceiver_id(), message);
+        service.notifyUser(message.getreceiverEmail(), message);
         messageService.save(message);
 
         return ResponseEntity.ok("message sent");
     }
 
-    @GetMapping("/msg")
-    public Object message() {
-        System.out.println(" Ato message");
-        return new Message();
-    }
-
     @GetMapping("/contact/{id}")
-    public HashMap<String,Message> getContact(@PathVariable String id){return messageService.getContact(id);}
-
+    public HashMap<String, Message> getContact(@PathVariable String id) {
+        return messageService.getContact(id);
+    }
 
 }
