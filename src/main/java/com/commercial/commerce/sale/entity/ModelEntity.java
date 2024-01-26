@@ -1,6 +1,8 @@
 package com.commercial.commerce.sale.entity;
 
 import java.sql.Date;
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.RequiredArgsConstructor;
@@ -34,7 +36,7 @@ public class ModelEntity {
 
     @Basic
     @Column(name = "release_date")
-    private Date date;
+    private LocalDate date;
 
     @ManyToOne
     @JoinColumn(name = "idmake", referencedColumnName = "idmake")
@@ -44,7 +46,7 @@ public class ModelEntity {
     @JoinColumn(name = "idtype", referencedColumnName = "idtype")
     private TypeEntity type;
 
-    public ModelEntity(String name, Date date, int doors, int places, String type, String make) {
+    public ModelEntity(String name, LocalDate date, int doors, int places, String type, String make) {
         this.setNom(name);
         this.setDate(date);
         this.setDoors(doors);

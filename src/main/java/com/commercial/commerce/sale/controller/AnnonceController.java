@@ -1,5 +1,7 @@
 package com.commercial.commerce.sale.controller;
 
+import java.sql.Timestamp;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -93,7 +95,6 @@ public class AnnonceController extends Controller {
             annonce.setMaintenance(maintains);
             List<Long> favoris = new ArrayList<>();
             annonce.setFavoris(favoris);
-            annonce.setDate(LocalDateTime.now());
 
             AnnonceEntity createdAnnonce = annonceService.insert(annonce);
 
