@@ -59,6 +59,21 @@ public class AnnonceService {
         return annonces.getContent();
     }
 
+    // public List<AnnonceEntity> getAllWithPagination(int offset, int limit) {
+    // Query query = new Query();
+    // query.addCriteria(Criteria.where("state").is(2));
+    // PageRequest pageRequest = PageRequest.of(offset, limit);
+    // System.out.print(query.toString());
+    // List<AnnonceEntity> annonces = mongoTemplate.find(query.with(pageRequest),
+    // AnnonceEntity.class);
+    // User user = null;
+    // for (AnnonceEntity annonceEntity : annonces) {
+    // user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+    // annonceEntity.getVendeur().setNom(user.getName());
+    // annonceEntity.getVendeur().setProfile(user.getProfile());
+    // }
+    // return annonces;
+    // }
     // public List<AnnonceEntity> selectWithPagination(int offset, int limit) {
     // int page = offset;
     // int size = limit;

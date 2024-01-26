@@ -177,12 +177,14 @@ public class AnnonceController extends Controller {
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getFavoris(HttpServletRequest request,
             @PathVariable Long iduser) {
         try {
-            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
-                    iduser) == false) {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "cannot access to this request"),
-                                LocalDateTime.now()));
-            }
+            // if
+            // (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
+            // iduser) == false) {
+            // return ResponseEntity.status(HttpStatus.OK)
+            // .body(new ApiResponse<>(null, new Status("error", "cannot access to this
+            // request"),
+            // LocalDateTime.now()));
+            // }
             List<AnnonceEntity> annonces = annonceService.getAnnoncesByFavoris(iduser);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
         } catch (Exception e) {
@@ -195,12 +197,6 @@ public class AnnonceController extends Controller {
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getMyAnnonce(HttpServletRequest request,
             @PathVariable Long iduser) {
         try {
-            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
-                    iduser) == false) {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "cannot access to this request"),
-                                LocalDateTime.now()));
-            }
             List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(iduser);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
         } catch (Exception e) {
