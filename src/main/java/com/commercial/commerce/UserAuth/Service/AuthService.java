@@ -23,6 +23,7 @@ import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.CountryEntity;
 import com.commercial.commerce.sale.service.CountryService;
 
+import jakarta.el.ELException;
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 
@@ -79,7 +80,12 @@ public class AuthService {
                 authenticationManager.authenticate(
                                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
                 User user = repository.findByEmail(request.getEmail()).orElseThrow();
-                return getAuthResponseAdmin(user);
+                if (user.getRoles() == Role.ADMIN) {
+                        return getAuthResponseAdmin(user);
+                } else {
+                        throw new ELException("Cannot access");
+                }
+
         }
 
         public AuthenticationResponse getAuthResponse(User user) {
@@ -112,8 +118,10 @@ public class AuthService {
         }
 
         public Status useRefreshTokenAdmin(RefreshTokenRequest refreshTokenRequest) {
+
                 User user = refreshTokenService.findByToken(refreshTokenRequest.getRefresh_token()).map(
                                 refreshTokenService::verifyExpiration).map(RefreshToken::getUser).get();
+
                 String accesToken = jwtService.generateTokenAdmin(user);
                 var tokenRefresh = refreshTokenService.generateRefreshToken(user.getEmail());
 

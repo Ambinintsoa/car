@@ -32,7 +32,7 @@ public class AnnonceEntity {
 
     private List<MaintainEntity> maintenance;
 
-    private String localisation;
+    private CountryEntity localisation;
 
     private int stock;
 
@@ -44,7 +44,7 @@ public class AnnonceEntity {
 
     private MotorEntity motor;
 
-    private double note;
+    private double etat;
 
     private int state;
 

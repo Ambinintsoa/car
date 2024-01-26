@@ -76,6 +76,11 @@ public class AnnonceController extends Controller {
             annonce.setType(typeService.getTypeById(annonce.getType().getId()).get());
             annonce.setModele(modelService.getModelById(annonce.getModele().getId()).get());
             annonce.setMotor(motorService.getMotorById(annonce.getMotor().getId()).get());
+            if (annonce.getEtat() > 10 || annonce.getEtat() < 0) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "Etat not valid"),
+                                LocalDateTime.now()));
+            }
             List<MaintainEntity> maintains = new ArrayList<>();
             annonce.setMaintenance(MaintainEntity.removeDuplicates(annonce.getMaintenance()));
             for (int i = 0; i < annonce.getMaintenance().size(); i++) {
