@@ -1,6 +1,7 @@
 package com.commercial.commerce.sale.entity;
 
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
 import com.commercial.commerce.sale.utils.Caracteristic;
 import com.commercial.commerce.sale.utils.Maintenance;
@@ -18,7 +19,6 @@ public class AnnonceEntity {
 
     @Id
     private String id;
-
     private MakeEntity brand;
     private ModelEntity modele;
 

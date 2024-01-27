@@ -158,7 +158,7 @@ public class AnnonceService {
     }
 
     public List<AnnonceEntity> getBetween(double inf, double sup) {
-        return annonceRepository.findByPrixLessThanEqualAndPrixGreaterThanEqual(sup, inf);
+        return annonceRepository.findByPrixBetween(inf, sup);
     }
 
     public List<AnnonceEntity> getInf(double inf) {
@@ -174,7 +174,7 @@ public class AnnonceService {
         for (int i = 0; i < brand.size(); i++) {
             idbrand[i] = brand.get(i).getId();
         }
-        return annonceRepository.findByBrandIn(idbrand);
+        return annonceRepository.findAllByBrand_IdIn(idbrand);
     }
 
     public List<AnnonceEntity> getModel(List<ModelEntity> brand) {
@@ -182,7 +182,7 @@ public class AnnonceService {
         for (int i = 0; i < brand.size(); i++) {
             idbrand[i] = brand.get(i).getId();
         }
-        return annonceRepository.findByModeleIn(idbrand);
+        return annonceRepository.findAllByModele_IdIn(idbrand);
     }
 
     public List<AnnonceEntity> getBetweenDate(LocalDateTime inf, LocalDateTime sup) {
@@ -202,35 +202,66 @@ public class AnnonceService {
         if (parametre.getDateInf() != null && parametre.getDateSup() != null) {
             entity1 = this.getBetweenDate(parametre.getDateInf(), parametre.getDateSup());
         }
+        List<AnnonceEntity> entity11 = null;
+        if (parametre.getDateInf() != null && parametre.getDateSup() == null) {
+            entity11 = this.getSupDate(parametre.getDateInf());
+        }
+        List<AnnonceEntity> entity12 = null;
+        if (parametre.getDateInf() == null && parametre.getDateSup() != null) {
+            entity12 = this.getInfDate(parametre.getDateSup());
+        }
         List<AnnonceEntity> entity2 = null;
         if (parametre.getInfMontant() != null && parametre.getSupMontant() != null) {
             entity2 = this.getBetween(parametre.getInfMontant(), parametre.getSupMontant());
+        }
+        List<AnnonceEntity> entity21 = null;
+        if (parametre.getInfMontant() != null && parametre.getSupMontant() == null) {
+            entity21 = this.getSup(parametre.getInfMontant());
+        }
+        List<AnnonceEntity> entity22 = null;
+        if (parametre.getInfMontant() == null && parametre.getSupMontant() != null) {
+            entity22 = this.getInf(parametre.getSupMontant());
         }
         List<AnnonceEntity> entity3 = null;
         if (parametre.getBrands() != null && parametre.getBrands().size() > 0) {
             entity3 = this.getBrand(parametre.getBrands());
         }
+        System.out.println(entity3);
         List<AnnonceEntity> entity4 = null;
         if (parametre.getModeles() != null && parametre.getModeles().size() > 0) {
             entity4 = this.getModel(parametre.getModeles());
         }
         List<AnnonceEntity> list = this.intersect(entity1, entity2);
+        list = this.intersect(entity11, list);
+        list = this.intersect(entity12, list);
+        list = this.intersect(entity21, list);
+        list = this.intersect(entity22, list);
         list = this.intersect(entity3, list);
         list = this.intersect(list, entity4);
         return list;
     }
 
     public List<AnnonceEntity> intersect(List<AnnonceEntity> list1, List<AnnonceEntity> list2) {
+
         List<AnnonceEntity> list = new ArrayList<>();
-        for (int i = 0; i < list1.size(); i++) {
-            for (int u = 0; i < list2.size(); u++) {
-                if (list1.get(i).getId().compareToIgnoreCase(list2.get(u).getId()) == 0) {
-                    list.add(list1.get(i));
-                    break;
+        if (list1 != null && list2 != null) {
+            for (int i = 0; i < list1.size(); i++) {
+                for (int u = 0; u < list2.size(); u++) {
+                    if (list1.get(i).getId().compareToIgnoreCase(list2.get(u).getId()) == 0) {
+                        list.add(list1.get(i));
+                        break;
+                    }
                 }
             }
+            return list;
         }
-        return list;
+        if (list1 != null && list2 == null) {
+            return list1;
+        }
+        if (list2 != null && list1 == null) {
+            return list2;
+        }
+        return null;
     }
 
     public long pagination(int limit) {

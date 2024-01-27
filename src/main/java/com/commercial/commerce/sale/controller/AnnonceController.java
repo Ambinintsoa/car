@@ -250,7 +250,8 @@ public class AnnonceController extends Controller {
 
     ) {
         try {
-            return createResponseEntity(annonceService.getInf(parametre.getInfMontant()),
+
+            return createResponseEntity(annonceService.research(parametre),
                     "Announcement retrieved successfully");
 
         } catch (Exception e) {
