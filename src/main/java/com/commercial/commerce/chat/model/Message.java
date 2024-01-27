@@ -35,30 +35,6 @@ public class Message {
         this.picturePath = picturePath;
     }
 
-    public String getcontent() {
-        return content;
-    }
-
-    public String getsenderName() {
-        return senderName;
-    }
-
-    public void setsenderName(String senderName) {
-        this.senderName = senderName;
-    }
-
-    public void setcontent(String content) {
-        this.content = content;
-    }
-
-    public String getreceiverEmail() {
-        return receiverEmail;
-    }
-
-    public void setreceiverEmail(String receiverEmail) {
-        this.receiverEmail = receiverEmail;
-    }
-
     public String getId() {
         return id;
     }
@@ -67,12 +43,28 @@ public class Message {
         this.id = id;
     }
 
-    public String getsenderId() {
+    public String getSenderId() {
         return senderId;
     }
 
-    public void setsenderId(String senderId) {
+    public void setSenderId(String senderId) {
         this.senderId = senderId;
+    }
+
+    public String getSenderName() {
+        return senderName;
+    }
+
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
+    }
+
+    public String getReceiverEmail() {
+        return receiverEmail;
+    }
+
+    public void setReceiverEmail(String receiverEmail) {
+        this.receiverEmail = receiverEmail;
     }
 
     public String getContent() {

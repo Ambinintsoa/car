@@ -39,16 +39,16 @@ public class MessageService {
         HashMap<String, Message> utilisateurAvecEchange = new HashMap<>();
 
         List<Message> messageUtilisateur = messageList.stream()
-                .filter(message -> message.getsenderId().equals(idUser) || message.getreceiverEmail().equals(idUser))
+                .filter(message -> message.getSenderId().equals(idUser) || message.getReceiverEmail().equals(idUser))
                 .toList();
 
         for (Message message : messageUtilisateur) {
-            String autreUser = message.getsenderId().equals(idUser) ? message.getreceiverEmail()
-                    : message.getsenderId();
+            String autreUser = message.getSenderId().equals(idUser) ? message.getReceiverEmail()
+                    : message.getSenderId();
             Message lastMessage = utilisateurAvecEchange.get(autreUser);
             if (lastMessage == null) {
-                utilisateurAvecEchange.put(autreUser, new Message(message.getsenderId(), "Sender",
-                        message.getreceiverEmail(), message.getContent(), message.getDate(),
+                utilisateurAvecEchange.put(autreUser, new Message(message.getSenderId(), "Sender",
+                        message.getReceiverEmail(), message.getContent(), message.getDate(),
                         message.getPicturePath()));
             } else {
                 if (message.getDate().compareTo(lastMessage.getDate()) > 0) {
