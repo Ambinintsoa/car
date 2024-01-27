@@ -17,6 +17,6 @@ public class MessageController {
     public ResponseMessage getPrivateMessage(final Message message,
             final Principal principal) throws InterruptedException {
         Thread.sleep(200);
-        return new ResponseMessage(HtmlUtils.htmlEscape(message.getcontent()));
+        return new ResponseMessage(HtmlUtils.htmlEscape(message.getContent()));
     }
 }

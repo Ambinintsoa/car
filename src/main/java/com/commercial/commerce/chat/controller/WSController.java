@@ -34,7 +34,7 @@ public class WSController {
     public ResponseEntity<String> sendMessage(
             @RequestBody Message message) {
         System.out.println(message.toString());
-        service.notifyUser(message.getreceiverEmail(), message);
+        service.notifyUser(message.getReceiverEmail(), message);
         messageService.save(message);
 
         return ResponseEntity.ok("message sent");
