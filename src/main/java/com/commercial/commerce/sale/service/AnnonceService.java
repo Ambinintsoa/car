@@ -169,6 +169,18 @@ public class AnnonceService {
         return annonceRepository.findByPrixGreaterThanEqual(sup);
     }
 
+    public List<AnnonceEntity> getEtatBetween(double inf, double sup) {
+        return annonceRepository.findByEtatBetween(inf, sup);
+    }
+
+    public List<AnnonceEntity> getEtatInf(double inf) {
+        return annonceRepository.findByEtatLessThanEqual(inf);
+    }
+
+    public List<AnnonceEntity> getEtatSup(double sup) {
+        return annonceRepository.findByEtatGreaterThanEqual(sup);
+    }
+
     public List<AnnonceEntity> getBrand(List<MakeEntity> brand) {
         String[] idbrand = new String[brand.size()];
         for (int i = 0; i < brand.size(); i++) {
@@ -226,10 +238,21 @@ public class AnnonceService {
         if (parametre.getBrands() != null && parametre.getBrands().size() > 0) {
             entity3 = this.getBrand(parametre.getBrands());
         }
-        System.out.println(entity3);
         List<AnnonceEntity> entity4 = null;
         if (parametre.getModeles() != null && parametre.getModeles().size() > 0) {
             entity4 = this.getModel(parametre.getModeles());
+        }
+        List<AnnonceEntity> entity5 = null;
+        if (parametre.getInfEtat() != null && parametre.getSupEtat() != null) {
+            entity1 = this.getEtatBetween(parametre.getInfEtat(), parametre.getSupEtat());
+        }
+        List<AnnonceEntity> entity51 = null;
+        if (parametre.getInfEtat() != null && parametre.getSupEtat() == null) {
+            entity11 = this.getEtatSup(parametre.getInfEtat());
+        }
+        List<AnnonceEntity> entity52 = null;
+        if (parametre.getInfEtat() == null && parametre.getSupEtat() != null) {
+            entity12 = this.getEtatInf(parametre.getSupEtat());
         }
         List<AnnonceEntity> list = this.intersect(entity1, entity2);
         list = this.intersect(entity11, list);
@@ -238,6 +261,9 @@ public class AnnonceService {
         list = this.intersect(entity22, list);
         list = this.intersect(entity3, list);
         list = this.intersect(list, entity4);
+        list = this.intersect(entity5, list);
+        list = this.intersect(entity51, list);
+        list = this.intersect(entity52, list);
         return list;
     }
 

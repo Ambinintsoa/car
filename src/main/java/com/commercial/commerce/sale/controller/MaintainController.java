@@ -40,7 +40,7 @@ public class MaintainController extends Controller {
 
     @GetMapping("/actu/pagination/maintains")
     public ResponseEntity<ApiResponse<List<MaintainEntity>>> getAllMaintainssWithPagination(
-            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MaintainEntity> types = maintainService.selectWithPagination(id, limit);

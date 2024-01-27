@@ -14,6 +14,8 @@ import lombok.Setter;
 public class Parameter {
     Double supMontant;
     Double infMontant;
+    Double supEtat;
+    Double infEtat;
     List<MakeEntity> brands;
     List<ModelEntity> modeles;
     LocalDateTime dateInf;

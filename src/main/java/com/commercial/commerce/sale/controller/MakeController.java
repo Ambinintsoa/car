@@ -41,7 +41,7 @@ public class MakeController extends Controller {
 
     @GetMapping("/actu/pagination/brands")
     public ResponseEntity<ApiResponse<List<MakeEntity>>> getAllBrandsWithPagination(
-            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MakeEntity> types = makeService.selectWithPagination(id, limit);

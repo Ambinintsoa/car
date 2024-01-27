@@ -78,7 +78,7 @@ public class PurchaseController extends Controller {
 
     @GetMapping("/user/{iduser}/accepted")
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getAllValid(HttpServletRequest request,
-            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit,
             @PathVariable Long iduser) {
         try {

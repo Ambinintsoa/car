@@ -37,7 +37,7 @@ public class MotorController extends Controller {
 
     @GetMapping("/actu/pagination/motors")
     public ResponseEntity<ApiResponse<List<MotorEntity>>> getAllMotorsWithPagination(
-            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<MotorEntity> types = motorService.selectWithPagination(id, limit);

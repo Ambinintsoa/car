@@ -18,9 +18,15 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
 
     List<AnnonceEntity> findByPrixBetween(double prixMin, double prixMax);
 
+    List<AnnonceEntity> findByEtatBetween(double min, double max);
+
     List<AnnonceEntity> findByPrixGreaterThanEqual(double inf);
 
     List<AnnonceEntity> findByPrixLessThanEqual(double sup);
+
+    List<AnnonceEntity> findByEtatGreaterThanEqual(double inf);
+
+    List<AnnonceEntity> findByEtatLessThanEqual(double sup);
 
     List<AnnonceEntity> findAllByBrand_IdIn(String[] brand);
 

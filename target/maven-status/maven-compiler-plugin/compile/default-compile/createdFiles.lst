@@ -4,6 +4,7 @@ com\commercial\commerce\sale\controller\Controller.class
 com\commercial\commerce\ServletInitializer.class
 com\commercial\commerce\sale\controller\ModelController.class
 com\commercial\commerce\sale\utils\Vendeur.class
+com\commercial\commerce\sale\entity\CouleurEntity.class
 com\commercial\commerce\CommerceApplication.class
 com\commercial\commerce\UserAuth\Request\RefreshTokenRequest$RefreshTokenRequestBuilder.class
 com\commercial\commerce\UserAuth\Request\AuthenticationRequest$AuthenticationRequestBuilder.class
@@ -74,6 +75,7 @@ com\commercial\commerce\chat\Utils\Status.class
 com\commercial\commerce\sale\repository\AnnonceRepository.class
 com\commercial\commerce\sale\entity\FilesBody.class
 com\commercial\commerce\UserAuth\Request\RegisterRequest.class
+com\commercial\commerce\sale\repository\CouleurRepository.class
 com\commercial\commerce\sale\entity\PurchaseEntity.class
 com\commercial\commerce\sale\controller\TypeController.class
 com\commercial\commerce\UserAuth\Models\User.class
@@ -84,6 +86,7 @@ com\commercial\commerce\sale\repository\MaintainRepository.class
 com\commercial\commerce\sale\service\CategoryService.class
 com\commercial\commerce\UserAuth\Service\CheckStatusService.class
 com\commercial\commerce\chat\service\WSService.class
+com\commercial\commerce\sale\controller\CouleurController.class
 com\commercial\commerce\chat\handler\UserHandshakeHandler.class
 com\commercial\commerce\sale\service\MotorService.class
 com\commercial\commerce\UserAuth\Auth\AuthController.class
@@ -92,6 +95,7 @@ com\commercial\commerce\sale\controller\MaintainController.class
 com\commercial\commerce\chat\model\ResponseMessage.class
 com\commercial\commerce\sale\repository\ModelRepository.class
 com\commercial\commerce\sale\entity\TypeEntity.class
+com\commercial\commerce\sale\service\CouleurService.class
 com\commercial\commerce\chat\model\JsonResponse.class
 com\commercial\commerce\chat\controller\MessageController.class
 com\commercial\commerce\sale\controller\AnnonceController.class

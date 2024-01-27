@@ -12,6 +12,36 @@ VALUES
     ('Diesel'),
     ('Electric');
 
+create sequence seq_couleur;
+CREATE  TABLE couleur ( 
+	idcouleur             varchar(100)  default 'CLR'||NEXTVAL('seq_couleur'),
+	name                  varchar(40)    ,
+    state int default  1,
+	CONSTRAINT pk_couleur PRIMARY KEY ( idcouleur )
+ );
+INSERT INTO category (couleur)
+VALUES
+    ('rouge'),
+    ('bleu'),
+    ('vert'),
+    ('jaune'),
+    ('orange'),
+    ('violet'),
+    ('rose'),
+    ('noir'),
+    ('blanc'),
+    ('gris'),
+    ('marron'),
+    ('turquoise'),
+    ('argent'),
+    ('or'),
+    ('indigo'),
+    ('cyan'),
+    ('olive'),
+    ('corail'),
+    ('pourpre'),
+    ('azur');
+
 create sequence seq_category;
 CREATE  TABLE category ( 
 	idcategory             varchar(100)  default 'CTG'||NEXTVAL('seq_category'),
@@ -23,6 +53,8 @@ INSERT INTO category (name)
 VALUES
     ('brake'),
     ('rim');
+
+
  create sequence seq_specifite;
 CREATE  TABLE specifite ( 
 	idspecifite             varchar(100)  default 'SPF'||NEXTVAL('seq_specifite'),

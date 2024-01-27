@@ -53,7 +53,7 @@ public class CategoryController extends Controller {
 
     @GetMapping("/actu/pagination/categories")
     public ResponseEntity<ApiResponse<List<CategoryEntity>>> getAllCategoriesWithPagination(
-            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<CategoryEntity> types = categoryService.selectWithPagination(id, limit);
