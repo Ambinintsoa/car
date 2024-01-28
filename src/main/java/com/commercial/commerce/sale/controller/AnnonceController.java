@@ -406,4 +406,55 @@ public class AnnonceController extends Controller {
         }
     }
 
+    @GetMapping("/statistique/top_type_vendu")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsTypesTop() {
+        try {
+
+            return createResponseEntity(annonceService.getBestVenteType(),
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/statistique/brand_vendu")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsBrand() {
+        try {
+
+            return createResponseEntity(annonceService.countAllByBrand(),
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/statistique/top_brand_vendu")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsBrandsTop() {
+        try {
+
+            return createResponseEntity(annonceService.getBestVenteBrand(),
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/statistique/top_model_vendu")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsModelsTop() {
+        try {
+
+            return createResponseEntity(annonceService.getBestVenteModel(),
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
+        }
+    }
 }

@@ -6,7 +6,7 @@ import org.springframework.data.mongodb.core.aggregation.Aggregation;
 import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
-
+import org.springframework.data.domain.Sort;
 import com.commercial.commerce.sale.utils.Statistique;
 
 import java.util.List;
@@ -34,14 +34,70 @@ public class AnnonceRepositoryImpl implements AnnonceRepositoryCustom {
     }
 
     @Override
-    public List<Statistique> countAllByType() {
+    public List<Statistique> getBestVenteModel() {
         Aggregation aggregation = Aggregation.newAggregation(
                 Aggregation.match(Criteria.where("state").is(2)),
-                Aggregation.group("modele.type.nom").addToSet("modele.type.nom").as("label")
+                Aggregation.group("modele.nom").addToSet("modele.nom").as("label")
                         .count().as("count"),
                 Aggregation.project("label", "count").andExclude("_id"));
 
         AggregationResults<Statistique> results = mongoTemplate.aggregate(aggregation, "annonce", Statistique.class);
         return results.getMappedResults();
     }
+
+    @Override
+    public List<Statistique> getBestVenteBrand() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("state").is(2)),
+                Aggregation.group("brand.nom").addToSet("brand.nom").as("label")
+                        .count().as("count"),
+                Aggregation.project("label", "count").andExclude("_id"));
+
+        AggregationResults<Statistique> results = mongoTemplate.aggregate(aggregation, "annonce", Statistique.class);
+        return results.getMappedResults();
+    }
+
+    @Override
+    public List<Statistique> countAllByType() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("state").is(2)),
+                Aggregation.group("modele.type.nom").addToSet("modele.type.nom").as("label")
+                        .count().as("count"),
+                Aggregation.project("label", "count").andExclude("_id"),
+                Aggregation.sort(Sort.Direction.DESC, "count"),
+                Aggregation.limit(3));
+
+        AggregationResults<Statistique> results = mongoTemplate.aggregate(aggregation, "annonce", Statistique.class);
+        return results.getMappedResults();
+    }
+
+    @Override
+    public List<Statistique> countAllByBrand() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("state").is(2)),
+                Aggregation.group("brand.nom").addToSet("brand.nom").as("label")
+                        .count().as("count"),
+                Aggregation.project("label", "count").andExclude("_id"),
+                Aggregation.sort(Sort.Direction.DESC, "count"),
+                Aggregation.limit(3));
+
+        AggregationResults<Statistique> results = mongoTemplate.aggregate(aggregation, "annonce", Statistique.class);
+        return results.getMappedResults();
+    }
+
+    @Override
+    public List<Statistique> getBestVenteType() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("state").is(2)),
+                Aggregation.group("modele.type.nom").addToSet("modele.type.nom").as("label")
+                        .count().as("count"),
+
+                Aggregation.project("label", "count").andExclude("_id"),
+                Aggregation.sort(Sort.Direction.DESC, "count"),
+                Aggregation.limit(3));
+
+        AggregationResults<Statistique> results = mongoTemplate.aggregate(aggregation, "annonce", Statistique.class);
+        return results.getMappedResults();
+    }
+
 }

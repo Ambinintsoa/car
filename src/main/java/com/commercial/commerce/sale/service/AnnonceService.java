@@ -385,4 +385,20 @@ public class AnnonceService {
     public List<Statistique> countAllByType() {
         return annonceRepositoryImpl.countAllByType();
     }
+
+    public List<Statistique> getBestVenteType() {
+        return annonceRepositoryImpl.getBestVenteType();
+    }
+
+    public List<Statistique> countAllByBrand() {
+        return annonceRepositoryImpl.countAllByBrand();
+    }
+
+    public List<Statistique> getBestVenteBrand() {
+        return annonceRepositoryImpl.getBestVenteBrand();
+    }
+
+    public List<Statistique> getBestVenteModel() {
+        return annonceRepositoryImpl.getBestVenteModel();
+    }
 }
