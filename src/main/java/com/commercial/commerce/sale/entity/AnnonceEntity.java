@@ -35,8 +35,6 @@ public class AnnonceEntity {
 
     private CountryEntity localisation;
 
-    private int stock;
-
     private Vendeur vendeur;
 
     private int commission;

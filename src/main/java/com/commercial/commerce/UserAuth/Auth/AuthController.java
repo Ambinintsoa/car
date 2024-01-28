@@ -57,15 +57,19 @@ public class AuthController extends Controller {
     @PostMapping("/authenticate")
     public ResponseEntity<AuthenticationResponse> authenticate(
             @RequestBody AuthenticationRequest request) {
-        ///
         return ResponseEntity.ok(service.authenticate(request));
     }
 
     @PostMapping("/authenticate_admin")
-    public ResponseEntity<AuthenticationResponse> authenticateAdmin(
+    public ResponseEntity<Object> authenticateAdmin(
             @RequestBody AuthenticationRequest request) {
-        ///
-        return ResponseEntity.ok(service.authenticateAdmin(request));
+        try {
+            return ResponseEntity.ok(service.authenticateAdmin(request));
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new com.commercial.commerce.response.Status("error", e.getMessage()),
+                            LocalDateTime.now()));
+        }
     }
 
     @PostMapping("/checkTokenStatus")
@@ -97,7 +101,6 @@ public class AuthController extends Controller {
     @PostMapping("/refresh_token_admin")
     public ResponseEntity<Object> refreshTokenAdmin(
             @RequestBody RefreshTokenRequest request) {
-        ///
         try {
             return ResponseEntity.ok(service.useRefreshTokenAdmin(request));
         } catch (Exception e) {
