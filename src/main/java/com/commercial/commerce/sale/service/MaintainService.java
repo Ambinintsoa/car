@@ -36,6 +36,9 @@ public class MaintainService {
             if (updatedMaintain.getNom() == null) {
                 updatedMaintain.setNom(existingMaintain.get().getNom());
             }
+            if (updatedMaintain.getState() == null) {
+                updatedMaintain.setState(existingMaintain.get().getState());
+            }
             return Optional.of(maintainRepository.save(updatedMaintain));
         } else {
             return Optional.empty();

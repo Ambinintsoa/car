@@ -29,6 +29,19 @@ public class Controller {
 
     }
 
+    public boolean isTokenValidAchat(String token, Long id) {
+        String username = jwtService.extractUsername(token);
+        Optional<User> user = authService.findById(id);
+        if (user.isPresent() && !jwtService.isTokenExpired(token)) {
+            System.out.println(username);
+            System.out.print(user.get().getEmail());
+            System.out.println((username.equals(user.get().getEmail())));
+            return (username.equals(user.get().getEmail()));
+        }
+        return true;
+
+    }
+
     public <T> ResponseEntity<ApiResponse<T>> createResponseEntity(T data, String message) {
         ApiResponse<T> response = new ApiResponse<>();
         response.setData(data);

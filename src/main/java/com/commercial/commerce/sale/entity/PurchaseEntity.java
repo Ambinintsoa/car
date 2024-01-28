@@ -34,7 +34,7 @@ public class PurchaseEntity {
 
     @Basic
     @Column(name = "state")
-    private int state;
+    private Integer state;
 
     @Basic
     @Column(name = "date")

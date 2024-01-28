@@ -32,11 +32,19 @@ import lombok.AllArgsConstructor;
 public class PurchaseController extends Controller {
     private final PurchaseService purchaseService;
     private final AnnonceService annonceService;
+    private final RefreshTokenService refreshTokenService;
 
     @PostMapping(value = "/user/{iduser}/purchases")
     public ResponseEntity<ApiResponse<PurchaseEntity>> save(HttpServletRequest request,
             @Valid @RequestBody PurchaseEntity purchase, @PathVariable Long iduser) {
         try {
+            AnnonceEntity annonceEntity = annonceService.getById(purchase.getAnnouncement());
+            if (this.isTokenValidAchat(refreshTokenService.splitToken(request.getHeader("Authorization")),
+                    annonceEntity.getVendeur().getIdvendeur()) == true) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "cannot buy your own car"),
+                                LocalDateTime.now()));
+            }
             purchase.setUser(new User());
             purchase.getUser().setId(iduser);
             PurchaseEntity createdAnnonce = purchaseService.insert(purchase);
@@ -47,15 +55,22 @@ public class PurchaseController extends Controller {
         }
     }
 
-    @PostMapping(value = "/actu/achat")
+    @PostMapping(value = "/achat")
     public ResponseEntity<ApiResponse<TransactionEntity>> achat(HttpServletRequest request,
-            @RequestParam(name = "purchase") String id) {
+            @Valid @RequestBody PurchaseEntity purchaseEntity) {
         try {
-            PurchaseEntity purchase = new PurchaseEntity();
+            purchaseEntity = purchaseService.getById(purchaseEntity.getId()).get();
+            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
+                    purchaseEntity.getUser().getId()) == false) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
+                                LocalDateTime.now()));
+            }
+            purchaseEntity = purchaseService.getById(purchaseEntity.getId()).get();
+            purchaseService.updateState(purchaseEntity, 3);
 
-            purchase = purchaseService.getById(id).get();
-            AnnonceEntity annonce = annonceService.getById(purchase.getAnnouncement());
-            TransactionEntity createdAnnonce = purchaseService.achat(purchase,
+            AnnonceEntity annonce = annonceService.getById(purchaseEntity.getAnnouncement());
+            TransactionEntity createdAnnonce = purchaseService.achat(purchaseEntity,
                     annonce.getVendeur().getIdvendeur());
             return createResponseEntity(createdAnnonce, "Purchase created successfully");
         } catch (Exception e) {
@@ -104,7 +119,7 @@ public class PurchaseController extends Controller {
         }
     }
 
-    @GetMapping("/user{iduser}/valid/purchases")
+    @GetMapping("/user/{iduser}/valid/purchases")
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getFavoris(HttpServletRequest request,
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit,
@@ -123,6 +138,7 @@ public class PurchaseController extends Controller {
             @RequestParam(name = "offset") int id,
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
+
             List<PurchaseEntity> types = purchaseService.selectWithPagination(id, limit);
             return createResponseEntity(types, "Purchases retrieved successfully");
 

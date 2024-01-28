@@ -18,44 +18,11 @@ import com.commercial.commerce.sale.service.TransactionService;
 import lombok.AllArgsConstructor;
 
 @RestController
-@RequestMapping("/actu")
+@RequestMapping("/bibine")
 @AllArgsConstructor
 public class TransactionController extends Controller {
 
     private final TransactionService transactionService;
-    // private final RefreshTokenService refreshTokenService;
-
-    // @PostMapping(value = "/transactions")
-    // public ResponseEntity<ApiResponse<TransactionEntity>> save(HttpServletRequest
-    // request,
-    // @Valid @RequestBody TransactionEntity transaction) {
-    // try {
-    // if (request.getHeader("Authorization") != null) {
-    // String token =
-    // refreshTokenService.splitToken(request.getHeader("Authorization"));
-    // if (refreshTokenService.validation(token)) {
-    // transaction.setSender(new User());
-    // transaction.getSender().setId(Long.parseLong(refreshTokenService.getId(token)));
-    // TransactionEntity createdTransaction =
-    // transactionService.insert(transaction);
-    // return createResponseEntity(createdTransaction, "Transaction created
-    // successfully");
-    // return ResponseEntity.status(HttpStatus.OK)
-    // .body(new ApiResponse<>(null, new Status("refused", "you can't access to this
-    // url"),
-    // LocalDateTime.now()));
-    // } else {
-    // return ResponseEntity.status(HttpStatus.OK)
-    // .body(new ApiResponse<>(null, new Status("error", "this url is protected"),
-    // LocalDateTime.now()));
-    // }
-    // }
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.OK)
-    // .body(new ApiResponse<>(null, new Status("error", e.getMessage()),
-    // LocalDateTime.now()));
-    // }
-    // }
 
     @GetMapping("/transactions")
     public ResponseEntity<ApiResponse<List<TransactionEntity>>> getAllTransactionsById() {

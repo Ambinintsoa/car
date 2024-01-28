@@ -35,6 +35,9 @@ public class CategoryService {
             if (updatedCategory.getNom() == null) {
                 updatedCategory.setNom(existingCategory.get().getNom());
             }
+            if (updatedCategory.getState() == null) {
+                updatedCategory.setState(existingCategory.get().getState());
+            }
             return Optional.of(categoryRepository.save(updatedCategory));
         } else {
             return Optional.empty();

@@ -1,9 +1,13 @@
 package com.commercial.commerce.sale.entity;
 
 import jakarta.persistence.*;
+import lombok.Getter;
 import lombok.RequiredArgsConstructor;
+import lombok.Setter;
 
 @Entity
+@Getter
+@Setter
 @Table(name = "couleur", schema = "public")
 @RequiredArgsConstructor
 public class CouleurEntity {
@@ -18,29 +22,6 @@ public class CouleurEntity {
 
     @Basic
     @Column(name = "state")
-    private int state;
+    private Integer state;
 
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getNom() {
-        return nom;
-    }
-
-    public void setState(int state) {
-        this.state = state;
-    }
-
-    public int getState() {
-        return this.state;
-    }
-
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
 }

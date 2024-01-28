@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.commercial.commerce.UserAuth.Repository.UserRepository;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
@@ -44,11 +45,12 @@ public class PurchaseService {
 
     public List<PurchaseEntity> getAllPurchaseValid(Long id, int offset, int limit) {
 
-        return purchaseRepository.findAllActiveValid(id, limit, offset);
+        return purchaseRepository.findAllActiveValid(id, PageRequest.of(offset, limit)).getContent();
     }
 
     public List<PurchaseEntity> selectWithPagination(int offset, int limit) {
-        return purchaseRepository.selectWithPagination(limit, offset);
+        return purchaseRepository.selectWithPagination(PageRequest.of(offset, limit)).getContent();
+
     }
 
     public List<PurchaseEntity> selectPurchase(Long id, int offset, int limit) {
@@ -58,7 +60,7 @@ public class PurchaseService {
         for (int i = 0; i < annonces.size(); i++) {
             idannonce[i] = annonces.get(i).getId();
         }
-        return purchaseRepository.findAllValid(idannonce, limit, offset);
+        return purchaseRepository.findAllValid(idannonce, PageRequest.of(offset, limit)).getContent();
     }
 
     public Optional<PurchaseEntity> getById(String id) {

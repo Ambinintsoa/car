@@ -36,6 +36,9 @@ public class CouleurService {
             if (updatedCouleur.getNom() == null) {
                 updatedCouleur.setNom(existingCouleur.get().getNom());
             }
+            if (updatedCouleur.getState() == null) {
+                updatedCouleur.setState(existingCouleur.get().getState());
+            }
 
             return Optional.of(couleurRepository.save(updatedCouleur));
         } else {

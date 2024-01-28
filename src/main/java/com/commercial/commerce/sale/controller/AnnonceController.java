@@ -1,7 +1,5 @@
 package com.commercial.commerce.sale.controller;
 
-import java.sql.Timestamp;
-import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +41,6 @@ import com.commercial.commerce.sale.utils.Vendeur;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
 
 @RestController
 @RequestMapping("/bibine")
@@ -77,6 +74,20 @@ public class AnnonceController extends Controller {
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             List<AnnonceEntity> categories = annonceService.getAllWithPagination(id, limit);
+            return createResponseEntity(categories, "Announcements retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/pagination/annonces_non_valid")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnoncesPaginationNo(
+            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+            List<AnnonceEntity> categories = annonceService.getAllWithPaginationNo(id, limit);
             return createResponseEntity(categories, "Announcements retrieved successfully");
 
         } catch (Exception e) {
@@ -241,12 +252,12 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('none')")
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/annonces/{id}/validate")
     public ResponseEntity<ApiResponse<AnnonceEntity>> updateAnnonceStateValide(HttpServletRequest request,
-            @PathVariable String id) {
+            @PathVariable String id, @RequestParam(name = "commission") int com) {
         try {
-            Optional<AnnonceEntity> existingAnnonce = annonceService.updateAnnonceState(id, 1);
+            Optional<AnnonceEntity> existingAnnonce = annonceService.validate(id, com);
 
             if (existingAnnonce.isPresent()) {
                 return createResponseEntity(existingAnnonce.get(), "Annonce state updated successfully");
@@ -373,12 +384,25 @@ public class AnnonceController extends Controller {
     public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsModels() {
         try {
 
-            return createResponseEntity(null,
+            return createResponseEntity(annonceService.countAllByModele(),
                     "Annonces retrieved successfully for the given state");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/statistique/type_vendu")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsTypes() {
+        try {
+
+            return createResponseEntity(annonceService.countAllByType(),
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
         }
     }
 

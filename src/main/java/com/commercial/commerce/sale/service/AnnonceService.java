@@ -1,6 +1,5 @@
 package com.commercial.commerce.sale.service;
 
-import java.sql.Date;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -12,19 +11,22 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
-import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
 import com.commercial.commerce.UserAuth.Models.User;
 import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.chat.model.JsonResponse;
 import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
+import com.commercial.commerce.sale.entity.CategoryEntity;
 import com.commercial.commerce.sale.entity.CouleurEntity;
 import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.entity.ModelEntity;
 import com.commercial.commerce.sale.entity.TypeEntity;
 import com.commercial.commerce.sale.repository.AnnonceRepository;
+import com.commercial.commerce.sale.repository.AnnonceRepositoryImpl;
 import com.commercial.commerce.sale.utils.Parameter;
+import com.commercial.commerce.sale.utils.Statistique;
+
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,7 +37,7 @@ public class AnnonceService {
     @Autowired
     private AuthService authService;
     @Autowired
-    private MongoTemplate mongoTemplate;
+    private AnnonceRepositoryImpl annonceRepositoryImpl;
 
     public List<AnnonceEntity> getAllEntity() {
         List<AnnonceEntity> annonces = annonceRepository.findAllByState(1);
@@ -51,6 +53,18 @@ public class AnnonceService {
     public List<AnnonceEntity> getAllWithPagination(int offset, int limit) {
         PageRequest pageRequest = PageRequest.of(offset, limit);
         Page<AnnonceEntity> annonces = annonceRepository.findAll(pageRequest);
+        User user = null;
+        for (AnnonceEntity annonceEntity : annonces) {
+            user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+            annonceEntity.getVendeur().setNom(user.getName());
+            annonceEntity.getVendeur().setProfile(user.getProfile());
+        }
+        return annonces.getContent();
+    }
+
+    public List<AnnonceEntity> getAllWithPaginationNo(int offset, int limit) {
+        PageRequest pageRequest = PageRequest.of(offset, limit);
+        Page<AnnonceEntity> annonces = annonceRepository.findAllNo(pageRequest);
         User user = null;
         for (AnnonceEntity annonceEntity : annonces) {
             user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
@@ -92,6 +106,13 @@ public class AnnonceService {
             annonceRepository.save(annonce);
         }
         return annonce;
+    }
+
+    public Optional<AnnonceEntity> validate(String id, int com) {
+
+        this.updateAnnonceState(id, 1);
+        this.updateAnnonceCommission(id, com);
+        return annonceRepository.findById(id);
     }
 
     public AnnonceEntity removeFavoris(Long user, String annonceId) {
@@ -289,6 +310,19 @@ public class AnnonceService {
         }
     }
 
+    public Optional<AnnonceEntity> updateAnnonceCommission(String id, int newState) {
+        Optional<AnnonceEntity> existingAnnonce = annonceRepository.findById(id);
+
+        if (existingAnnonce.isPresent()) {
+            AnnonceEntity updatedAnnonce = existingAnnonce.get();
+            updatedAnnonce.setCommission(newState);
+
+            return Optional.of(annonceRepository.save(updatedAnnonce));
+        } else {
+            return Optional.empty();
+        }
+    }
+
     public List<AnnonceEntity> getAnnoncesByState(int state) {
         List<AnnonceEntity> annonces = annonceRepository.findAllByState(state);
         User user = null;
@@ -342,5 +376,13 @@ public class AnnonceService {
     public long pagination(int limit) {
         long number = annonceRepository.count();
         return (number + limit - 1) / limit;
+    }
+
+    public List<Statistique> countAllByModele() {
+        return annonceRepositoryImpl.countAllByModele();
+    }
+
+    public List<Statistique> countAllByType() {
+        return annonceRepositoryImpl.countAllByType();
     }
 }

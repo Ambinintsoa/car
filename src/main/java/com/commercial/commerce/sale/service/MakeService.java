@@ -36,6 +36,9 @@ public class MakeService {
             if (updatedMake.getNom() == null) {
                 updatedMake.setNom(existingMake.get().getNom());
             }
+            if (updatedMake.getState() == null) {
+                updatedMake.setState(existingMake.get().getState());
+            }
 
             return Optional.of(makeRepository.save(updatedMake));
         } else {

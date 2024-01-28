@@ -9,6 +9,6 @@ import lombok.Setter;
 @Setter
 
 public class Statistique {
-    private String modeleId;
+    private String label;
     private long count;
 }

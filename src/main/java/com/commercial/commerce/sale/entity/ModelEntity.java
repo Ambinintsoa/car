@@ -32,7 +32,7 @@ public class ModelEntity {
 
     @Basic
     @Column(name = "state")
-    private int state;
+    private Integer state;
 
     @Basic
     @Column(name = "release_date")
@@ -76,6 +76,9 @@ public class ModelEntity {
         }
         if (this.getBrand() == null) {
             this.setBrand(update.getBrand());
+        }
+        if (this.getState() == null) {
+            this.setState(update.getState());
         }
 
     }

@@ -23,6 +23,7 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\TypeEntit
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Model.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\CouleurEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Service\RefreshTokenService.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\AnnonceRepositoryCustom.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Models\User.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Repository\UserRepository.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\CouleurService.java
@@ -94,6 +95,7 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\MaintainE
 D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\model\Message.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\Utils\Status.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\MakeController.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\AnnonceRepositoryImpl.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\service\WSService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\CommerceApplication.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\AnnonceEntity.java

@@ -36,6 +36,9 @@ public class TypeService {
             if (updatedType.getNom() == null) {
                 updatedType.setNom(existingType.get().getNom());
             }
+            if (updatedType.getState() == null) {
+                updatedType.setState(existingType.get().getState());
+            }
             return Optional.of(typeRepository.save(updatedType));
         } else {
             return Optional.empty();

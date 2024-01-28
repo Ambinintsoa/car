@@ -36,6 +36,9 @@ public class CountryService {
             if (updatedCountry.getNom() == null) {
                 updatedCountry.setNom(existingCountry.get().getNom());
             }
+            if (updatedCountry.getState() == null) {
+                updatedCountry.setState(existingCountry.get().getState());
+            }
             return Optional.of(countryRepository.save(updatedCountry));
         } else {
             return Optional.empty();

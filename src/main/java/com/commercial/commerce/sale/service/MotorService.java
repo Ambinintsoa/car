@@ -36,6 +36,9 @@ public class MotorService {
             if (updatedMotor.getNom() == null) {
                 updatedMotor.setNom(existingMotor.get().getNom());
             }
+            if (updatedMotor.getState() == null) {
+                updatedMotor.setState(existingMotor.get().getState());
+            }
             return Optional.of(motorRepository.save(updatedMotor));
         } else {
             return Optional.empty();
