@@ -354,7 +354,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/actu/pagination/annonces_vendu/{idVendeur}")
+    @GetMapping("/actu/pagination/user/{idVendeur}/annonces_vendu")
     public ResponseEntity<ApiResponse<Page<AnnonceEntity>>> getAnnoncesByState(
             @PathVariable Long idVendeur,
             @RequestParam(name = "offset") int page,
