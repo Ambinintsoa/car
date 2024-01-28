@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import com.commercial.commerce.UserAuth.Repository.UserRepository;
+import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.entity.PurchaseEntity;
@@ -27,6 +28,8 @@ public class PurchaseService {
     private UserRepository userRepository;
     @Autowired
     private AnnonceService annonceService;
+    @Autowired
+    private AuthService authService;
     @Autowired
     private TransactionService transactionService;
     @Autowired
@@ -71,13 +74,26 @@ public class PurchaseService {
         purchaseRepository.updatePurchaseState(purchase.getId(), state);
     }
 
-    public TransactionEntity achat(PurchaseEntity purchase, Long user) {
+    public TransactionEntity achat(PurchaseEntity purchase, Long user) throws Exception {
         TransactionEntity transaction = new TransactionEntity();
+        purchase = purchaseRepository.findById(purchase.getId()).get();
+        System.out.println("PurchaseService.achat()");
+        AnnonceEntity annonceEntity = annonceService.getById(purchase.getAnnouncement());
         transaction.setPurchase(purchase);
         transaction.setReceiver(userRepository.findById(user).get());
-        transaction.setSender(purchase.getUser());
-        transaction.setDate(new Date(System.currentTimeMillis()));
-        transaction = transactionService.insert(transaction);
-        return transaction;
+        System.out.println("PurchaseService.achat()");
+        purchase.setUser(userRepository.findById(purchase.getUser().getId()).get());
+        if (purchase.getUser().getCompte() != null
+                && purchase.getUser().getCompte() >= annonceEntity.getPrix() + annonceEntity.getCommission()) {
+            authService.recharge(purchase.getUser().getId(), -annonceEntity.getPrix());
+            authService.recharge(userRepository.findById(user).get().getId(),
+                    annonceEntity.getPrix());
+            transaction.setSender(purchase.getUser());
+            transaction.setDate(new Date(System.currentTimeMillis()));
+            transaction = transactionService.insert(transaction);
+            return transaction;
+        }
+        throw new Exception("solde non valide");
+
     }
 }

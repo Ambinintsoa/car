@@ -402,7 +402,7 @@ public class AnnonceController extends Controller {
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
 
@@ -450,6 +450,19 @@ public class AnnonceController extends Controller {
         try {
 
             return createResponseEntity(annonceService.getBestVenteModel(),
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/commission")
+    public ResponseEntity<ApiResponse<Double>> getCommission() {
+        try {
+
+            return createResponseEntity(annonceService.getCommission(),
                     "Annonces retrieved successfully for the given state");
 
         } catch (Exception e) {

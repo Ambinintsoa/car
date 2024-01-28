@@ -17,4 +17,5 @@ public interface AnnonceRepositoryCustom {
 
     List<Statistique> getBestVenteType();
 
+    public double sumOfCommissions();
 }

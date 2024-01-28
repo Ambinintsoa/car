@@ -6,6 +6,9 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
+import javax.naming.CommunicationException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -24,6 +27,7 @@ import com.commercial.commerce.sale.entity.ModelEntity;
 import com.commercial.commerce.sale.entity.TypeEntity;
 import com.commercial.commerce.sale.repository.AnnonceRepository;
 import com.commercial.commerce.sale.repository.AnnonceRepositoryImpl;
+import com.commercial.commerce.sale.utils.CommissionSummary;
 import com.commercial.commerce.sale.utils.Parameter;
 import com.commercial.commerce.sale.utils.Statistique;
 
@@ -400,5 +404,9 @@ public class AnnonceService {
 
     public List<Statistique> getBestVenteModel() {
         return annonceRepositoryImpl.getBestVenteModel();
+    }
+
+    public double getCommission() {
+        return annonceRepositoryImpl.sumOfCommissions();
     }
 }

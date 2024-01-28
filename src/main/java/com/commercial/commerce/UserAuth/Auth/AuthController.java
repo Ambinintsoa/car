@@ -6,9 +6,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.commercial.commerce.UserAuth.Request.AuthenticationRequest;
@@ -23,6 +25,7 @@ import com.commercial.commerce.Utils.Status;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.sale.controller.Controller;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.websocket.server.PathParam;
 import lombok.RequiredArgsConstructor;
 
@@ -103,6 +106,21 @@ public class AuthController extends Controller {
             @RequestBody RefreshTokenRequest request) {
         try {
             return ResponseEntity.ok(service.useRefreshTokenAdmin(request));
+        } catch (Exception e) {
+            return ResponseEntity.ok(Status.builder().status("error").details(e.getMessage()).build());
+        }
+
+    }
+
+    @PostMapping("/user/{iduser}/recharge")
+    public ResponseEntity<Object> recharge(@PathVariable Long iduser, @RequestParam(name = "montant") double montant,
+            HttpServletRequest request) {
+        try {
+            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
+                    iduser) == false) {
+                ResponseEntity.ok(Status.builder().status("error").details("not the user").build());
+            }
+            return ResponseEntity.ok(service.recharge(iduser, montant));
         } catch (Exception e) {
             return ResponseEntity.ok(Status.builder().status("error").details(e.getMessage()).build());
         }

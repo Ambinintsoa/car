@@ -7,6 +7,8 @@ import org.springframework.data.mongodb.core.aggregation.AggregationResults;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.domain.Sort;
+
+import com.commercial.commerce.sale.utils.CommissionSummary;
 import com.commercial.commerce.sale.utils.Statistique;
 
 import java.util.List;
@@ -100,4 +102,23 @@ public class AnnonceRepositoryImpl implements AnnonceRepositoryCustom {
         return results.getMappedResults();
     }
 
+    @Override
+    public double sumOfCommissions() {
+        Aggregation aggregation = Aggregation.newAggregation(
+                Aggregation.match(Criteria.where("state").is(2)),
+                Aggregation.group().sum("commission").as("totalCommission")
+
+        );
+
+        AggregationResults<CommissionSummary> results = mongoTemplate.aggregate(
+                aggregation, "annonce", CommissionSummary.class);
+
+        List<CommissionSummary> mappedResults = results.getMappedResults();
+
+        if (!mappedResults.isEmpty()) {
+            return mappedResults.get(0).getTotalCommission();
+        }
+
+        return 0.0; // Retourne 0 si aucune commission n'est trouvée
+    }
 }

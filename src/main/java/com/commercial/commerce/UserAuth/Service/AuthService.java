@@ -147,4 +147,18 @@ public class AuthService {
 
                 return repository.findById(id);
         }
+
+        public Optional<User> recharge(Long id, double sum) {
+                User user = repository.findById(id).get();
+                if (user != null) {
+                        if (user.getCompte() == null) {
+                                user.setCompte(0.0);
+                        }
+                        user.setCompte(user.getCompte() + sum);
+                        ;
+                        return Optional.of(repository.save(user));
+                } else {
+                        return Optional.empty();
+                }
+        }
 }

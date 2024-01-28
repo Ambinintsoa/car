@@ -57,6 +57,9 @@ public class User implements UserDetails {
     @Column(name = "profile")
     String profile;
 
+    @Column(name = "compte")
+    Double compte;
+
     @Enumerated(EnumType.STRING)
     Role roles;
 

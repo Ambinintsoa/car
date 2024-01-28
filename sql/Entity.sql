@@ -19,6 +19,8 @@ CREATE  TABLE couleur (
     state int default  1,
 	CONSTRAINT pk_couleur PRIMARY KEY ( idcouleur )
  );
+
+ 
 INSERT INTO category (couleur)
 VALUES
     ('rouge'),
