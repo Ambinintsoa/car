@@ -3,6 +3,8 @@ package com.commercial.commerce.sale.entity;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.DBRef;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
+
 import com.commercial.commerce.sale.utils.Caracteristic;
 import com.commercial.commerce.sale.utils.Maintenance;
 import com.commercial.commerce.sale.utils.Vendeur;
@@ -21,11 +23,10 @@ public class AnnonceEntity {
     private String id;
     private MakeEntity brand;
     private ModelEntity modele;
-
     private List<Caracteristic> caracteristic;
     private double prix;
     private String year;
-
+    private CouleurEntity couleur;
     private double kilometre;
 
     private double consommation;

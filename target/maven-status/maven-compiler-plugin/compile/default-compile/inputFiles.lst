@@ -56,6 +56,7 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\config\WebSocket
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\ModelEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\service\MakeService.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\controller\MessageController.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\utils\Statistique.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Models\RefreshToken.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\ServletInitializer.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\MakeEntity.java

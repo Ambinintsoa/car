@@ -73,6 +73,7 @@ public class AuthService {
                 authenticationManager.authenticate(
                                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
                 User user = repository.findByEmail(request.getEmail()).orElseThrow();
+
                 return getAuthResponse(user);
         }
 
@@ -89,6 +90,7 @@ public class AuthService {
         }
 
         public AuthenticationResponse getAuthResponse(User user) {
+
                 String jwtToken = jwtService.generateToken(user);
                 RefreshToken tokenRefresh = refreshTokenService.generateRefreshToken(user.getEmail());
                 return AuthenticationResponse.builder().token(jwtToken).user(user)

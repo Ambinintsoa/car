@@ -5,18 +5,25 @@ import java.time.Instant;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
+
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.commercial.commerce.UserAuth.Enum.Role;
 import com.commercial.commerce.UserAuth.Models.User;
 import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
@@ -24,15 +31,14 @@ import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.entity.MaintainEntity;
-import com.commercial.commerce.sale.entity.ModelEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
 import com.commercial.commerce.sale.service.CountryService;
 import com.commercial.commerce.sale.service.MaintainService;
 import com.commercial.commerce.sale.service.MakeService;
 import com.commercial.commerce.sale.service.ModelService;
 import com.commercial.commerce.sale.service.MotorService;
-import com.commercial.commerce.sale.service.TypeService;
 import com.commercial.commerce.sale.utils.Parameter;
+import com.commercial.commerce.sale.utils.Statistique;
 import com.commercial.commerce.sale.utils.Vendeur;
 
 import jakarta.servlet.http.HttpServletRequest;
@@ -99,10 +105,10 @@ public class AnnonceController extends Controller {
             if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
                     iduser) == false) {
                 return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "cannot access to this request"),
+                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
                                 LocalDateTime.now()));
             }
-            annonce.setState(1);
+            annonce.setState(0);
             annonce.setVendeur(new Vendeur());
             annonce.setDate(LocalDateTime.now());
             annonce.getVendeur().setIdvendeur(iduser);
@@ -143,7 +149,7 @@ public class AnnonceController extends Controller {
             if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
                     iduser) == false) {
                 return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "cannot access to this request"),
+                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
                                 LocalDateTime.now()));
             }
             AnnonceEntity createdAnnonce = annonceService.addFavoris(iduser, id);
@@ -161,7 +167,7 @@ public class AnnonceController extends Controller {
             if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
                     iduser) == false) {
                 return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "cannot access to this request"),
+                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
                                 LocalDateTime.now()));
             }
             AnnonceEntity updatedAnnonce = annonceService.removeFavoris(iduser, id);
@@ -177,14 +183,6 @@ public class AnnonceController extends Controller {
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getFavoris(HttpServletRequest request,
             @PathVariable Long iduser) {
         try {
-            // if
-            // (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
-            // iduser) == false) {
-            // return ResponseEntity.status(HttpStatus.OK)
-            // .body(new ApiResponse<>(null, new Status("error", "cannot access to this
-            // request"),
-            // LocalDateTime.now()));
-            // }
             List<AnnonceEntity> annonces = annonceService.getAnnoncesByFavoris(iduser);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
         } catch (Exception e) {
@@ -211,6 +209,102 @@ public class AnnonceController extends Controller {
         try {
             List<AnnonceEntity> annonces = annonceService.getByType(idtype);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @DeleteMapping("/annonces/{id}")
+    public ResponseEntity<ApiResponse<AnnonceEntity>> updateAnnonceState(HttpServletRequest request,
+            @PathVariable String id) {
+        try {
+            AnnonceEntity annonceEntity = annonceService.getById(id);
+            User user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
+                    annonceEntity.getVendeur().getIdvendeur()) == false && user.getRoles() != Role.ADMIN) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
+                                LocalDateTime.now()));
+            }
+            Optional<AnnonceEntity> existingAnnonce = annonceService.updateAnnonceState(id, -1);
+
+            if (existingAnnonce.isPresent()) {
+                return createResponseEntity(existingAnnonce.get(), "Annonce state updated successfully");
+            } else {
+                return createResponseEntity(null, "Annonce not found");
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @PreAuthorize("hasRole('none')")
+    @PutMapping("/annonces/{id}/validate")
+    public ResponseEntity<ApiResponse<AnnonceEntity>> updateAnnonceStateValide(HttpServletRequest request,
+            @PathVariable String id) {
+        try {
+            Optional<AnnonceEntity> existingAnnonce = annonceService.updateAnnonceState(id, 1);
+
+            if (existingAnnonce.isPresent()) {
+                return createResponseEntity(existingAnnonce.get(), "Annonce state updated successfully");
+            } else {
+                return createResponseEntity(null, "Annonce not found");
+            }
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/annonces_vendu")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAnnoncesByState() {
+        try {
+            List<AnnonceEntity> annonces = annonceService.getAnnoncesByState(2);
+            return createResponseEntity(annonces, "Annonces retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/user/{idVendeur}/annonces_vendu")
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAnnoncesByVendeur(@PathVariable Long idVendeur) {
+        try {
+            // Supposons que l'état que vous voulez filtrer soit 2
+            int state = 2;
+            List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(idVendeur, state);
+            return createResponseEntity(annonces, "Annonces retrieved successfully for this vendeur");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @PutMapping("/annonces/{id}/vendu")
+    public ResponseEntity<ApiResponse<AnnonceEntity>> updateAnnonceVendu(HttpServletRequest request,
+            @PathVariable String id) {
+        try {
+            AnnonceEntity annonceEntity = annonceService.getById(id);
+            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
+                    annonceEntity.getVendeur().getIdvendeur()) == false) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
+                                LocalDateTime.now()));
+            }
+            Optional<AnnonceEntity> existingAnnonce = annonceService.updateAnnonceState(id, 2);
+
+            if (existingAnnonce.isPresent()) {
+                return createResponseEntity(existingAnnonce.get(), "Annonce state updated successfully");
+            } else {
+                return createResponseEntity(null, "Annonce not found");
+            }
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
@@ -259,4 +353,33 @@ public class AnnonceController extends Controller {
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
+
+    @GetMapping("/actu/pagination/annonces_vendu/{idVendeur}")
+    public ResponseEntity<ApiResponse<Page<AnnonceEntity>>> getAnnoncesByState(
+            @PathVariable Long idVendeur,
+            @RequestParam(name = "offset") int page,
+            @RequestParam(name = "limit", defaultValue = "10") int size) {
+        try {
+            Page<AnnonceEntity> annonces = annonceService.getAnnoncesByStatePaginer(idVendeur, 2, page, size);
+            return createResponseEntity(annonces, "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/statistique/model_vendu")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsModels() {
+        try {
+
+            return createResponseEntity(null,
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
 }

@@ -14,6 +14,7 @@ import lombok.RequiredArgsConstructor;
 
 @Configuration
 @EnableWebSecurity
+
 @RequiredArgsConstructor
 public class SecurityConfig {
 
@@ -29,7 +30,6 @@ public class SecurityConfig {
                                                 .requestMatchers("/bibine/actu/**").permitAll()
                                                 .requestMatchers("/auth/**").permitAll()
                                                 .requestMatchers("/websocket/**").permitAll()
-                                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                                                 .anyRequest().authenticated())
                                 .sessionManagement(sessionManagement -> sessionManagement
                                                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS))

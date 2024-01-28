@@ -22,6 +22,7 @@ com\commercial\commerce\UserAuth\Enum\Role.class
 com\commercial\commerce\UserAuth\Request\RefreshTokenRequest.class
 com\commercial\commerce\UserAuth\Config\ApplicationConfig.class
 com\commercial\commerce\sale\repository\TypeRepository.class
+com\commercial\commerce\sale\utils\Statistique.class
 com\commercial\commerce\chat\config\WebSocketConfig.class
 com\commercial\commerce\sale\service\PurchaseService.class
 com\commercial\commerce\sale\controller\PurchaseController.class

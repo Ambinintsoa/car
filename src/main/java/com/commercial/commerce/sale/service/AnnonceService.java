@@ -12,20 +12,19 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.stereotype.Service;
-
-import com.commercial.commerce.UserAuth.Enum.Role;
 import com.commercial.commerce.UserAuth.Models.User;
 import com.commercial.commerce.UserAuth.Service.AuthService;
-import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.chat.model.JsonResponse;
 import com.commercial.commerce.chat.service.FileHelper;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
+import com.commercial.commerce.sale.entity.CouleurEntity;
 import com.commercial.commerce.sale.entity.MakeEntity;
 import com.commercial.commerce.sale.entity.ModelEntity;
+import com.commercial.commerce.sale.entity.TypeEntity;
 import com.commercial.commerce.sale.repository.AnnonceRepository;
 import com.commercial.commerce.sale.utils.Parameter;
-
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -35,9 +34,11 @@ public class AnnonceService {
     private AnnonceRepository annonceRepository;
     @Autowired
     private AuthService authService;
+    @Autowired
+    private MongoTemplate mongoTemplate;
 
     public List<AnnonceEntity> getAllEntity() {
-        List<AnnonceEntity> annonces = annonceRepository.findAll();
+        List<AnnonceEntity> annonces = annonceRepository.findAllByState(1);
         User user = null;
         for (AnnonceEntity annonceEntity : annonces) {
             user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
@@ -59,30 +60,10 @@ public class AnnonceService {
         return annonces.getContent();
     }
 
-    // public List<AnnonceEntity> getAllWithPagination(int offset, int limit) {
-    // Query query = new Query();
-    // query.addCriteria(Criteria.where("state").is(2));
-    // PageRequest pageRequest = PageRequest.of(offset, limit);
-    // System.out.print(query.toString());
-    // List<AnnonceEntity> annonces = mongoTemplate.find(query.with(pageRequest),
-    // AnnonceEntity.class);
-    // User user = null;
-    // for (AnnonceEntity annonceEntity : annonces) {
-    // user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
-    // annonceEntity.getVendeur().setNom(user.getName());
-    // annonceEntity.getVendeur().setProfile(user.getProfile());
-    // }
-    // return annonces;
-    // }
-    // public List<AnnonceEntity> selectWithPagination(int offset, int limit) {
-    // int page = offset;
-    // int size = limit;
-    // PageRequest pageRequest = PageRequest.of(page, size);
+    public Long countSoldCarsByModelId(ModelEntity model) {
+        return annonceRepository.countSoldCarsByModelId(model.getId());
 
-    // Page<AnnonceEntity> annoncesPage = annonceRepository.findAll(pageRequest);
-    // List<AnnonceEntity> annoncesList = annoncesPage.getContent();
-    // return annoncesList;
-    // }
+    }
 
     public AnnonceEntity insert(AnnonceEntity annonce) throws Exception {
         FileHelper file = new FileHelper();
@@ -189,6 +170,22 @@ public class AnnonceService {
         return annonceRepository.findAllByBrand_IdIn(idbrand);
     }
 
+    public List<AnnonceEntity> getType(List<TypeEntity> brand) {
+        String[] idbrand = new String[brand.size()];
+        for (int i = 0; i < brand.size(); i++) {
+            idbrand[i] = brand.get(i).getId();
+        }
+        return annonceRepository.findAllByModele_Type_IdIn(idbrand);
+    }
+
+    public List<AnnonceEntity> getCouleur(List<CouleurEntity> brand) {
+        String[] idbrand = new String[brand.size()];
+        for (int i = 0; i < brand.size(); i++) {
+            idbrand[i] = brand.get(i).getId();
+        }
+        return annonceRepository.findAllByCouleur_IdIn(idbrand);
+    }
+
     public List<AnnonceEntity> getModel(List<ModelEntity> brand) {
         String[] idbrand = new String[brand.size()];
         for (int i = 0; i < brand.size(); i++) {
@@ -210,6 +207,7 @@ public class AnnonceService {
     }
 
     public List<AnnonceEntity> research(Parameter parametre) {
+        List<AnnonceEntity> entity0 = annonceRepository.findAll();
         List<AnnonceEntity> entity1 = null;
         if (parametre.getDateInf() != null && parametre.getDateSup() != null) {
             entity1 = this.getBetweenDate(parametre.getDateInf(), parametre.getDateSup());
@@ -254,7 +252,16 @@ public class AnnonceService {
         if (parametre.getInfEtat() == null && parametre.getSupEtat() != null) {
             entity12 = this.getEtatInf(parametre.getSupEtat());
         }
+        List<AnnonceEntity> entity6 = null;
+        if (parametre.getCouleurs() != null && parametre.getCouleurs().size() > 0) {
+            entity4 = this.getCouleur(parametre.getCouleurs());
+        }
+        List<AnnonceEntity> entity7 = null;
+        if (parametre.getTypes() != null && parametre.getTypes().size() > 0) {
+            entity7 = this.getType(parametre.getTypes());
+        }
         List<AnnonceEntity> list = this.intersect(entity1, entity2);
+        list = this.intersect(entity0, list);
         list = this.intersect(entity11, list);
         list = this.intersect(entity12, list);
         list = this.intersect(entity21, list);
@@ -264,7 +271,49 @@ public class AnnonceService {
         list = this.intersect(entity5, list);
         list = this.intersect(entity51, list);
         list = this.intersect(entity52, list);
+        list = this.intersect(entity6, list);
+        list = this.intersect(entity7, list);
         return list;
+    }
+
+    public Optional<AnnonceEntity> updateAnnonceState(String id, int newState) {
+        Optional<AnnonceEntity> existingAnnonce = annonceRepository.findById(id);
+
+        if (existingAnnonce.isPresent()) {
+            AnnonceEntity updatedAnnonce = existingAnnonce.get();
+            updatedAnnonce.setState(newState);
+
+            return Optional.of(annonceRepository.save(updatedAnnonce));
+        } else {
+            return Optional.empty();
+        }
+    }
+
+    public List<AnnonceEntity> getAnnoncesByState(int state) {
+        List<AnnonceEntity> annonces = annonceRepository.findAllByState(state);
+        User user = null;
+        for (AnnonceEntity annonceEntity : annonces) {
+            user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+            annonceEntity.getVendeur().setNom(user.getName());
+            annonceEntity.getVendeur().setProfile(user.getProfile());
+        }
+        return annonces;
+    }
+
+    public Page<AnnonceEntity> getAnnoncesByStatePaginer(Long id, int state, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<AnnonceEntity> annonces = annonceRepository.findAllByVendeur_IdvendeurAndState(id, state, pageable);
+        User user = null;
+        for (AnnonceEntity annonceEntity : annonces) {
+            user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+            annonceEntity.getVendeur().setNom(user.getName());
+            annonceEntity.getVendeur().setProfile(user.getProfile());
+        }
+        return annonces;
+    }
+
+    public List<AnnonceEntity> getAnnoncesByVendeur(Long idVendeur, int state) {
+        return annonceRepository.findAllByVendeur_IdvendeurAndState(idVendeur, state);
     }
 
     public List<AnnonceEntity> intersect(List<AnnonceEntity> list1, List<AnnonceEntity> list2) {

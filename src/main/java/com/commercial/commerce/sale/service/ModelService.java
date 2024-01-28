@@ -40,6 +40,10 @@ public class ModelService {
         return modelRepository.findByMake(id);
     }
 
+    public List<ModelEntity> getAll() {
+        return modelRepository.findAll();
+    }
+
     public Optional<ModelEntity> getModelById(String id) {
         return modelRepository.findByIdActive(id);
     }

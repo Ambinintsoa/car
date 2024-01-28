@@ -11,11 +11,15 @@ import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import java.time.LocalDateTime;
+import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
 
@@ -79,11 +83,14 @@ public class MakeController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/brands/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<ApiResponse<MakeEntity>> updateMake(HttpServletRequest request, @PathVariable String id,
+            Authentication authentication,
             @Valid @RequestBody MakeEntity updatedMake) { // Change le nom du type d'entité
         try {
+            Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+            System.out.println("Roles de l'utilisateur : " + authorities);
             Optional<MakeEntity> existingMake = makeService.updateMake(id, updatedMake);
 
             if (existingMake.isPresent()) {
@@ -102,7 +109,8 @@ public class MakeController extends Controller {
 
     @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/brands/{id}")
-    public ResponseEntity<ApiResponse<MakeEntity>> deleteMake(HttpServletRequest request, @PathVariable String id,
+    public ResponseEntity<ApiResponse<MakeEntity>> deleteMake(HttpServletRequest request,
+            @PathVariable String id,
             String authorizationHeader) {
         try {
             Optional<MakeEntity> existingMake = makeService.deleteMake(id);
