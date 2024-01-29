@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -37,6 +38,7 @@ public class WSController {
     public ResponseEntity<String> sendMessage(
             @RequestBody Message message) {
         System.out.println(message.toString());
+        message.setDate(new Date(System.currentTimeMillis()));
         service.notifyUser(message.getReceiverEmail(), message);
         messageService.save(message);
 
