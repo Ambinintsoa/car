@@ -148,17 +148,21 @@ public class AuthService {
                 return repository.findById(id);
         }
 
-        public Optional<User> recharge(Long id, double sum) {
-                User user = repository.findById(id).get();
-                if (user != null) {
-                        if (user.getCompte() == null) {
-                                user.setCompte(0.0);
+        public Optional<User> recharge(Long id, double sum) throws Exception {
+                if (sum > 0) {
+                        User user = repository.findById(id).get();
+                        if (user != null) {
+                                if (user.getCompte() == null) {
+                                        user.setCompte(0.0);
+                                }
+                                user.setCompte(user.getCompte() + sum);
+                                ;
+                                return Optional.of(repository.save(user));
+                        } else {
+                                return Optional.empty();
                         }
-                        user.setCompte(user.getCompte() + sum);
-                        ;
-                        return Optional.of(repository.save(user));
-                } else {
-                        return Optional.empty();
                 }
+                throw new Exception("somme non-valid");
+
         }
 }

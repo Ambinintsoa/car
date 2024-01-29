@@ -122,7 +122,7 @@ public class TransactionController extends Controller {
                     iduser) == false) {
                 ResponseEntity.ok(Status.builder().status("error").details("not the user").build());
             }
-            return ResponseEntity.ok(service.recharge(iduser, montant));
+            return ResponseEntity.ok(service.recharge(iduser, montant).get());
         } catch (Exception e) {
             return ResponseEntity.ok(Status.builder().status("error").details(e.getMessage()).build());
         }
