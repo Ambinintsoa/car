@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.commercial.commerce.UserAuth.Models.User;
 import com.commercial.commerce.UserAuth.Service.AuthService;
 import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 // import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
@@ -115,16 +116,19 @@ public class TransactionController extends Controller {
     }
 
     @PostMapping("/user/{iduser}/recharge")
-    public ResponseEntity<Object> recharge(@PathVariable Long iduser, @RequestParam(name = "montant") double montant,
+    public ResponseEntity<ApiResponse<User>> recharge(@PathVariable Long iduser,
+            @RequestParam(name = "montant") double montant,
             HttpServletRequest request) {
         try {
             if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
                     iduser) == false) {
                 ResponseEntity.ok(Status.builder().status("error").details("not the user").build());
             }
-            return ResponseEntity.ok(service.recharge(iduser, montant).get());
+            return createResponseEntity(service.recharge(iduser, montant).get(), "Compte updated successfully");
+
         } catch (Exception e) {
-            return ResponseEntity.ok(Status.builder().status("error").details(e.getMessage()).build());
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
 
     }
