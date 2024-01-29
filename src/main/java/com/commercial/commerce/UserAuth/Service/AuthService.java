@@ -1,5 +1,8 @@
 package com.commercial.commerce.UserAuth.Service;
 
+import java.sql.Date;
+import java.time.LocalDate;
+import java.time.Period;
 import java.util.List;
 import java.util.Optional;
 
@@ -42,12 +45,6 @@ public class AuthService {
         public AuthenticationResponse register(RegisterRequest request) throws Exception {
                 if (repository.findByEmail(request.getEmail()).isEmpty()) {
                         String profile = null;
-                        if (request.getProfile() != null) {
-                                FileHelper file = new FileHelper();
-                                JsonResponse json = file.uploadOnline(request.getProfile());
-                                profile = json.getData().getUrl();
-                        }
-
                         User user = User.builder().name(request.getName())
                                         .country(new CountryEntity(request.getIdcountry()))
                                         .gender(request.getGender())
@@ -60,6 +57,19 @@ public class AuthService {
                         if (user.getGender() < 0 && user.getGender() > 1) {
                                 throw new Exception("Gender is not valid");
                         }
+                        Date now = new Date(System.currentTimeMillis());
+                        LocalDate localDate1 = now.toLocalDate();
+                        LocalDate localDate2 = user.getDtn().toLocalDate();
+                        Period period = Period.between(localDate1, localDate2);
+                        if (period.getYears() < 18) {
+                                throw new Exception("Age is not valid");
+                        }
+                        if (request.getProfile() != null) {
+                                FileHelper file = new FileHelper();
+                                JsonResponse json = file.uploadOnline(request.getProfile());
+                                profile = json.getData().getUrl();
+                        }
+
                         user = repository.save(user);
                         user.setCountry(countryService.getCountryById(request.getIdcountry()).get());
 
