@@ -25,12 +25,7 @@ public class MessageService {
     public List<Message> getNotif(String receiverEmail, Pageable pageable){
         List<Message> notif = messageRepository.findByReceiverEmailOrderByDateDesc(receiverEmail,pageable);
 
-        List<Message> toreturn =  notif.stream().sorted(Comparator.comparing(Message::getDate)).toList();
-
-        if(toreturn.size() > 10 ){
-            toreturn.subList(10, toreturn.size()).clear();
-        }
-        return toreturn;
+        return notif;
     }
 
     public List<Message> getAllMessage() {
