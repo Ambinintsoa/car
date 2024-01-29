@@ -60,7 +60,8 @@ public class AuthService {
                         Date now = new Date(System.currentTimeMillis());
                         LocalDate localDate1 = now.toLocalDate();
                         LocalDate localDate2 = user.getDtn().toLocalDate();
-                        Period period = Period.between(localDate1, localDate2);
+                        Period period = Period.between(localDate2, localDate1);
+                        System.out.println(period.getYears());
                         if (period.getYears() < 18) {
                                 throw new Exception("Age is not valid");
                         }
