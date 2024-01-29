@@ -25,6 +25,7 @@ import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.ModelEntity;
 import com.commercial.commerce.sale.entity.TransactionEntity;
 import com.commercial.commerce.sale.service.TransactionService;
+import com.commercial.commerce.sale.utils.Statistique;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -131,5 +132,18 @@ public class TransactionController extends Controller {
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
 
+    }
+
+    @GetMapping("/statistique/transactions/sent")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsTypes() {
+        try {
+
+            return createResponseEntity(transactionService.statistiques(),
+                    "Annonces retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
     }
 }

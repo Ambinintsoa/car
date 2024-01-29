@@ -1,6 +1,7 @@
 package com.commercial.commerce.sale.service;
 
 import java.sql.Date;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,6 +15,7 @@ import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.entity.PurchaseEntity;
 import com.commercial.commerce.sale.entity.TransactionEntity;
 import com.commercial.commerce.sale.repository.PurchaseRepository;
+import com.commercial.commerce.sale.utils.Statistique;
 
 import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
@@ -49,6 +51,11 @@ public class PurchaseService {
     public List<PurchaseEntity> getAllPurchaseValid(Long id, int offset, int limit) {
 
         return purchaseRepository.findAllActiveValid(id, PageRequest.of(offset, limit)).getContent();
+    }
+
+    public List<PurchaseEntity> getAllSent(Long id, int offset, int limit) {
+
+        return purchaseRepository.findAllSent(id, PageRequest.of(offset, limit)).getContent();
     }
 
     public List<PurchaseEntity> selectWithPagination(int offset, int limit) {
@@ -95,5 +102,17 @@ public class PurchaseService {
         }
         throw new Exception("solde non valide");
 
+    }
+
+    public List<Statistique> statPurchase() {
+        List<Object[]> obj = purchaseRepository.getStatsPerMonth();
+        List<Statistique> stat = new ArrayList<>();
+        for (Object[] iterable_element : obj) {
+            Statistique stats = new Statistique();
+            stats.setLabel((String) iterable_element[0]);
+            stats.setCount((Long) iterable_element[1]);
+            stat.add(stats);
+        }
+        return stat;
     }
 }

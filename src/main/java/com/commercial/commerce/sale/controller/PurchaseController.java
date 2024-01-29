@@ -24,6 +24,7 @@ import com.commercial.commerce.sale.entity.PurchaseEntity;
 import com.commercial.commerce.sale.entity.TransactionEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
 import com.commercial.commerce.sale.service.PurchaseService;
+import com.commercial.commerce.sale.utils.Statistique;
 
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
@@ -137,6 +138,20 @@ public class PurchaseController extends Controller {
         }
     }
 
+    @GetMapping("/user/{iduser}/sent_purchases")
+    public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getAllSent(HttpServletRequest request,
+            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit,
+            @PathVariable Long iduser) {
+        try {
+            List<PurchaseEntity> annonces = purchaseService.getAllSent(iduser, id, limit);
+            return createResponseEntity(annonces, "Purchases retrieved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/actu/pagination/purchases")
     public ResponseEntity<ApiResponse<List<PurchaseEntity>>> getAllPurchasesWithPagination(
             @RequestParam(name = "offset") int id,
@@ -175,6 +190,19 @@ public class PurchaseController extends Controller {
             PurchaseEntity categories = purchaseService.getById(id).get();
             purchaseService.updateState(categories, 0);
             return createResponseEntity(categories, "purchase  updated successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/statistique/purchases/sent")
+    public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsTypes() {
+        try {
+
+            return createResponseEntity(purchaseService.statPurchase(),
+                    "Annonces retrieved successfully for the given state");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
