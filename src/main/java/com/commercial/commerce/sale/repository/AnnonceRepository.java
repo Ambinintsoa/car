@@ -13,6 +13,8 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
 
     List<AnnonceEntity> findByFavoris(Long user);
 
+    Page<AnnonceEntity> findByFavoris(Long user, Pageable pageable);
+
     Long countByFavoris(Long userId);
 
     Long countByVendeur_Idvendeur(Long idVendeur);
@@ -20,6 +22,8 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
     Long countByVendeur_IdvendeurAndState(Long idVendeur, int state);
 
     List<AnnonceEntity> findByVendeurIdvendeur(Long idvendeur);
+
+    Page<AnnonceEntity> findByVendeurIdvendeur(Long idvendeur, Pageable pageable);
 
     List<AnnonceEntity> findByModeleTypeId(String idtype);
 
@@ -49,13 +53,16 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
 
     List<AnnonceEntity> findAllByState(int state);
 
+    long countByState(int state);
+
     Page<AnnonceEntity> findAllByState(int state, Pageable page);
 
     List<AnnonceEntity> findByDateLessThanEqual(LocalDateTime dateSup);
 
-    List<AnnonceEntity> findAllByVendeur_IdvendeurAndState(Long idVendeur, int state);
+    Page<AnnonceEntity> findAllByVendeur_IdvendeurAndState(Long idVendeur,
+            int state, Pageable pageable);
 
-    Page<AnnonceEntity> findAllByVendeur_IdvendeurAndState(Long idVendeur, int state, Pageable pageable);
+    List<AnnonceEntity> findAllByVendeur_IdvendeurAndState(Long idVendeur, int state);
 
     @Query("{ 'state' : 2, 'modele.id' : ?0 }")
     List<AnnonceEntity> findSoldCarsByModelId(String modelId);

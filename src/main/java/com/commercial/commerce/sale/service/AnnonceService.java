@@ -146,15 +146,46 @@ public class AnnonceService {
         return annonce;
     }
 
+    public List<AnnonceEntity> getAnnoncesByFavoris(Long user, int offset, int limit) {
+        List<AnnonceEntity> annonce = annonceRepository.findByFavoris(user, PageRequest.of(offset, limit)).getContent();
+        return annonce;
+    }
+
     public Long getAnnoncesByFavorisCount(Long user) {
 
         return annonceRepository.countByFavoris(user);
+    }
+
+    public List<AnnonceEntity> getAnnoncesByVendeur(Long user, int offset, int limit) {
+        List<AnnonceEntity> annonce = annonceRepository
+                .findByVendeurIdvendeur(user, PageRequest.of(offset, limit)).getContent();
+        return annonce;
     }
 
     public List<AnnonceEntity> getAnnoncesByVendeur(Long user) {
         List<AnnonceEntity> annonce = annonceRepository
                 .findByVendeurIdvendeur(user);
         return annonce;
+    }
+
+    public List<AnnonceEntity> getAnnoncesByVendeurPaginer(Long idVendeur, int state, int offset, int limit) {
+        return annonceRepository.findAllByVendeur_IdvendeurAndState(idVendeur, state, PageRequest.of(offset, limit))
+                .getContent();
+    }
+
+    public Long getAnnoncesByVendeurPage(Long iduser, int limit) {
+        Long count = annonceRepository.countByVendeur_Idvendeur(iduser);
+        return (count + limit - 1) / limit;
+    }
+
+    public Long getFavorisPage(Long iduser, int limit) {
+        Long count = annonceRepository.countByFavoris(iduser);
+        return (count + limit - 1) / limit;
+    }
+
+    public Long getAnnoncesByVendeurPage(Long iduser, int state, int limit) {
+        Long count = annonceRepository.countByVendeur_IdvendeurAndState(iduser, state);
+        return (count + limit - 1) / limit;
     }
 
     public List<AnnonceEntity> getByType(String type) {
@@ -366,10 +397,6 @@ public class AnnonceService {
         return annonces;
     }
 
-    public List<AnnonceEntity> getAnnoncesByVendeur(Long idVendeur, int state) {
-        return annonceRepository.findAllByVendeur_IdvendeurAndState(idVendeur, state);
-    }
-
     public Long getAnnoncesByVendeurCount(Long idVendeur, int state) {
         return annonceRepository.countByVendeur_IdvendeurAndState(idVendeur, state);
     }
@@ -403,6 +430,11 @@ public class AnnonceService {
 
     public long pagination(int limit) {
         long number = annonceRepository.count();
+        return (number + limit - 1) / limit;
+    }
+
+    public long paginationValid(int limit) {
+        long number = annonceRepository.countByState(1);
         return (number + limit - 1) / limit;
     }
 

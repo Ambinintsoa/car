@@ -57,10 +57,26 @@ public class AnnonceController extends Controller {
     private final CountryService countryService;
     private final AuthService authService;
 
+    // @GetMapping("/actu/annonces")
+    // public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnonces() {
+    // try {
+    // List<AnnonceEntity> categories = annonceService.getAllEntity();
+    // return createResponseEntity(categories, "Announcements retrieved
+    // successfully");
+
+    // } catch (Exception e) {
+    // return ResponseEntity.status(HttpStatus.OK)
+    // .body(new ApiResponse<>(null, new Status("error", e.getMessage()),
+    // LocalDateTime.now()));
+    // }
+    // }
+
     @GetMapping("/actu/annonces")
-    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnonces() {
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnoncesPaginer(
+            @RequestParam(name = "offset") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
-            List<AnnonceEntity> categories = annonceService.getAllEntity();
+            List<AnnonceEntity> categories = annonceService.getAllEntityPaginer(id, limit);
             return createResponseEntity(categories, "Announcements retrieved successfully");
 
         } catch (Exception e) {
@@ -69,13 +85,12 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/actu/voir/annonces")
-    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnoncesPaginer(
-            @RequestParam(name = "offset") int id,
+    @GetMapping("/actu/valid_annonces/pagination")
+    public ResponseEntity<ApiResponse<Long>> getPaginationValid(
             @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
-            List<AnnonceEntity> categories = annonceService.getAllEntityPaginer(id, limit);
-            return createResponseEntity(categories, "Announcements retrieved successfully");
+
+            return createResponseEntity(annonceService.paginationValid(limit), "Categories retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -207,10 +222,26 @@ public class AnnonceController extends Controller {
 
     @GetMapping("/actu/user/{iduser}/annonces_favoris")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getFavoris(HttpServletRequest request,
-            @PathVariable Long iduser) {
+            @PathVariable Long iduser, @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
-            List<AnnonceEntity> annonces = annonceService.getAnnoncesByFavoris(iduser);
+            List<AnnonceEntity> annonces = annonceService.getAnnoncesByFavoris(iduser, id, limit);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/user/{iduser}/page_annonces_favoris")
+    public ResponseEntity<ApiResponse<Long>> getPaginationFavoris(
+            @PathVariable Long iduser,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+
+            return createResponseEntity(annonceService.getFavorisPage(iduser, limit),
+                    "Categories retrieved successfully");
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
@@ -219,10 +250,26 @@ public class AnnonceController extends Controller {
 
     @GetMapping("/actu/user/{iduser}/own_annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getMyAnnonce(HttpServletRequest request,
-            @PathVariable Long iduser) {
+            @PathVariable Long iduser, @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
-            List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(iduser);
+            List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(iduser, id, limit);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/user/{iduser}/page_own_annonces")
+    public ResponseEntity<ApiResponse<Long>> getPaginationOwn(
+            @PathVariable Long iduser,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+
+            return createResponseEntity(annonceService.getAnnoncesByVendeurPage(iduser, limit),
+                    "Categories retrieved successfully");
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
@@ -316,12 +363,29 @@ public class AnnonceController extends Controller {
     }
 
     @GetMapping("/actu/user/{idVendeur}/annonces_vendu")
-    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAnnoncesByVendeur(@PathVariable Long idVendeur) {
+    public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAnnoncesByVendeur(@PathVariable Long idVendeur,
+            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
         try {
             // Supposons que l'état que vous voulez filtrer soit 2
             int state = 2;
-            List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(idVendeur, state);
+            List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeurPaginer(idVendeur, state, id, limit);
             return createResponseEntity(annonces, "Annonces retrieved successfully for this vendeur");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/user/{idVendeur}/page_annonces_vendu")
+    public ResponseEntity<ApiResponse<Long>> getPaginationVendu(
+            @PathVariable Long idVendeur,
+            @RequestParam(name = "limit", defaultValue = "5") int limit) {
+        try {
+
+            return createResponseEntity(annonceService.getAnnoncesByVendeurPage(idVendeur, 2, limit),
+                    "Categories retrieved successfully");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
@@ -382,7 +446,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/actu/annonces/search")
+    @PostMapping("/actu/annonces/search")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAnnonceById(@Valid @RequestBody Parameter parametre
 
     ) {
