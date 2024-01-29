@@ -35,6 +35,7 @@ import com.commercial.commerce.sale.service.MaintainService;
 import com.commercial.commerce.sale.service.MakeService;
 import com.commercial.commerce.sale.service.ModelService;
 import com.commercial.commerce.sale.service.MotorService;
+import com.commercial.commerce.sale.utils.Count;
 import com.commercial.commerce.sale.utils.Parameter;
 import com.commercial.commerce.sale.utils.Statistique;
 import com.commercial.commerce.sale.utils.Vendeur;
@@ -208,6 +209,24 @@ public class AnnonceController extends Controller {
         try {
             List<AnnonceEntity> annonces = annonceService.getAnnoncesByVendeur(iduser);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
+    @GetMapping("/actu/user/{iduser}/count")
+    public ResponseEntity<ApiResponse<Count>> getMyAnnonceCount(HttpServletRequest request,
+            @PathVariable Long iduser) {
+        try {
+            int state = 2;
+            Count count = new Count();
+            count.setOwn_annonce(annonceService.getAnnoncesByVendeurCount(iduser));
+            count.setVendu(annonceService.getAnnoncesByVendeurCount(iduser, state));
+            count.setFavoris(annonceService.getAnnoncesByFavorisCount(iduser));
+            return createResponseEntity(count,
+                    "Announcement retrieved successfully");
+
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));

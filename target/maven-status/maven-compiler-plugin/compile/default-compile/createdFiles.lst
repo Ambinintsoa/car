@@ -43,6 +43,7 @@ com\commercial\commerce\UserAuth\Config\SecurityConfig.class
 com\commercial\commerce\chat\service\FileHelper.class
 com\commercial\commerce\sale\repository\PurchaseRepository.class
 com\commercial\commerce\sale\service\AnnonceService.class
+com\commercial\commerce\sale\utils\Count.class
 com\commercial\commerce\sale\service\MakeService.class
 com\commercial\commerce\sale\utils\CommissionSummary.class
 com\commercial\commerce\UserAuth\Repository\RefreshTokenRepository.class

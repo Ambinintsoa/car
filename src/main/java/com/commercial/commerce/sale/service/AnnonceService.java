@@ -135,6 +135,11 @@ public class AnnonceService {
         return annonce;
     }
 
+    public Long getAnnoncesByFavorisCount(Long user) {
+
+        return annonceRepository.countByFavoris(user);
+    }
+
     public List<AnnonceEntity> getAnnoncesByVendeur(Long user) {
         List<AnnonceEntity> annonce = annonceRepository
                 .findByVendeurIdvendeur(user);
@@ -352,6 +357,14 @@ public class AnnonceService {
 
     public List<AnnonceEntity> getAnnoncesByVendeur(Long idVendeur, int state) {
         return annonceRepository.findAllByVendeur_IdvendeurAndState(idVendeur, state);
+    }
+
+    public Long getAnnoncesByVendeurCount(Long idVendeur, int state) {
+        return annonceRepository.countByVendeur_IdvendeurAndState(idVendeur, state);
+    }
+
+    public Long getAnnoncesByVendeurCount(Long idVendeur) {
+        return annonceRepository.countByVendeur_Idvendeur(idVendeur);
     }
 
     public List<AnnonceEntity> intersect(List<AnnonceEntity> list1, List<AnnonceEntity> list2) {
