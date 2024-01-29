@@ -18,6 +18,7 @@ public class CommerceApplication {
 		// Configure allowed origins, methods, headers, etc.
 		config.addAllowedOrigin("http://localhost:8100"); // Replace with yourallowed origins
 		config.addAllowedOrigin("http://localhost");
+		config.addAllowedOrigin("http://localhost:3000");
 		config.addAllowedMethod("*");
 		config.addAllowedHeader("*");
 
