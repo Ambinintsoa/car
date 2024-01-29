@@ -23,7 +23,12 @@ public class MessageService {
 
     public List<Message> getNotif(String receiverEmail){
         List<Message> notif = messageRepository.findByReceiverEmail(receiverEmail);
-        return notif.stream().sorted(Comparator.comparing(Message::getDate)).toList();
+        List<Message> toreturn =  notif.stream().sorted(Comparator.comparing(Message::getDate)).toList();
+
+        if(toreturn.size() > 10 ){
+            toreturn.subList(10, toreturn.size()).clear();
+        }
+        return toreturn;
     }
 
     public List<Message> getAllMessage() {
