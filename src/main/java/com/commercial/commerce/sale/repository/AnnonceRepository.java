@@ -25,7 +25,7 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
 
     Page<AnnonceEntity> findByVendeurIdvendeur(Long idvendeur, Pageable pageable);
 
-    List<AnnonceEntity> findByModeleTypeId(String idtype);
+    Page<AnnonceEntity> findByModeleTypeId(String idtype, Pageable pageable);
 
     List<AnnonceEntity> findByPrixBetween(double prixMin, double prixMax);
 

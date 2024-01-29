@@ -188,9 +188,9 @@ public class AnnonceService {
         return (count + limit - 1) / limit;
     }
 
-    public List<AnnonceEntity> getByType(String type) {
+    public List<AnnonceEntity> getByType(String type, int offset, int limit) {
         List<AnnonceEntity> annonce = annonceRepository
-                .findByModeleTypeId(type);
+                .findByModeleTypeId(type, PageRequest.of(offset, limit)).getContent();
         return annonce;
     }
 

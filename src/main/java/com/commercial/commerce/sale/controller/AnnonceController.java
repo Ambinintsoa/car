@@ -296,9 +296,11 @@ public class AnnonceController extends Controller {
 
     @GetMapping("/actu/type/{idtype}/annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAnnonceType(HttpServletRequest request,
+            @RequestParam(name = "offset", defaultValue = "0") int id,
+            @RequestParam(name = "limit", defaultValue = "5") int limit,
             @PathVariable String idtype) {
         try {
-            List<AnnonceEntity> annonces = annonceService.getByType(idtype);
+            List<AnnonceEntity> annonces = annonceService.getByType(idtype, id, limit);
             return createResponseEntity(annonces, "Announcement retrieved successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
