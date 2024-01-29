@@ -39,6 +39,7 @@ D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\repository\Motor
 D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\controller\WSController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\CountryEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Auth\AuthController.java
+D:\cloud_project\car\src\main\java\com\commercial\commerce\chat\controller\NotifController.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\UserAuth\Config\JwtAuthFilter.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\entity\MotorEntity.java
 D:\cloud_project\car\src\main\java\com\commercial\commerce\sale\controller\MotorController.java

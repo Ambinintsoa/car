@@ -33,6 +33,7 @@ com\commercial\commerce\chat\model\ImageResponse.class
 com\commercial\commerce\chat\Utils\RequestAPI$1.class
 com\commercial\commerce\sale\entity\CountryEntity.class
 com\commercial\commerce\sale\service\MaintainService.class
+com\commercial\commerce\chat\controller\NotifController.class
 com\commercial\commerce\sale\service\TypeService.class
 com\commercial\commerce\UserAuth\Models\RefreshToken.class
 com\commercial\commerce\UserAuth\Response\CheckStatusResponse.class
