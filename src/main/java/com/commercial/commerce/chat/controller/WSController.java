@@ -4,6 +4,8 @@ import com.commercial.commerce.chat.service.MessageService;
 import com.commercial.commerce.chat.service.WSService;
 import com.commercial.commerce.chat.model.Message;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -51,8 +53,5 @@ public class WSController {
         return messageService.getDiscussion(user1,user2);
     }
 
-    @PostMapping("/notification")
-    public List<Message> getNotif(@RequestBody Message message){
-        return messageService.getNotif(message.getReceiverEmail());
-    }
+
 }

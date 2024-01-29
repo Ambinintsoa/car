@@ -3,6 +3,7 @@ package com.commercial.commerce.chat.service;
 import com.commercial.commerce.chat.model.Message;
 import com.commercial.commerce.chat.repository.MessageRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.commercial.commerce.chat.model.Message;
 import com.commercial.commerce.chat.repository.MessageRepository;
@@ -21,8 +22,9 @@ public class MessageService {
         messageRepository.save(message);
     }
 
-    public List<Message> getNotif(String receiverEmail){
-        List<Message> notif = messageRepository.findByReceiverEmail(receiverEmail);
+    public List<Message> getNotif(String receiverEmail, Pageable pageable){
+        List<Message> notif = messageRepository.findByReceiverEmailOrderByDateDesc(receiverEmail,pageable);
+
         List<Message> toreturn =  notif.stream().sorted(Comparator.comparing(Message::getDate)).toList();
 
         if(toreturn.size() > 10 ){
