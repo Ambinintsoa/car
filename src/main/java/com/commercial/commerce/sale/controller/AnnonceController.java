@@ -190,7 +190,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/user/{iduser}/annonces_favoris")
+    @GetMapping("/actu/user/{iduser}/annonces_favoris")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getFavoris(HttpServletRequest request,
             @PathVariable Long iduser) {
         try {
@@ -202,7 +202,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/user/{iduser}/own_annonces")
+    @GetMapping("/actu/user/{iduser}/own_annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getMyAnnonce(HttpServletRequest request,
             @PathVariable Long iduser) {
         try {
@@ -463,11 +463,30 @@ public class AnnonceController extends Controller {
         try {
 
             return createResponseEntity(annonceService.getCommission(),
-                    "Annonces retrieved successfully for the given state");
+                    "Commission retrieved successfully for the given state");
 
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
-                    .body(new ApiResponse<>(null, new Status("e       rror", e.getMessage()), LocalDateTime.now()));
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
     }
+
+    @GetMapping("/user/{iduser}/solde")
+    public ResponseEntity<ApiResponse<Double>> getSolde(@PathVariable Long iduser, HttpServletRequest request) {
+        try {
+            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
+                    iduser) == false) {
+                return ResponseEntity.status(HttpStatus.OK)
+                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
+                                LocalDateTime.now()));
+            }
+            return createResponseEntity(annonceService.getSolde(iduser),
+                    "Solde retrieved successfully for the given state");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
 }

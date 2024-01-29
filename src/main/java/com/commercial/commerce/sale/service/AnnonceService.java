@@ -409,4 +409,12 @@ public class AnnonceService {
     public double getCommission() {
         return annonceRepositoryImpl.sumOfCommissions();
     }
+
+    public double getSolde(Long id) {
+        User user = authService.findById(id).get();
+        if (user.getCompte() == null) {
+            return 0;
+        }
+        return user.getCompte();
+    }
 }

@@ -112,18 +112,4 @@ public class AuthController extends Controller {
 
     }
 
-    @PostMapping("/user/{iduser}/recharge")
-    public ResponseEntity<Object> recharge(@PathVariable Long iduser, @RequestParam(name = "montant") double montant,
-            HttpServletRequest request) {
-        try {
-            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
-                    iduser) == false) {
-                ResponseEntity.ok(Status.builder().status("error").details("not the user").build());
-            }
-            return ResponseEntity.ok(service.recharge(iduser, montant));
-        } catch (Exception e) {
-            return ResponseEntity.ok(Status.builder().status("error").details(e.getMessage()).build());
-        }
-
-    }
 }

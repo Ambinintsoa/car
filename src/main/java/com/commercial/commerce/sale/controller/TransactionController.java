@@ -15,12 +15,17 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.commercial.commerce.UserAuth.Service.AuthService;
+import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 // import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.ModelEntity;
 import com.commercial.commerce.sale.entity.TransactionEntity;
 import com.commercial.commerce.sale.service.TransactionService;
+
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.AllArgsConstructor;
 
 @RestController
@@ -29,6 +34,8 @@ import lombok.AllArgsConstructor;
 public class TransactionController extends Controller {
 
     private final TransactionService transactionService;
+    private final RefreshTokenService refreshTokenService;
+    private final AuthService service;
 
     @GetMapping("/transactions")
     public ResponseEntity<ApiResponse<List<TransactionEntity>>> getAllTransactionsById() {
@@ -105,5 +112,20 @@ public class TransactionController extends Controller {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
         }
+    }
+
+    @PostMapping("/user/{iduser}/recharge")
+    public ResponseEntity<Object> recharge(@PathVariable Long iduser, @RequestParam(name = "montant") double montant,
+            HttpServletRequest request) {
+        try {
+            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
+                    iduser) == false) {
+                ResponseEntity.ok(Status.builder().status("error").details("not the user").build());
+            }
+            return ResponseEntity.ok(service.recharge(iduser, montant));
+        } catch (Exception e) {
+            return ResponseEntity.ok(Status.builder().status("error").details(e.getMessage()).build());
+        }
+
     }
 }
