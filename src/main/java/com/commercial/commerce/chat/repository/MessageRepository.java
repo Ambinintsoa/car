@@ -13,7 +13,7 @@ public interface MessageRepository extends MongoRepository<Message, String> {
 
     List<Message> findByReceiverEmailAndSenderId(String receiverEmail, String SenderId);
 
-    @Query("{'receiverEmail' :  ?0}")
+    @Query(value = "{'receiverEmail' :  ?0}",sort = "{'date' : -1 }" )
     List<Message> findByReceiverEmailOrderByDateDesc(String receiverEmail, Pageable pageable);
 
 }

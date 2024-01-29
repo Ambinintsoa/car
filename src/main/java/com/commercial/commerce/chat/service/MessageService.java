@@ -23,9 +23,7 @@ public class MessageService {
     }
 
     public List<Message> getNotif(String receiverEmail, Pageable pageable){
-        List<Message> notif = messageRepository.findByReceiverEmailOrderByDateDesc(receiverEmail,pageable);
-
-        return notif;
+        return messageRepository.findByReceiverEmailOrderByDateDesc(receiverEmail,pageable);
     }
 
     public List<Message> getAllMessage() {
