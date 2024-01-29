@@ -79,6 +79,5 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
     @Query("[{'$group': {'_id': '$modele.id', 'count': {'$sum': 1}}}])")
     List<Statistique> countAllByModele();
 
-    @Query("{'$or':[{'$text': {'$search': ?0}}, {'description': { $regex: ?0, $options: 'i' }}]}")
-    List<AnnonceEntity> findByDescriptionContainingIgnoreCaseAndTextSearch(String motCle);
+    List<AnnonceEntity> findByDescriptionContainingIgnoreCase(String motCle);
 }

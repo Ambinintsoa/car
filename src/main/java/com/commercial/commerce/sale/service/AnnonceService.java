@@ -285,7 +285,7 @@ public class AnnonceService {
         List<AnnonceEntity> entity = null;
         if (parametre.getDescription() != null && parametre.getDescription() != "") {
             entity = annonceRepository
-                    .findByDescriptionContainingIgnoreCaseAndTextSearch(parametre.getDescription());
+                    .findByDescriptionContainingIgnoreCase(parametre.getDescription());
 
         }
         if (parametre.getDateInf() != null && parametre.getDateSup() != null) {
