@@ -25,4 +25,5 @@ public class Parameter {
     List<CouleurEntity> couleurs;
     LocalDateTime dateInf;
     LocalDateTime dateSup;
+    String description;
 }

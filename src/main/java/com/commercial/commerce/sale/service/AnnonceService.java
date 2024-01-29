@@ -280,7 +280,14 @@ public class AnnonceService {
 
     public List<AnnonceEntity> research(Parameter parametre) {
         List<AnnonceEntity> entity0 = annonceRepository.findAll();
+
         List<AnnonceEntity> entity1 = null;
+        List<AnnonceEntity> entity = null;
+        if (parametre.getDescription() != null && parametre.getDescription() != "") {
+            entity = annonceRepository
+                    .findByDescriptionContainingIgnoreCaseAndTextSearch(parametre.getDescription());
+
+        }
         if (parametre.getDateInf() != null && parametre.getDateSup() != null) {
             entity1 = this.getBetweenDate(parametre.getDateInf(), parametre.getDateSup());
         }
@@ -345,6 +352,7 @@ public class AnnonceService {
         list = this.intersect(entity52, list);
         list = this.intersect(entity6, list);
         list = this.intersect(entity7, list);
+        list = this.intersect(entity, list);
         return list;
     }
 
