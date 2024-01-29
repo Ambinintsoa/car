@@ -1,6 +1,7 @@
 package com.commercial.commerce.UserAuth.Auth;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.commercial.commerce.UserAuth.Models.User;
 import com.commercial.commerce.UserAuth.Request.AuthenticationRequest;
 import com.commercial.commerce.UserAuth.Request.RefreshTokenRequest;
 import com.commercial.commerce.UserAuth.Request.RegisterRequest;
@@ -24,6 +26,7 @@ import com.commercial.commerce.UserAuth.Service.RefreshTokenService;
 import com.commercial.commerce.Utils.Status;
 import com.commercial.commerce.response.ApiResponse;
 import com.commercial.commerce.sale.controller.Controller;
+import com.commercial.commerce.sale.entity.AnnonceEntity;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.websocket.server.PathParam;
@@ -64,10 +67,12 @@ public class AuthController extends Controller {
     }
 
     @PostMapping("/authenticate_admin")
-    public ResponseEntity<Object> authenticateAdmin(
+    public ResponseEntity<ApiResponse<AuthenticationResponse>> authenticateAdmin(
             @RequestBody AuthenticationRequest request) {
         try {
-            return ResponseEntity.ok(service.authenticateAdmin(request));
+
+            return createResponseEntity(service.authenticateAdmin(request),
+                    "Admin retrieved successfully");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.OK)
                     .body(new ApiResponse<>(null, new com.commercial.commerce.response.Status("error", e.getMessage()),
