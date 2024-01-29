@@ -62,6 +62,18 @@ public class ModelController extends Controller {
         }
     }
 
+    @GetMapping("/actu/models")
+    public ResponseEntity<ApiResponse<List<ModelEntity>>> getModels() {
+        try {
+            List<ModelEntity> models = modelService.getAll();
+            return createResponseEntity(models, "models retrieved successfully");
+
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.OK)
+                    .body(new ApiResponse<>(null, new Status("error", e.getMessage()), LocalDateTime.now()));
+        }
+    }
+
     @GetMapping("/actu/models/{id}")
     public ResponseEntity<ApiResponse<ModelEntity>> getModelById(@PathVariable String id) {
         try {
