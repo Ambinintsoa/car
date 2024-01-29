@@ -69,6 +69,7 @@ public class AuthService {
                                 FileHelper file = new FileHelper();
                                 JsonResponse json = file.uploadOnline(request.getProfile());
                                 profile = json.getData().getUrl();
+                                user.setProfile(profile);
                         }
 
                         user = repository.save(user);
