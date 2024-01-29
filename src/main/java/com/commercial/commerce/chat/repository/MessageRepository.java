@@ -10,4 +10,6 @@ public interface MessageRepository extends MongoRepository<Message, String> {
 
     List<Message> findByReceiverEmailAndSenderId(String receiverEmail, String SenderId);
 
+    List<Message> findByReceiverEmail(String receiverEmail);
+
 }

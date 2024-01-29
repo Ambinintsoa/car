@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Service
 public class MessageService {
@@ -18,6 +19,11 @@ public class MessageService {
 
     public void save(Message message) {
         messageRepository.save(message);
+    }
+
+    public List<Message> getNotif(String receiverEmail){
+        List<Message> notif = messageRepository.findByReceiverEmail(receiverEmail);
+        return notif.stream().sorted(Comparator.comparing(Message::getDate)).toList();
     }
 
     public List<Message> getAllMessage() {
@@ -32,6 +38,8 @@ public class MessageService {
 
         return fromTwotoOne.stream().sorted(Comparator.comparing(Message::getDate)).toList();
     }
+
+
 
     public HashMap<String, Message> getContact(String idUser) {
         List<Message> messageList = this.getAllMessage();
