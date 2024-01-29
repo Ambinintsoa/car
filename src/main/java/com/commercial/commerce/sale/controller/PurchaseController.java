@@ -2,6 +2,8 @@ package com.commercial.commerce.sale.controller;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 import javax.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -66,10 +68,12 @@ public class PurchaseController extends Controller {
                         .body(new ApiResponse<>(null, new Status("error", "not the user"),
                                 LocalDateTime.now()));
             }
+
             purchaseEntity = purchaseService.getById(purchaseEntity.getId()).get();
-            purchaseService.updateState(purchaseEntity, 3);
+            purchaseService.updateState(purchaseEntity, 2);
 
             AnnonceEntity annonce = annonceService.getById(purchaseEntity.getAnnouncement());
+            annonce = annonceService.updateAnnonceState(annonce.getId(), 2).get();
             TransactionEntity createdAnnonce = purchaseService.achat(purchaseEntity,
                     annonce.getVendeur().getIdvendeur());
             return createResponseEntity(createdAnnonce, "Purchase created successfully");
