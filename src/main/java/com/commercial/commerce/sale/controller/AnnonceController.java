@@ -30,6 +30,7 @@ import com.commercial.commerce.response.Status;
 import com.commercial.commerce.sale.entity.AnnonceEntity;
 import com.commercial.commerce.sale.entity.MaintainEntity;
 import com.commercial.commerce.sale.service.AnnonceService;
+import com.commercial.commerce.sale.service.CouleurService;
 import com.commercial.commerce.sale.service.CountryService;
 import com.commercial.commerce.sale.service.MaintainService;
 import com.commercial.commerce.sale.service.MakeService;
@@ -54,22 +55,9 @@ public class AnnonceController extends Controller {
     private final MakeService makeService;
     private final MaintainService maintainService;
     private final RefreshTokenService refreshTokenService;
+    private final CouleurService couleurService;
     private final CountryService countryService;
     private final AuthService authService;
-
-    // @GetMapping("/actu/annonces")
-    // public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnonces() {
-    // try {
-    // List<AnnonceEntity> categories = annonceService.getAllEntity();
-    // return createResponseEntity(categories, "Announcements retrieved
-    // successfully");
-
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.OK)
-    // .body(new ApiResponse<>(null, new Status("error", e.getMessage()),
-    // LocalDateTime.now()));
-    // }
-    // }
 
     @GetMapping("/actu/annonces")
     public ResponseEntity<ApiResponse<List<AnnonceEntity>>> getAllAnnoncesPaginer(
@@ -157,6 +145,7 @@ public class AnnonceController extends Controller {
             annonce.setLocalisation(countryService.getCountryById(annonce.getLocalisation().getId()).get());
             annonce.setModele(modelService.getModelById(annonce.getModele().getId()).get());
             annonce.setMotor(motorService.getMotorById(annonce.getMotor().getId()).get());
+            annonce.setCouleur(couleurService.getCouleurById(annonce.getCouleur().getId()).get());
             if (annonce.getEtat() > 10 || annonce.getEtat() < 0) {
                 return ResponseEntity.status(HttpStatus.OK)
                         .body(new ApiResponse<>(null, new Status("error", "Etat not valid"),
