@@ -20,6 +20,8 @@ public class CommerceApplication {
 		config.addAllowedOrigin("http://localhost");
 		config.addAllowedOrigin("http://localhost:3000");
 		config.addAllowedOrigin("https://main--deft-churros-fac1e5.netlify.app/");
+		config.addAllowedOrigin("https://deft-churros-fac1e5.netlify.app/");
+
 		config.addAllowedOrigin("https://main--serene-mooncake-d83e90.netlify.app/");
 		config.addAllowedMethod("*");
 		config.addAllowedHeader("*");
