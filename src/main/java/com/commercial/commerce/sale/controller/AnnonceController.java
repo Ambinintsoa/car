@@ -312,14 +312,7 @@ public class AnnonceController extends Controller {
     public ResponseEntity<ApiResponse<AnnonceEntity>> updateAnnonceState(HttpServletRequest request,
             @PathVariable String id) {
         try {
-            AnnonceEntity annonceEntity = annonceService.getById(id);
-            User user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
-            if (this.isTokenValid(refreshTokenService.splitToken(request.getHeader("Authorization")),
-                    annonceEntity.getVendeur().getIdvendeur()) == false && user.getRoles() != Role.ADMIN) {
-                return ResponseEntity.status(HttpStatus.OK)
-                        .body(new ApiResponse<>(null, new Status("error", "not the user"),
-                                LocalDateTime.now()));
-            }
+
             Optional<AnnonceEntity> existingAnnonce = annonceService.updateAnnonceState(id, -1);
 
             if (existingAnnonce.isPresent()) {

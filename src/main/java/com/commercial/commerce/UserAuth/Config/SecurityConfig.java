@@ -37,14 +37,16 @@ public class SecurityConfig {
                                                 .hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.POST, "/bibine/colors")
                                                 .hasAuthority("ADMIN")
-
+                                                .requestMatchers(HttpMethod.GET, "/bibine/actu/pagination/annonces")
+                                                .hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.PUT, "/bibine/maintains/{id}")
                                                 .hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.DELETE, "/bibine/maintains/{id}")
                                                 .hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.POST, "/bibine/maintains")
                                                 .hasAuthority("ADMIN")
-
+                                                .requestMatchers(HttpMethod.DELETE, "/bibine/actu/annonces/{id}")
+                                                .hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.PUT, "/bibine/categories/{id}")
                                                 .hasAuthority("ADMIN")
                                                 .requestMatchers(HttpMethod.DELETE, "/bibine/categories/{id}")
