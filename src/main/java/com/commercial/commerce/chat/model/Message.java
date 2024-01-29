@@ -35,6 +35,8 @@ public class Message {
         this.picturePath = picturePath;
     }
 
+    public Message(){}
+
     public String getId() {
         return id;
     }

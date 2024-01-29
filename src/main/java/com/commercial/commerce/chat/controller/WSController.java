@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.HashMap;
+import java.util.List;
 
 @RestController
 public class WSController {
@@ -45,4 +46,8 @@ public class WSController {
         return messageService.getContact(id);
     }
 
+    @GetMapping("/discussion/")
+    public List<Message> getDiscussion(@RequestBody String user1, @RequestBody String user2){
+        return messageService.getDiscussion(user1,user2);
+    }
 }
