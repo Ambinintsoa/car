@@ -61,7 +61,6 @@ public class MotorController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/motors")
     public ResponseEntity<ApiResponse<MotorEntity>> createMotor(HttpServletRequest request,
             @Valid @RequestBody MotorEntity motor) {
@@ -74,7 +73,6 @@ public class MotorController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/motors/{id}")
     public ResponseEntity<ApiResponse<MotorEntity>> updateMotor(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody MotorEntity updatedMotor) {
@@ -94,7 +92,6 @@ public class MotorController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/motors/{id}")
     public ResponseEntity<ApiResponse<MotorEntity>> deleteMotor(HttpServletRequest request, @PathVariable String id) {
         try {

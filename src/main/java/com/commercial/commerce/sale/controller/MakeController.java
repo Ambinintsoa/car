@@ -70,7 +70,6 @@ public class MakeController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/brands")
     public ResponseEntity<ApiResponse<MakeEntity>> createMake(HttpServletRequest request,
             @Valid @RequestBody MakeEntity make) {
@@ -84,7 +83,7 @@ public class MakeController extends Controller {
     }
 
     @PutMapping("/brands/{id}")
-    @PreAuthorize("hasRole('ADMIN')")
+
     public ResponseEntity<ApiResponse<MakeEntity>> updateMake(HttpServletRequest request, @PathVariable String id,
             Authentication authentication,
             @Valid @RequestBody MakeEntity updatedMake) { // Change le nom du type d'entité
@@ -107,7 +106,6 @@ public class MakeController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/brands/{id}")
     public ResponseEntity<ApiResponse<MakeEntity>> deleteMake(HttpServletRequest request,
             @PathVariable String id,

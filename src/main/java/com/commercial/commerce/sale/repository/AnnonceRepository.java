@@ -49,6 +49,8 @@ public interface AnnonceRepository extends MongoRepository<AnnonceEntity, String
 
     List<AnnonceEntity> findAllByState(int state);
 
+    Page<AnnonceEntity> findAllByState(int state, Pageable page);
+
     List<AnnonceEntity> findByDateLessThanEqual(LocalDateTime dateSup);
 
     List<AnnonceEntity> findAllByVendeur_IdvendeurAndState(Long idVendeur, int state);

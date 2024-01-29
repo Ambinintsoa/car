@@ -23,7 +23,6 @@ public class ModelController extends Controller {
 
     private final ModelService modelService;
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/models")
     public ResponseEntity<ApiResponse<ModelEntity>> createModel(HttpServletRequest request,
             @Valid @RequestBody ModelEntity modelEntity) {
@@ -87,7 +86,6 @@ public class ModelController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/models/{id}")
     public ResponseEntity<ApiResponse<ModelEntity>> updateModel(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody ModelEntity updatedMake) { // Change le nom du type d'entité
@@ -106,7 +104,6 @@ public class ModelController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/models/{id}")
     public ResponseEntity<ApiResponse<ModelEntity>> deleteModel(HttpServletRequest request, @PathVariable String id,
             String authorizationHeader) {

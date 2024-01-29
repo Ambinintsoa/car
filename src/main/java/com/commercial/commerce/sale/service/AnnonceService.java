@@ -54,6 +54,17 @@ public class AnnonceService {
         return annonces;
     }
 
+    public List<AnnonceEntity> getAllEntityPaginer(int offset, int limit) {
+        List<AnnonceEntity> annonces = annonceRepository.findAllByState(1, PageRequest.of(offset, limit)).getContent();
+        User user = null;
+        for (AnnonceEntity annonceEntity : annonces) {
+            user = authService.findById(annonceEntity.getVendeur().getIdvendeur()).get();
+            annonceEntity.getVendeur().setNom(user.getName());
+            annonceEntity.getVendeur().setProfile(user.getProfile());
+        }
+        return annonces;
+    }
+
     public List<AnnonceEntity> getAllWithPagination(int offset, int limit) {
         PageRequest pageRequest = PageRequest.of(offset, limit);
         Page<AnnonceEntity> annonces = annonceRepository.findAll(pageRequest);

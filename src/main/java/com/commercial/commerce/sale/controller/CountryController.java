@@ -62,7 +62,6 @@ public class CountryController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/countries")
     public ResponseEntity<ApiResponse<CountryEntity>> createCountry(HttpServletRequest request,
             @Valid @RequestBody CountryEntity country) {
@@ -75,7 +74,6 @@ public class CountryController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/countries/{id}")
     public ResponseEntity<ApiResponse<CountryEntity>> updateCountry(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody CountryEntity updatedCountry) {
@@ -92,7 +90,6 @@ public class CountryController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/countries/{id}")
     public ResponseEntity<ApiResponse<CountryEntity>> deleteCountry(HttpServletRequest request,
             @PathVariable String id) {

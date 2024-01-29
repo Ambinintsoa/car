@@ -65,7 +65,6 @@ public class MaintainController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/maintains")
     public ResponseEntity<ApiResponse<MaintainEntity>> createMaintain(HttpServletRequest request,
             @Valid @RequestBody MaintainEntity maintain) {
@@ -78,7 +77,6 @@ public class MaintainController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/maintains/{id}")
     public ResponseEntity<ApiResponse<MaintainEntity>> updateMaintain(HttpServletRequest request,
             @PathVariable String id,
@@ -98,7 +96,6 @@ public class MaintainController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/maintains/{id}")
     public ResponseEntity<ApiResponse<MaintainEntity>> deleteMaintain(HttpServletRequest request,
             @PathVariable String id) {

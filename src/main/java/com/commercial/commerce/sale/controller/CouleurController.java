@@ -66,7 +66,6 @@ public class CouleurController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/colors")
     public ResponseEntity<ApiResponse<CouleurEntity>> createColor(HttpServletRequest request,
             @Valid @RequestBody CouleurEntity color) {
@@ -79,7 +78,6 @@ public class CouleurController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/colors/{id}")
     public ResponseEntity<ApiResponse<CouleurEntity>> updateColor(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody CouleurEntity updatedColor) {
@@ -98,7 +96,6 @@ public class CouleurController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/colors/{id}")
     public ResponseEntity<ApiResponse<CouleurEntity>> deleteColor(HttpServletRequest request, @PathVariable String id,
             String authorizationHeader) {

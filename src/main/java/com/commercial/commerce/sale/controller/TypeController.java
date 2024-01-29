@@ -61,7 +61,6 @@ public class TypeController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/types")
     public ResponseEntity<ApiResponse<TypeEntity>> createType(HttpServletRequest request,
             @Valid @RequestBody TypeEntity type) {
@@ -74,7 +73,6 @@ public class TypeController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/types/{id}")
     public ResponseEntity<ApiResponse<TypeEntity>> updateType(HttpServletRequest request, @PathVariable String id,
             @Valid @RequestBody TypeEntity updatedType) {
@@ -94,7 +92,6 @@ public class TypeController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/types/{id}")
     public ResponseEntity<ApiResponse<TypeEntity>> deleteType(HttpServletRequest request, @PathVariable String id) {
         try {

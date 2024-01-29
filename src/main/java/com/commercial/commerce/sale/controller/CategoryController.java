@@ -78,7 +78,6 @@ public class CategoryController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping(value = "/categories")
     public ResponseEntity<ApiResponse<CategoryEntity>> createCategory(HttpServletRequest request,
             @Valid @RequestBody CategoryEntity category) {
@@ -92,7 +91,6 @@ public class CategoryController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/categories/{id}")
     public ResponseEntity<ApiResponse<CategoryEntity>> updateCategory(HttpServletRequest request,
             @PathVariable String id,
@@ -113,7 +111,6 @@ public class CategoryController extends Controller {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/categories/{id}")
     public ResponseEntity<ApiResponse<CategoryEntity>> deleteCategory(HttpServletRequest request,
             @PathVariable String id) {
