@@ -46,12 +46,12 @@ public class WSController {
         return messageService.getContact(id);
     }
 
-    @GetMapping("/discussion")
+    @PostMapping("/discussion")
     public List<Message> getDiscussion(@RequestBody String user1, @RequestBody String user2){
         return messageService.getDiscussion(user1,user2);
     }
 
-    @GetMapping("/notification")
+    @PostMapping("/notification")
     public List<Message> getNotif(@RequestBody Message message){
         return messageService.getNotif(message.getReceiverEmail());
     }
