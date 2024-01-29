@@ -478,7 +478,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/statistique/model_vendu")
+    @GetMapping("/statistique/model/sell")
     public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsModels() {
         try {
 
@@ -491,7 +491,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/statistique/type_vendu")
+    @GetMapping("/statistique/type/sell")
     public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsTypes() {
         try {
 
@@ -504,7 +504,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/statistique/top_type_vendu")
+    @GetMapping("/statistique/type/top/sell")
     public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsTypesTop() {
         try {
 
@@ -517,7 +517,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/statistique/brand_vendu")
+    @GetMapping("/statistique/brand/sell")
     public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsBrand() {
         try {
 
@@ -530,7 +530,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/statistique/top_brand_vendu")
+    @GetMapping("/statistique/brand/top/sell")
     public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsBrandsTop() {
         try {
 
@@ -543,7 +543,7 @@ public class AnnonceController extends Controller {
         }
     }
 
-    @GetMapping("/statistique/top_model_vendu")
+    @GetMapping("/statistique/model/top/sell")
     public ResponseEntity<ApiResponse<List<Statistique>>> countSoldCarsModelsTop() {
         try {
 
