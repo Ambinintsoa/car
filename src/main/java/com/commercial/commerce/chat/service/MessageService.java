@@ -55,7 +55,7 @@ public class MessageService {
                     : message.getSenderId();
             Message lastMessage = utilisateurAvecEchange.get(autreUser);
             if (lastMessage == null) {
-                utilisateurAvecEchange.put(autreUser, new Message(message.getSenderId(), "Sender",
+                utilisateurAvecEchange.put(autreUser, new Message(message.getSenderId(), message.getSenderName(),
                         message.getReceiverEmail(), message.getContent(), message.getDate(),
                         message.getPicturePath()));
             } else {

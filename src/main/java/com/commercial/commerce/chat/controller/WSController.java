@@ -45,9 +45,9 @@ public class WSController {
         return ResponseEntity.ok("message sent");
     }
 
-    @GetMapping("/contact/{id}")
-    public HashMap<String, Message> getContact(@PathVariable String id) {
-        return messageService.getContact(id);
+    @GetMapping("/contact/{email}")
+    public HashMap<String, Message> getContact(@PathVariable String email) {
+        return messageService.getContact(email);
     }
 
     @PostMapping("/discussion")
